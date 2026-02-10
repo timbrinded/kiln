@@ -31,7 +31,7 @@ The plugin checks 40 rules across 6 categories:
 Clone the repo and point Claude Code at it:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/swift-design.git ~/.claude/plugins/swift-design
+git clone https://github.com/timbrinded/swift-design.git ~/.claude/plugins/swift-design
 ```
 
 Then add it to your Claude Code settings at `~/.claude/settings.json`:
