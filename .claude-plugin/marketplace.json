@@ -1,0 +1,23 @@
+{
+  "name": "swift-design",
+  "metadata": {
+    "description": "SwiftUI design excellence — HIG-compliant code review, generation, and iteration with 40 enforceable rules."
+  },
+  "owner": {
+    "name": "timbo"
+  },
+  "plugins": [
+    {
+      "name": "swift-design",
+      "source": "./",
+      "description": "Review and generate SwiftUI views for design quality, HIG compliance, accessibility, and modern API usage. 40 enforceable rules, letter grading, visual screenshot review, and design token references for iOS design excellence.",
+      "version": "0.1.0",
+      "author": {
+        "name": "timbo"
+      },
+      "category": "design",
+      "license": "MIT",
+      "keywords": ["swiftui", "ios", "hig", "design", "accessibility", "review", "apple", "mobile", "ui"]
+    }
+  ]
+}
