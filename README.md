@@ -2,7 +2,7 @@
 
 **Raw code refined into polished design.**
 
-Kiln is a marketplace of Claude Code plugins for front-end design excellence. Each plugin encodes platform-specific design guidelines as machine-enforceable rules — catching the design mistakes that AI-generated UI consistently gets wrong.
+Kiln is a marketplace of Claude Code plugins for code quality. Design plugins encode platform-specific guidelines as machine-enforceable rules. Performance plugins distill expert optimization knowledge into actionable guidance.
 
 ---
 
@@ -11,6 +11,7 @@ Kiln is a marketplace of Claude Code plugins for front-end design excellence. Ea
 | Plugin | Platform | Description |
 |--------|----------|-------------|
 | [swift-design](./plugins/swift-design/) | iOS / SwiftUI | 40 HIG rules, letter grading, visual review, accessibility checks, modern API enforcement |
+| [performance-optimization](./plugins/performance-optimization/) | C++ / Rust / TypeScript | Abseil-derived optimization guidance, measurement methodology, cross-language patterns |
 
 ---
 

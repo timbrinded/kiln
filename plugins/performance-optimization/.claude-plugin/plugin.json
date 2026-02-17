@@ -1,0 +1,9 @@
+{
+  "name": "performance-optimization",
+  "version": "0.1.0",
+  "description": "Language-agnostic performance optimization skill distilled from Google's Abseil performance wisdom. Covers measurement methodology, optimization techniques, and cross-language patterns for C++, Rust, and TypeScript.",
+  "author": {
+    "name": "timbo"
+  },
+  "keywords": ["performance", "optimization", "profiling", "benchmarking", "memory", "algorithms", "c++", "rust", "typescript"]
+}
