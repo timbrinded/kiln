@@ -1,0 +1,9 @@
+{
+  "name": "ui-refactor",
+  "version": "0.1.0",
+  "description": "UI design reviewer distilled from Refactoring UI principles. Reviews screenshots, code, and descriptions for hierarchy, spacing, typography, color, depth, and polish — with concrete CSS fixes and named anti-patterns.",
+  "author": {
+    "name": "timbo"
+  },
+  "keywords": ["ui", "design", "css", "tailwind", "refactoring-ui", "hierarchy", "spacing", "typography", "color", "review"]
+}

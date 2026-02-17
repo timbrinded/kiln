@@ -26,6 +26,16 @@
       "category": "performance",
       "license": "MIT",
       "keywords": ["performance", "optimization", "profiling", "benchmarking", "memory", "algorithms", "c++", "rust", "typescript"]
+    },
+    {
+      "name": "ui-refactor",
+      "source": "./plugins/ui-refactor",
+      "description": "UI design reviewer distilled from Refactoring UI principles. Reviews screenshots, code, and descriptions for hierarchy, spacing, typography, color, depth, and polish — with concrete CSS fixes and named anti-patterns.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "design",
+      "license": "MIT",
+      "keywords": ["ui", "design", "css", "tailwind", "refactoring-ui", "hierarchy", "spacing", "typography", "color", "review"]
     }
   ]
 }
