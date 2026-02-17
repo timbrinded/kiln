@@ -26,40 +26,19 @@ The plugin checks 40 rules across 6 categories:
 
 ## Installation
 
-### Option 1: Plugin directory (recommended)
+### From the Kiln marketplace (recommended)
 
-Clone the repo and point Claude Code at it:
+In the Claude Code interactive terminal:
 
-```bash
-git clone https://github.com/timbrinded/kiln.git ~/.claude/plugins/kiln
+```
+/plugin marketplace add https://github.com/timbrinded/kiln.git
+/plugin install swift-design@kiln
 ```
 
-Then add it to your Claude Code settings at `~/.claude/settings.json`:
-
-```json
-{
-  "plugins": [
-    "~/.claude/plugins/kiln/plugins/swift-design"
-  ]
-}
-```
-
-Restart Claude Code. The plugin loads automatically on next session.
-
-### Option 2: Test without installing
-
-Run Claude Code with the `--plugin-dir` flag:
+### Test without installing
 
 ```bash
 claude --plugin-dir /path/to/kiln/plugins/swift-design
-```
-
-### Option 3: Project-level installation
-
-Copy or symlink into a project's `.claude/plugins/` directory to share with your team via git:
-
-```bash
-ln -s /path/to/kiln/plugins/swift-design .claude/plugins/swift-design
 ```
 
 ### Verify installation
@@ -311,35 +290,28 @@ Five dimensions scored 1–5:
 ## Plugin structure
 
 ```
-kiln/
+swift-design/
 ├── .claude-plugin/
-│   └── marketplace.json                     # Kiln marketplace index
-├── plugins/
-│   └── swift-design/                        # This plugin
-│       ├── .claude-plugin/
-│       │   └── plugin.json                  # Plugin manifest
-│       ├── agents/
-│       │   └── swift-design-reviewer.md     # Proactive design review agent
-│       ├── commands/
-│       │   ├── swift-review.md              # /swift-review command
-│       │   └── swift-generate.md            # /swift-generate command
-│       ├── skills/
-│       │   └── swift-design/
-│       │       ├── SKILL.md                 # Core skill — mode routing (819 words)
-│       │       └── references/
-│       │           ├── review-checklist.md  # 40 rules + grade rubric
-│       │           ├── deprecated-apis.md   # Modern API before/after guide
-│       │           ├── design-tokens.md     # Spacing, typography, color tokens
-│       │           ├── hig-rules.md         # HIG fundamentals for generation
-│       │           ├── accessibility-guide.md   # VoiceOver, Dynamic Type, contrast
-│       │           ├── component-patterns.md    # TabView, NavigationStack, List, Form
-│       │           ├── animation-guide.md       # Spring animations, haptics
-│       │           ├── visual-review-rubric.md  # 5-dimension screenshot rubric
-│       │           └── anti-patterns.md         # 17 AI code smells + fixes
-│       └── README.md
-├── shared/                                  # Future cross-plugin resources
-├── README.md                                # Kiln marketplace docs
-└── LICENSE
+│   └── plugin.json                  # Plugin manifest
+├── agents/
+│   └── swift-design-reviewer.md     # Proactive design review agent
+├── commands/
+│   ├── swift-review.md              # /swift-review command
+│   └── swift-generate.md            # /swift-generate command
+├── skills/
+│   └── swift-design/
+│       ├── SKILL.md                 # Core skill — mode routing (819 words)
+│       └── references/
+│           ├── review-checklist.md  # 40 rules + grade rubric
+│           ├── deprecated-apis.md   # Modern API before/after guide
+│           ├── design-tokens.md     # Spacing, typography, color tokens
+│           ├── hig-rules.md         # HIG fundamentals for generation
+│           ├── accessibility-guide.md   # VoiceOver, Dynamic Type, contrast
+│           ├── component-patterns.md    # TabView, NavigationStack, List, Form
+│           ├── animation-guide.md       # Spring animations, haptics
+│           ├── visual-review-rubric.md  # 5-dimension screenshot rubric
+│           └── anti-patterns.md         # 17 AI code smells + fixes
+└── README.md
 ```
 
 **How progressive disclosure works:** The skill metadata (~100 words) is always in Claude's context. When triggered, SKILL.md adds ~800 words of mode routing. Only when a specific mode runs does the relevant reference file (~1,000 words each) get loaded. Maximum context cost for a full review is ~2,800 words — not 11,000.

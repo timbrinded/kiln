@@ -8,37 +8,53 @@ Kiln is a marketplace of Claude Code plugins for code quality. Design plugins en
 
 ## Available Plugins
 
-| Plugin | Platform | Description |
+| Plugin | Category | Description |
 |--------|----------|-------------|
-| [swift-design](./plugins/swift-design/) | iOS / SwiftUI | 40 HIG rules, letter grading, visual review, accessibility checks, modern API enforcement |
-| [performance-optimization](./plugins/performance-optimization/) | C++ / Rust / TypeScript | Abseil-derived optimization guidance, measurement methodology, cross-language patterns |
+| [swift-design](./plugins/swift-design/) | Design | 40 HIG rules for SwiftUI — letter grading, visual review, accessibility checks, modern API enforcement |
+| [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
 
 ---
 
 ## Installation
 
-### 1. Clone the marketplace
+### 1. Add the Kiln marketplace
 
-```bash
-git clone https://github.com/timbrinded/kiln.git ~/.claude/plugins/kiln
+In the Claude Code interactive terminal:
+
+```
+/plugin marketplace add https://github.com/timbrinded/kiln.git
 ```
 
-### 2. Add a plugin to Claude Code settings
+### 2. Install a plugin
 
-Point Claude Code at the specific plugin directory in `~/.claude/settings.json`:
+Browse available plugins:
 
-```json
-{
-  "plugins": [
-    "~/.claude/plugins/kiln/plugins/swift-design"
-  ]
-}
+```
+/plugin
 ```
 
-### 3. Test without installing
+Navigate to the **Discover** tab, select a plugin, and choose a scope (User, Project, or Local).
+
+Or install directly:
+
+```
+/plugin install swift-design@kiln
+/plugin install performance-optimization@kiln
+```
+
+### Alternative: test without installing
 
 ```bash
 claude --plugin-dir /path/to/kiln/plugins/swift-design
+claude --plugin-dir /path/to/kiln/plugins/performance-optimization
+```
+
+### Alternative: local marketplace
+
+If you've cloned the repo locally:
+
+```
+/plugin marketplace add ./path/to/kiln
 ```
 
 ---
