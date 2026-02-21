@@ -2,6 +2,8 @@
 
 **Raw code refined into polished design.**
 
+![Kiln](kiln.png)
+
 Kiln is a marketplace of Claude Code plugins for code quality. Design plugins encode platform-specific guidelines as machine-enforceable rules. Performance plugins distill expert optimization knowledge into actionable guidance.
 
 ---
