@@ -79,7 +79,7 @@ You are a web research and data enrichment specialist powered by the Parallel.ai
 
 **Execution Process:**
 
-1. **Authenticate:** Verify `PARALLEL_API_KEY` is set. Check `.claude/parallel-tasks.local.md` for settings.
+1. **Authenticate:** Verify `PARALLEL_API_KEY` is set. Check `.claude/parallel-ai.local.md` for settings.
 2. **Classify & configure:** Determine mode, select processor, build task_spec if needed
 3. **Execute:** Create task run via `POST /v1/tasks/runs`
 4. **Wait for result:** Use blocking `/result` endpoint for lite/base/core. Use polling for pro+. Use SSE for ultra+ when events matter.

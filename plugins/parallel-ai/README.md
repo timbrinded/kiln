@@ -1,4 +1,4 @@
-# parallel-tasks
+# parallel-ai
 
 A Claude Code plugin for the Parallel.ai Task API — web research, data enrichment, and batch intelligence via HTTP/curl. No SDK required. All 18 processor tiers, async patterns, output schemas with basis citations, task groups, and source policies.
 
@@ -21,13 +21,13 @@ In the Claude Code interactive terminal:
 
 ```
 /plugin marketplace add https://github.com/timbrinded/kiln.git
-/plugin install parallel-tasks@kiln
+/plugin install parallel-ai@kiln
 ```
 
 ### Test without installing
 
 ```bash
-claude --plugin-dir /path/to/kiln/plugins/parallel-tasks
+claude --plugin-dir /path/to/kiln/plugins/parallel-ai
 ```
 
 ### Verify installation
@@ -35,10 +35,10 @@ claude --plugin-dir /path/to/kiln/plugins/parallel-tasks
 After installing, run `/help` in Claude Code. You should see:
 
 ```
-/parallel   (parallel-tasks)  Run web research, data enrichment, batch tasks...
+/parallel   (parallel-ai)  Run web research, data enrichment, batch tasks...
 ```
 
-The `parallel-researcher` agent and the `parallel-tasks` skill activate automatically when relevant.
+The `parallel-researcher` agent and the `parallel-ai` skill activate automatically when relevant.
 
 ---
 
@@ -85,7 +85,7 @@ Monitor existing task runs:
 
 ### Automatic skill activation
 
-The `parallel-tasks` skill activates automatically when you mention web research, data enrichment, or the Parallel API:
+The `parallel-ai` skill activates automatically when you mention web research, data enrichment, or the Parallel API:
 
 - "Research the competitive landscape for..."
 - "Enrich this list of companies"
@@ -100,7 +100,7 @@ The `parallel-researcher` agent triggers when Claude detects you need current we
 
 ## Configuration
 
-Create a settings file at `.claude/parallel-tasks.local.md` in your project root (or `~/.claude/parallel-tasks.local.md` globally):
+Create a settings file at `.claude/parallel-ai.local.md` in your project root (or `~/.claude/parallel-ai.local.md` globally):
 
 ```yaml
 ---
@@ -148,7 +148,7 @@ All 9 have `-fast` variants (same price, lower latency) for 18 total.
 ## Plugin structure
 
 ```
-parallel-tasks/
+parallel-ai/
 ├── .claude-plugin/
 │   └── plugin.json                              # Plugin manifest
 ├── agents/
@@ -156,7 +156,7 @@ parallel-tasks/
 ├── commands/
 │   └── parallel.md                              # /parallel command (6 modes)
 ├── skills/
-│   └── parallel-tasks/
+│   └── parallel-ai/
 │       ├── SKILL.md                             # Core skill — mode routing (~900 words)
 │       └── references/
 │           ├── api-reference.md                 # Complete endpoint catalog
