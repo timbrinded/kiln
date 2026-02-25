@@ -35,6 +35,10 @@ curl -X POST https://api.parallel.ai/v1/tasks/runs \
   }'
 ```
 
+### Applicability
+
+Source policies (`include_domains`, `exclude_domains`, `after_date`) apply to both the Task API (`POST /v1/tasks/runs`) and the Search API (`POST /v1beta/search`). The Extract API does not use source policies since URLs are provided explicitly.
+
 ### Best Practices
 
 - Use `include_domains` when you need results grounded in specific authoritative sources — official documentation, trusted publications, or known data providers.
@@ -132,6 +136,7 @@ Several Parallel.ai features are available as opt-in betas. Enable them by inclu
 | `webhook-2025-08-12` | Webhook notifications on run completion | Beta |
 | `field-basis-2025-11-25` | Per-element basis citations in structured output | Beta |
 | `mcp-server-2025-07-17` | MCP server integration during task execution | Beta |
+| `search-extract-2025-10-10` | Search and Extract APIs | Beta |
 
 ### Example: Multiple Beta Features
 
@@ -148,10 +153,16 @@ Beta features are subject to change or removal. Pin your usage to the dated iden
 | Product | Default Quota |
 |---|---|
 | Tasks / Task Groups | 2,000 creates per minute |
+| Search API | 600 requests per minute |
+| Extract API | 600 requests per minute |
 
-This quota applies to:
+Task/Group quota applies to:
 - `POST /v1/tasks/runs`
 - `POST /v1beta/tasks/groups/{id}/runs`
+
+Search/Extract quota applies to:
+- `POST /v1beta/search`
+- `POST /v1beta/extract`
 
 Status polling and result retrieval (`GET` endpoints) are not subject to the same rate limits, so polling for completion on already-submitted runs will not count against your creation quota.
 

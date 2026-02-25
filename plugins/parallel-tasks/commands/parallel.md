@@ -1,6 +1,6 @@
 ---
-description: Run web research, data enrichment, batch tasks, or check status via the Parallel.ai Task API
-argument-hint: "<mode> [args] — modes: research, enrich, batch, status, result, stream"
+description: Run web research, data enrichment, batch tasks, web search, URL extraction, or check status via the Parallel.ai APIs
+argument-hint: "<mode> [args] — modes: research, enrich, batch, search, extract, status, result, stream"
 allowed-tools: Read, Bash, Grep, Glob
 ---
 
@@ -43,6 +43,27 @@ Execute Parallel.ai Task API operations using the parallel-tasks skill.
 6. Stream group events, displaying results as they complete
 7. Summarize: total items, completed, failed, sample results
 
+### `search` — Web search
+`/parallel search "Recent AI infrastructure funding rounds" --mode one-shot --max-results 5`
+
+1. Parse objective from `$1`, optional `--mode` (default: `one-shot`), optional `--max-results` (default: 10)
+2. Load the parallel-tasks skill, then load `references/search-and-extract.md`
+3. Build request body with `objective`, `mode`, and `max_results`
+4. POST to `/v1beta/search` with both `x-api-key` and `parallel-beta: search-extract-2025-10-10` headers
+5. Display results: URL, title, publish date, and excerpts
+
+### `extract` — Extract content from URLs
+`/parallel extract "https://example.com/page1 https://example.com/page2" --objective "Key features" --full-content`
+
+Also supports reading URLs from a file:
+`/parallel extract urls.txt --objective "Pricing details"`
+
+1. Parse URLs from `$1` — either space-separated inline or a file path (one URL per line)
+2. Load the parallel-tasks skill, then load `references/search-and-extract.md`
+3. Build request body with `urls`, optional `--objective`, and `--full-content` flag
+4. POST to `/v1beta/extract` with both `x-api-key` and `parallel-beta: search-extract-2025-10-10` headers
+5. Display results per URL; report any entries from the `errors` array
+
 ### `status` — Check run status
 `/parallel status trun_9907962f83aa4d9d98fd7f4bf745d654`
 
@@ -70,18 +91,21 @@ Execute Parallel.ai Task API operations using the parallel-tasks skill.
 
 Display available modes with usage examples:
 ```
-Parallel.ai Task API — Web research, enrichment, and batch intelligence
+Parallel.ai APIs — Web research, enrichment, batch intelligence, search, and extraction
 
 Usage:
-  /parallel research "query" [--processor tier]    Run a web research task
-  /parallel enrich '{"key":"val"}' [--schema file] Enrich structured data
-  /parallel batch items.json [--processor tier]     Batch process a list
-  /parallel status {run_id}                         Check task status
-  /parallel result {run_id}                         Get task result
-  /parallel stream {run_id}                         Stream task events
+  /parallel research "query" [--processor tier]       Run a web research task
+  /parallel enrich '{"key":"val"}' [--schema file]    Enrich structured data
+  /parallel batch items.json [--processor tier]        Batch process a list
+  /parallel search "query" [--mode mode] [--max-results N]  Web search (sync)
+  /parallel extract "url1 url2" [--objective "goal"]   Extract URL content (sync)
+  /parallel status {run_id}                            Check task status
+  /parallel result {run_id}                            Get task result
+  /parallel stream {run_id}                            Stream task events
 
 Processors: lite, base (default), core, pro, ultra, ultra2x, ultra4x, ultra8x
             Add -fast suffix for lower latency (e.g., base-fast)
+Search modes: fast, one-shot (default), agentic
 
 Requires: PARALLEL_API_KEY environment variable
 ```

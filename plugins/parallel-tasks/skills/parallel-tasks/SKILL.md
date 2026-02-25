@@ -6,14 +6,18 @@ description: >
   "batch process entities", "check task status", "use the Parallel API",
   "deep research", "find current information about", "enrich this list",
   "get citations for", "research this topic", "data enrichment pipeline",
-  "run a batch of lookups", or needs to programmatically gather, verify,
-  or enrich information from the web using the Parallel.ai Task API.
+  "run a batch of lookups", "search the web", "find pages about",
+  "extract content from URL", "scrape this page", "get page content",
+  "Parallel Search API", "Parallel Extract API", or needs to
+  programmatically gather, verify, or enrich information from the web
+  using the Parallel.ai APIs (Task, Search, and Extract).
   Provides HTTP/curl-first guidance for all 18 processor tiers, async patterns,
-  output schemas with basis citations, task groups, and source policies.
+  output schemas with basis citations, task groups, source policies,
+  synchronous web search, and URL content extraction.
 version: 0.1.0
 ---
 
-# Parallel.ai Task API
+# Parallel.ai APIs
 
 HTTP/curl-first guide — no SDK required. All examples use `curl` + `jq`.
 
@@ -80,6 +84,52 @@ Check status, get results, or stream events for existing runs/groups.
 - **Stream events:** `GET /v1/tasks/runs/{run_id}/events` → SSE stream (load `references/async-patterns.md`)
 - **Group status:** `GET /v1beta/tasks/groups/{taskgroup_id}` → group-level status
 
+### Search Mode
+
+Synchronous web search → URLs + excerpts. No run IDs, no polling.
+
+1. Parse objective from user query and optional search_queries
+2. Select mode: `one-shot` (default), `agentic` (multi-pass), or `fast` (minimal)
+3. POST to `/v1beta/search` with **both** headers:
+```bash
+curl -s -X POST https://api.parallel.ai/v1beta/search \
+  -H "x-api-key: ${PARALLEL_API_KEY}" \
+  -H "parallel-beta: search-extract-2025-10-10" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "objective": "Your search objective here",
+    "mode": "one-shot",
+    "max_results": 5
+  }' | jq '.results[] | {url, title, excerpts}'
+```
+4. Present results: URL, title, publish date, and excerpts
+5. Load `references/search-and-extract.md` for full parameter details
+
+> Synchronous — no run_id, no polling. Response in 1–3s.
+
+### Extract Mode
+
+Extract content from specific URLs. Synchronous — no async lifecycle.
+
+1. Parse URLs from user input (inline list or read from file for >3 URLs)
+2. Optionally set `objective` to guide excerpt extraction and `full_content: true` for complete pages
+3. POST to `/v1beta/extract` with **both** headers:
+```bash
+curl -s -X POST https://api.parallel.ai/v1beta/extract \
+  -H "x-api-key: ${PARALLEL_API_KEY}" \
+  -H "parallel-beta: search-extract-2025-10-10" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "urls": ["https://example.com/page"],
+    "objective": "Extract key information",
+    "excerpts": true
+  }' | jq '.results[] | {url, title, excerpts}'
+```
+4. Present results per URL; report any errors from the `errors` array
+5. Load `references/search-and-extract.md` for full parameter details
+
+> Synchronous — response in 1–20s depending on page count.
+
 ## Quick Processor Table
 
 | Processor | $/1000 | Latency | Use When |
@@ -103,6 +153,8 @@ All 9 processors have `-fast` variants (same price, lower latency). Full table i
 | Building output schemas or understanding citations | `references/output-schemas-and-basis.md` |
 | Processing a list of items in batch | `references/task-groups.md` |
 | Source filtering, context reuse, metadata, MCP, beta features | `references/source-policies-and-advanced.md` |
+| Web search, finding URLs, quick lookups | `references/search-and-extract.md` |
+| Extracting content from URLs, scraping pages | `references/search-and-extract.md` |
 
 ## Settings
 
@@ -129,3 +181,4 @@ api-key-env: PARALLEL_API_KEY
 | `references/output-schemas-and-basis.md` | Schema types, task specs, Basis citations | ~1200 |
 | `references/task-groups.md` | Batch processing lifecycle, group endpoints | ~1200 |
 | `references/source-policies-and-advanced.md` | Source policies, context reuse, metadata, MCP, beta headers | ~1200 |
+| `references/search-and-extract.md` | Search API, Extract API, combined patterns, comparison to Task API | ~1200 |
