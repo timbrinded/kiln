@@ -1,5 +1,6 @@
 {
   "name": "kiln",
+  "version": "0.2.0",
   "metadata": {
     "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code design plugins."
   },
@@ -11,7 +12,7 @@
       "name": "swift-design",
       "source": "./plugins/swift-design",
       "description": "Review and generate SwiftUI views for design quality, HIG compliance, accessibility, and modern API usage. 40 enforceable rules, letter grading, visual screenshot review, and design token references for iOS design excellence.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "timbo" },
       "category": "design",
       "license": "MIT",
@@ -21,7 +22,7 @@
       "name": "performance-optimization",
       "source": "./plugins/performance-optimization",
       "description": "Language-agnostic performance optimization skill distilled from Google's Abseil performance wisdom. Covers measurement methodology, optimization techniques, and cross-language patterns for C++, Rust, and TypeScript.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "timbo" },
       "category": "performance",
       "license": "MIT",
@@ -31,7 +32,7 @@
       "name": "ui-refactor",
       "source": "./plugins/ui-refactor",
       "description": "UI design reviewer distilled from Refactoring UI principles. Reviews screenshots, code, and descriptions for hierarchy, spacing, typography, color, depth, and polish — with concrete CSS fixes and named anti-patterns.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "timbo" },
       "category": "design",
       "license": "MIT",

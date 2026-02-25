@@ -1,6 +1,6 @@
 {
   "name": "swift-design",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "SwiftUI design excellence — HIG-compliant code review, generation, and iteration with 40 enforceable rules, accessibility checks, and modern API enforcement.",
   "author": {
     "name": "timbo"
