@@ -391,6 +391,12 @@ Events follow the same format as single-run SSE events but include a `run_id` fi
 
 ---
 
+## Search and Extract APIs
+
+`POST /v1beta/search` and `POST /v1beta/extract` are synchronous endpoints covered in `references/search-and-extract.md`. Both require the `parallel-beta: search-extract-2025-10-10` header in addition to `x-api-key`.
+
+---
+
 ## Common Objects
 
 ### TaskRun Object
