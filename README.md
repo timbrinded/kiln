@@ -15,7 +15,7 @@ Kiln is a marketplace of Claude Code plugins for code quality and intelligent to
 | [swift-design](./plugins/swift-design/) | Design | 40 HIG rules for SwiftUI — letter grading, visual review, accessibility checks, modern API enforcement |
 | [ui-refactor](./plugins/ui-refactor/) | Design | Refactoring UI principles — review screenshots, CSS, and Tailwind for hierarchy, spacing, typography, color, depth, and polish |
 | [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
-| [parallel-tasks](./plugins/parallel-tasks/) | API | Parallel.ai Task API — web research, data enrichment, batch intelligence, 18 processor tiers, basis citations |
+| [parallel-ai](./plugins/parallel-ai/) | API | Parallel.ai Task API — web research, data enrichment, batch intelligence, 18 processor tiers, basis citations |
 
 ---
 
@@ -45,7 +45,7 @@ Or install directly:
 /plugin install swift-design@kiln
 /plugin install ui-refactor@kiln
 /plugin install performance-optimization@kiln
-/plugin install parallel-tasks@kiln
+/plugin install parallel-ai@kiln
 ```
 
 ### Alternative: test without installing
@@ -54,7 +54,7 @@ Or install directly:
 claude --plugin-dir /path/to/kiln/plugins/swift-design
 claude --plugin-dir /path/to/kiln/plugins/ui-refactor
 claude --plugin-dir /path/to/kiln/plugins/performance-optimization
-claude --plugin-dir /path/to/kiln/plugins/parallel-tasks
+claude --plugin-dir /path/to/kiln/plugins/parallel-ai
 ```
 
 ### Alternative: local marketplace

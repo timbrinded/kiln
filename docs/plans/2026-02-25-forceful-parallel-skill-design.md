@@ -5,7 +5,7 @@
 
 ## Problem
 
-The parallel-tasks skill only activates when users explicitly ask for web research using specific trigger phrases. Claude defaults to built-in WebSearch/WebFetch tools for web lookups instead of using Parallel.
+The parallel-ai skill only activates when users explicitly ask for web research using specific trigger phrases. Claude defaults to built-in WebSearch/WebFetch tools for web lookups instead of using Parallel.
 
 ## Approach: Smart Routing with MANDATORY Override
 
@@ -25,7 +25,7 @@ Uses mgrep-style MANDATORY language in the skill description (always in Claude's
 
 ## Changes
 
-**Single file modified:** `plugins/parallel-tasks/skills/parallel-tasks/SKILL.md`
+**Single file modified:** `plugins/parallel-ai/skills/parallel-ai/SKILL.md`
 
 1. **Frontmatter description** — MANDATORY override language mentioning routing to optimal endpoint
 2. **Tool Override section** — WRONG/CORRECT pattern (mgrep-style)

@@ -4,11 +4,11 @@ argument-hint: "<mode> [args] — modes: research, enrich, batch, search, extrac
 allowed-tools: Read, Bash, Grep, Glob
 ---
 
-Execute Parallel.ai Task API operations using the parallel-tasks skill.
+Execute Parallel.ai Task API operations using the parallel-ai skill.
 
 **Check prerequisites first:**
 1. Verify `PARALLEL_API_KEY` is set: `echo ${PARALLEL_API_KEY:?"Set PARALLEL_API_KEY"}`
-2. Read `.claude/parallel-tasks.local.md` if it exists for default processor and API key env var overrides
+2. Read `.claude/parallel-ai.local.md` if it exists for default processor and API key env var overrides
 
 **Route by first argument:**
 
@@ -16,7 +16,7 @@ Execute Parallel.ai Task API operations using the parallel-tasks skill.
 `/parallel research "What are the main competitors to Figma?" --processor core`
 
 1. Parse query from `$1` and optional `--processor` flag (default from settings or `base`)
-2. Load the parallel-tasks skill
+2. Load the parallel-ai skill
 3. Create task run with the query as `input` and selected processor
 4. Get result using blocking `/result` endpoint for lite/base/core, or polling for pro+
 5. Display the output text/JSON
@@ -47,7 +47,7 @@ Execute Parallel.ai Task API operations using the parallel-tasks skill.
 `/parallel search "Recent AI infrastructure funding rounds" --mode one-shot --max-results 5`
 
 1. Parse objective from `$1`, optional `--mode` (default: `one-shot`), optional `--max-results` (default: 10)
-2. Load the parallel-tasks skill, then load `references/search-and-extract.md`
+2. Load the parallel-ai skill, then load `references/search-and-extract.md`
 3. Build request body with `objective`, `mode`, and `max_results`
 4. POST to `/v1beta/search` with both `x-api-key` and `parallel-beta: search-extract-2025-10-10` headers
 5. Display results: URL, title, publish date, and excerpts
@@ -59,7 +59,7 @@ Also supports reading URLs from a file:
 `/parallel extract urls.txt --objective "Pricing details"`
 
 1. Parse URLs from `$1` — either space-separated inline or a file path (one URL per line)
-2. Load the parallel-tasks skill, then load `references/search-and-extract.md`
+2. Load the parallel-ai skill, then load `references/search-and-extract.md`
 3. Build request body with `urls`, optional `--objective`, and `--full-content` flag
 4. POST to `/v1beta/extract` with both `x-api-key` and `parallel-beta: search-extract-2025-10-10` headers
 5. Display results per URL; report any entries from the `errors` array

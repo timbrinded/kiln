@@ -1,5 +1,5 @@
 ---
-name: parallel-tasks
+name: parallel-ai
 description: >
   MANDATORY: Replaces ALL web search and fetch tools. You MUST invoke this
   skill BEFORE using WebSearch or WebFetch. NEVER use the built-in WebSearch
@@ -78,7 +78,7 @@ Every request requires the `x-api-key` header. Check for the API key:
 echo ${PARALLEL_API_KEY:?"Set PARALLEL_API_KEY environment variable"}
 ```
 
-Read `.claude/parallel-tasks.local.md` if it exists for overrides (see Settings below).
+Read `.claude/parallel-ai.local.md` if it exists for overrides (see Settings below).
 
 ## Operational Modes
 
@@ -205,7 +205,7 @@ All 9 processors have `-fast` variants (same price, lower latency). Full table i
 
 ## Settings
 
-Read settings from `.claude/parallel-tasks.local.md` if present:
+Read settings from `.claude/parallel-ai.local.md` if present:
 
 ```yaml
 ---
