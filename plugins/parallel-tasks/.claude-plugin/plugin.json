@@ -1,0 +1,9 @@
+{
+  "name": "parallel-tasks",
+  "version": "0.1.0",
+  "description": "HTTP/curl-first guide to Parallel.ai Task API for web research, data enrichment, and batch intelligence. All 18 processor tiers, async patterns, output schemas, basis citations, task groups, and source policies.",
+  "author": {
+    "name": "timbo"
+  },
+  "keywords": ["parallel", "task-api", "web-research", "enrichment", "deep-research", "batch", "curl", "api", "citations"]
+}

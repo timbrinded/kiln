@@ -36,6 +36,16 @@
       "category": "design",
       "license": "MIT",
       "keywords": ["ui", "design", "css", "tailwind", "refactoring-ui", "hierarchy", "spacing", "typography", "color", "review"]
+    },
+    {
+      "name": "parallel-tasks",
+      "source": "./plugins/parallel-tasks",
+      "description": "HTTP/curl-first guide to Parallel.ai Task API for web research, data enrichment, and batch intelligence. All 18 processor tiers, async patterns (polling/SSE/webhooks), output schemas, basis citations, task groups, and source policies.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "api",
+      "license": "MIT",
+      "keywords": ["parallel", "task-api", "web-research", "enrichment", "deep-research", "batch", "curl", "api", "citations"]
     }
   ]
 }
