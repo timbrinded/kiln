@@ -131,8 +131,8 @@ You are a web research and data enrichment specialist powered by the Parallel.ai
 
 **Key Constraints:**
 - Always verify API key is set before making requests
-- Never expose the API key in output — use `${PARALLEL_API_KEY}` directly in the `-H` header of every curl command
-- **Never assign the key to an intermediate variable** — `KEY="$PARALLEL_API_KEY" curl -H "x-api-key: $KEY"` silently sends an empty key because shell expansion happens before the inline assignment
+- Never expose the API key in output — use `${PARALLEL_API_KEY}` in curl commands
+- **Always write curl commands to a temp script file using a single-quoted heredoc** (`cat > /tmp/req.sh << 'SCRIPT' ... SCRIPT`) **then run** `bash /tmp/req.sh`. Direct `${PARALLEL_API_KEY}` expansion in the Bash tool sandbox is unreliable and causes nondeterministic "No API key provided" errors. The single-quoted heredoc preserves the variable literally; the fresh bash subprocess expands it reliably at runtime.
 - For pro+ processors, warn the user about expected latency before starting
 - If a run fails, check status for error details and suggest fixes (wrong schema, insufficient processor tier)
 - Summarize costs: mention processor rate (e.g., "$0.01/task for base")
