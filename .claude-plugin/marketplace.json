@@ -37,6 +37,16 @@
       "category": "design",
       "license": "MIT",
       "keywords": ["ui", "design", "css", "tailwind", "refactoring-ui", "hierarchy", "spacing", "typography", "color", "review"]
+    },
+    {
+      "name": "unslop",
+      "source": "./plugins/unslop",
+      "description": "Post-generation code quality cleanup. Reviews git diffs for AI-generated verbosity, unnecessary state, defensive coding, and complexity — then applies concrete simplifications.",
+      "version": "0.2.0",
+      "author": { "name": "timbo" },
+      "category": "code-quality",
+      "license": "MIT",
+      "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation"]
     }
   ]
 }
