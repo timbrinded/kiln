@@ -1,8 +1,8 @@
 {
   "name": "kiln",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "metadata": {
-    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code design plugins."
+    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, and learning workflows."
   },
   "owner": {
     "name": "timbo"
@@ -47,6 +47,16 @@
       "category": "code-quality",
       "license": "MIT",
       "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation"]
+    },
+    {
+      "name": "teach-me",
+      "source": "./plugins/teach-me",
+      "description": "Tutoring-oriented Claude Code skill that prioritizes hints, guided questions, mental models, and local project context over autonomous implementation.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "education",
+      "license": "MIT",
+      "keywords": ["teaching", "learning", "tutoring", "hints", "debugging", "exercises", "education"]
     }
   ]
 }
