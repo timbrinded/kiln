@@ -4,7 +4,7 @@
 
 ![Kiln](kiln.png)
 
-Kiln is a marketplace of Claude Code plugins for code quality and intelligent tooling. Design plugins encode platform-specific guidelines as machine-enforceable rules. Performance plugins distill expert optimization knowledge into actionable guidance. API plugins provide structured guides for web research and data enrichment APIs.
+Kiln is a marketplace of Claude Code plugins for code quality and intelligent tooling. Design plugins encode platform-specific guidelines as machine-enforceable rules. Performance plugins distill expert optimization knowledge into actionable guidance. Learning plugins guide users through concepts, exercises, and debugging with a tutoring-first style.
 
 ---
 
@@ -15,6 +15,7 @@ Kiln is a marketplace of Claude Code plugins for code quality and intelligent to
 | [swift-design](./plugins/swift-design/) | Design | 40 HIG rules for SwiftUI — letter grading, visual review, accessibility checks, modern API enforcement |
 | [ui-refactor](./plugins/ui-refactor/) | Design | Refactoring UI principles — review screenshots, CSS, and Tailwind for hierarchy, spacing, typography, color, depth, and polish |
 | [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
+| [teach-me](./plugins/teach-me/) | Education | Tutoring mode for hints, guided questions, mental models, and learning from local project context |
 
 ---
 
@@ -44,6 +45,7 @@ Or install directly:
 /plugin install swift-design@kiln
 /plugin install ui-refactor@kiln
 /plugin install performance-optimization@kiln
+/plugin install teach-me@kiln
 ```
 
 ### Alternative: test without installing
@@ -52,6 +54,7 @@ Or install directly:
 claude --plugin-dir /path/to/kiln/plugins/swift-design
 claude --plugin-dir /path/to/kiln/plugins/ui-refactor
 claude --plugin-dir /path/to/kiln/plugins/performance-optimization
+claude --plugin-dir /path/to/kiln/plugins/teach-me
 ```
 
 ### Alternative: local marketplace
