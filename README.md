@@ -16,6 +16,7 @@ Kiln is a marketplace of Claude Code plugins for code quality and intelligent to
 | [ui-refactor](./plugins/ui-refactor/) | Design | Refactoring UI principles — review screenshots, CSS, and Tailwind for hierarchy, spacing, typography, color, depth, and polish |
 | [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
 | [teach-me](./plugins/teach-me/) | Education | Tutoring mode for hints, guided questions, mental models, and learning from local project context |
+| [infographic](./plugins/infographic/) | Design | Image-generation prompt writer for repo docs, with optional tool-backed image generation when explicitly requested |
 
 ---
 
@@ -46,6 +47,7 @@ Or install directly:
 /plugin install ui-refactor@kiln
 /plugin install performance-optimization@kiln
 /plugin install teach-me@kiln
+/plugin install infographic@kiln
 ```
 
 ### Alternative: test without installing
@@ -55,6 +57,7 @@ claude --plugin-dir /path/to/kiln/plugins/swift-design
 claude --plugin-dir /path/to/kiln/plugins/ui-refactor
 claude --plugin-dir /path/to/kiln/plugins/performance-optimization
 claude --plugin-dir /path/to/kiln/plugins/teach-me
+claude --plugin-dir /path/to/kiln/plugins/infographic
 ```
 
 ### Alternative: local marketplace
