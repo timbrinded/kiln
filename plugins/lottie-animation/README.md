@@ -51,8 +51,11 @@ lottie-animation/
 |   `-- lottie-animation/
 |       |-- SKILL.md
 |       `-- references/
+|           |-- animation-taxonomy.md
 |           |-- bodymovin-authoring.md
+|           |-- compatibility-and-renderers.md
 |           |-- large-stable-lotties.md
+|           |-- motion-design-systems.md
 |           `-- standalone-player.md
 `-- README.md
 ```

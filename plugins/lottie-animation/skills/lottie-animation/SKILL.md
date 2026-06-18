@@ -5,11 +5,11 @@ description: This skill should be used when the user asks to "create a Lottie", 
 
 # Lottie Animation Authoring
 
-Create production-ready Lottie animations as renderable Bodymovin JSON, not just syntactically valid JSON. Prioritize the user's target player, visible motion quality, loop correctness, and runtime stability.
+Create production-ready Lottie animations as renderable Bodymovin JSON. Optimize for the real target player, motion intent, loop correctness, and runtime stability.
 
-## Target Surface First
+## Operating Rules
 
-Before authoring or editing an animation:
+Start with the target surface:
 
 1. Inspect the target app or viewer.
 2. Read the dependency manifest to identify the package manager and Lottie player.
@@ -17,67 +17,30 @@ Before authoring or editing an animation:
 4. Use the existing player when one exists.
 5. Create a standalone viewer only when no target app or viewer is present.
 
-When no target app exists, read `references/standalone-player.md` and use the
-official standalone player workflow.
+Use a procedural generator for nontrivial animation work. Keep the generator beside the generated asset when working in a target repo.
 
-Prefer a procedural generator script for nontrivial animations. Keep the generator beside the generated asset so the animation can be regenerated, reviewed, and extended.
+## Reference Router
 
-Before generating or substantially editing Bodymovin JSON, read
-`references/bodymovin-authoring.md`. It contains the concrete layer, shape,
-keyframe, slot, helper, and generator patterns needed to build a valid Lottie
-file rather than only describing the workflow around one.
+Load references by task:
 
-## Motion Design Workflow
+| Need | Read |
+| --- | --- |
+| Build or edit Bodymovin JSON | `references/bodymovin-authoring.md` |
+| No app or viewer was provided | `references/standalone-player.md` |
+| Choose safe features, renderer settings, or dotLottie/Skottie strategy | `references/compatibility-and-renderers.md` |
+| Improve timing, easing, choreography, or accessibility | `references/motion-design-systems.md` |
+| Decide how guidance changes for icons, loaders, heroes, explainers, wallpapers, product illustrations, or diagrams | `references/animation-taxonomy.md` |
+| Generate a large raw JSON while keeping the visible animation stable | `references/large-stable-lotties.md` |
 
-Define the animation in named visual systems before writing JSON. Use semantic systems such as:
+For open-ended "make it beautiful" requests, read `motion-design-systems.md` and `animation-taxonomy.md` before generating. For large raw-size requests, read `large-stable-lotties.md` and `compatibility-and-renderers.md`.
 
-- `centralSubject`
-- `atmosphericWash`
-- `orbitRing`
-- `currentTrace`
-- `refractionWavelet`
-- `particleBead`
-- `causticGlint`
-- `surfacePulse`
+## Authoring Workflow
 
-Layer motion at different scales:
-
-1. Background atmosphere and anchoring washes.
-2. Midground structure or flow field.
-3. A clear primary subject.
-4. Secondary rings, traces, ribbons, or arcs.
-5. Micro-particles, glints, and texture.
-
-Keep the first frame intentional. It often appears during loading, reduced-motion states, thumbnails, and paused previews.
-
-## Large But Renderable Lotties
-
-Treat raw JSON size and render complexity as separate constraints. Do not satisfy a size target by blindly adding thousands of visible SVG layers.
-
-When the user asks for a large raw JSON file, such as "30 MB":
-
-1. Build the visible animation first.
-2. Keep visible layer and shape counts within the target renderer's practical limits.
-3. Measure raw, gzip, and Brotli sizes.
-4. If the visible animation is below the requested raw-size floor, add deterministic top-level metadata only when the user explicitly requires raw JSON size.
-5. Verify the target renderer ignores that metadata.
-
-For SVG-rendered `lottie-web`, prefer hundreds to low thousands of rendered shapes. Treat 10k+ visible layers as high risk unless the actual target renderer has been tested with that density.
-
-For large, stable, visually pleasing JSON assets, read
-`references/large-stable-lotties.md`.
-
-## Loop Closure
-
-Treat seamless loops as a hard requirement unless the user says otherwise.
-
-1. Use `op - 1` as the final visible frame.
-2. Close every animated property on `op - 1` to the same visible value it has at frame `0`.
-3. Add generator-level post-processing that closes animated properties automatically.
-4. Render frame `0` and frame `op - 1`.
-5. Byte-compare or pixel-compare the screenshots.
-
-Do not assume cyclic math proves a rendered loop. Verify the rendered frames.
+1. Classify the animation intent: feedback, transition, progress, attention, orientation, delight, brand, explainer, ambient, or data flow.
+2. Define the visible composition before coding: focal subject, supporting systems, palette roles, loop duration, and first-frame poster.
+3. Generate simple Bodymovin shape data first: shape layers, transforms, fills, strokes, paths, and baked keyframes.
+4. Avoid effects, expressions, masks, precomps, 3D, renderer-specific tricks, and large visible layer counts unless the target player proves support.
+5. Close loops on `op - 1`, not `op`, and verify rendered frame `0` against `op - 1`.
 
 ## Validation
 
@@ -91,7 +54,7 @@ Validate in this order:
 6. Verify in the actual app route or viewer.
 7. Run the app's typecheck, build, lint, or equivalent project gate.
 
-For user-facing app integrations, capture desktop and mobile screenshots. Report the exact asset path, file size, rendered frame checks, compressed sizes when relevant, and build/typecheck result.
+For user-facing integrations, capture desktop and mobile screenshots. Report the asset path, file size, rendered frame checks, compressed sizes when relevant, and build/typecheck result.
 
 ## Delivery Rules
 
