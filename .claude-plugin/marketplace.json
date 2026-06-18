@@ -67,6 +67,16 @@
       "category": "design",
       "license": "MIT",
       "keywords": ["infographic", "image-generation", "prompting", "design", "documentation", "architecture", "adr", "diagram", "markdown"]
+    },
+    {
+      "name": "lottie-animation",
+      "source": "./plugins/lottie-animation",
+      "description": "Create, refine, and verify production-ready Lottie animations, including large-but-renderable JSON assets and seamless loops.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "design",
+      "license": "MIT",
+      "keywords": ["lottie", "bodymovin", "animation", "motion-design", "svg", "json", "lottie-web", "skottie"]
     }
   ]
 }
