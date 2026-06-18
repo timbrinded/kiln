@@ -51,6 +51,8 @@ lottie-animation/
 |   `-- lottie-animation/
 |       |-- SKILL.md
 |       `-- references/
+|           |-- bodymovin-authoring.md
+|           |-- standalone-player.md
 |           `-- luminous-tide-prism.md
 `-- README.md
 ```

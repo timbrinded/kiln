@@ -17,7 +17,15 @@ Before authoring or editing an animation:
 4. Use the existing player when one exists.
 5. Create a standalone viewer only when no target app or viewer is present.
 
+When no target app exists, read `references/standalone-player.md` and use the
+official standalone player workflow.
+
 Prefer a procedural generator script for nontrivial animations. Keep the generator beside the generated asset so the animation can be regenerated, reviewed, and extended.
+
+Before generating or substantially editing Bodymovin JSON, read
+`references/bodymovin-authoring.md`. It contains the concrete layer, shape,
+keyframe, slot, helper, and generator patterns needed to build a valid Lottie
+file rather than only describing the workflow around one.
 
 ## Motion Design Workflow
 
