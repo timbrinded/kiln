@@ -64,7 +64,8 @@ When the user asks for a large raw JSON file, such as "30 MB":
 
 For SVG-rendered `lottie-web`, prefer hundreds to low thousands of rendered shapes. Treat 10k+ visible layers as high risk unless the actual target renderer has been tested with that density.
 
-For the Luminous tide-prism style and detailed large-file strategy, read `references/luminous-tide-prism.md`.
+For large, stable, visually pleasing JSON assets, read
+`references/large-stable-lotties.md`.
 
 ## Loop Closure
 

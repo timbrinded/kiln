@@ -39,7 +39,7 @@ Ask naturally:
 - "Generate a seamless Bodymovin JSON loop."
 - "Make a visually impressive 30 MB Lottie."
 - "Fix this lottie-web animation so it renders."
-- "Make something like Luminous tide prism."
+- "Make a large stable Lottie JSON that still looks polished."
 
 ## Plugin structure
 
@@ -52,8 +52,8 @@ lottie-animation/
 |       |-- SKILL.md
 |       `-- references/
 |           |-- bodymovin-authoring.md
-|           |-- standalone-player.md
-|           `-- luminous-tide-prism.md
+|           |-- large-stable-lotties.md
+|           `-- standalone-player.md
 `-- README.md
 ```
 
@@ -63,7 +63,7 @@ No bundled runtime dependencies. The skill uses whatever Lottie player, package 
 
 ## Attribution
 
-This plugin skill is forked from the original [`text-to-lottie`](https://github.com/diffusionstudio/lottie/tree/main/skills/text-to-lottie) skill and adapted for the Kiln plugin marketplace. The fork preserves the original emphasis on authoring renderable Lottie/Bodymovin JSON against the real target player, then adds the Luminous tide-prism workflow for large-but-renderable animation assets.
+This plugin skill is forked from the original [`text-to-lottie`](https://github.com/diffusionstudio/lottie/tree/main/skills/text-to-lottie) skill and adapted for the Kiln plugin marketplace. The fork preserves the original emphasis on authoring renderable Lottie/Bodymovin JSON against the real target player, then adds a generalized workflow for large-but-renderable animation assets.
 
 ## License
 
