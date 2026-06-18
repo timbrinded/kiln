@@ -61,7 +61,7 @@ No bundled runtime dependencies. The skill uses whatever Lottie player, package 
 
 ## Attribution
 
-This plugin skill is forked from the original `text-to-lottie` skill and adapted for the Kiln plugin marketplace. The fork preserves the original emphasis on authoring renderable Lottie/Bodymovin JSON against the real target player, then adds the Luminous tide-prism workflow for large-but-renderable animation assets.
+This plugin skill is forked from the original [`text-to-lottie`](https://github.com/diffusionstudio/lottie/tree/main/skills/text-to-lottie) skill and adapted for the Kiln plugin marketplace. The fork preserves the original emphasis on authoring renderable Lottie/Bodymovin JSON against the real target player, then adds the Luminous tide-prism workflow for large-but-renderable animation assets.
 
 ## License
 
