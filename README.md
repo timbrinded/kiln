@@ -17,6 +17,7 @@ Kiln is a marketplace of Claude Code plugins for code quality and intelligent to
 | [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
 | [teach-me](./plugins/teach-me/) | Education | Tutoring mode for hints, guided questions, mental models, and learning from local project context |
 | [infographic](./plugins/infographic/) | Design | Image-generation prompt writer for repo docs, with optional tool-backed image generation when explicitly requested |
+| [lottie-animation](./plugins/lottie-animation/) | Design | Lottie authoring workflow for renderable Bodymovin JSON, seamless loops, and large-but-stable animation assets |
 
 ---
 
@@ -48,6 +49,7 @@ Or install directly:
 /plugin install performance-optimization@kiln
 /plugin install teach-me@kiln
 /plugin install infographic@kiln
+/plugin install lottie-animation@kiln
 ```
 
 ### Alternative: test without installing
@@ -58,6 +60,7 @@ claude --plugin-dir /path/to/kiln/plugins/ui-refactor
 claude --plugin-dir /path/to/kiln/plugins/performance-optimization
 claude --plugin-dir /path/to/kiln/plugins/teach-me
 claude --plugin-dir /path/to/kiln/plugins/infographic
+claude --plugin-dir /path/to/kiln/plugins/lottie-animation
 ```
 
 ### Alternative: local marketplace
