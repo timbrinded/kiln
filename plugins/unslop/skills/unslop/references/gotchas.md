@@ -76,7 +76,7 @@ Do not review code in these locations:
 - `*.snap` (test snapshots)
 - Files with `// Code generated` or `# This file is auto-generated` headers
 
-## Test Code Exceptions
+## Test Code
 
 Tests have different quality criteria than production code:
 
@@ -87,7 +87,19 @@ Tests have different quality criteria than production code:
 - **Magic numbers in assertions are fine** — `expect(result.length).toBe(3)` doesn't need a named constant
 - **Hardcoded test data is fine** — String literals, fixture objects, inline expected values
 
-Only flag test code when:
+These exceptions do not protect tests that only reproduce external dependency behavior. For Directive #15, an external import or dependency call is only a signal. Do not flag the test unless its assertions lack an application-owned purpose.
+
+Keep tests that protect:
+
+- Application-specific dependency configuration or wiring
+- Mapping, validation, transformation, or error handling implemented locally
+- A dependency interaction with another application component
+- An explicit application contract that deliberately exposes dependency semantics
+- A documented compatibility constraint or regression
+- Application behavior when the dependency is used only for fixtures or test infrastructure
+
+Other directives may still flag test code when:
+
 - A helper function is defined but never called
 - The same assertion is copy-pasted 10+ times and would genuinely benefit from a loop
 - Test setup creates objects with 15+ fields when only 2 are relevant to the test
@@ -130,6 +142,7 @@ When you're unsure whether something is slop or legitimate complexity, ask:
 1. **Is this code at a system boundary?** (external data, user input, network) → Probably legitimate
 2. **Is this a framework requirement?** (lifecycle methods, conventions, signatures) → Definitely legitimate
 3. **Is this inside the system with known types?** → Probably slop
-4. **Would removing this change behavior in any reachable code path?** → If yes, legitimate. If no, slop.
+4. **For production code, would removing this change required behavior?** → If yes, legitimate. If no, slop.
+5. **For test code, would removing this leave owned behavior unprotected?** → If yes, legitimate. If no, remove or consolidate it.
 
 **Default to NOT flagging.** A finding you're unsure about is worse than a finding you missed.

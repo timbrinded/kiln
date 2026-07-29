@@ -1,0 +1,115 @@
+{
+  "skill_name": "unslop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/unslop Review the attached app.js for unnecessary complexity.",
+      "expected_output": "A report-only unslop review that does not modify the working tree.",
+      "files": [
+        "evals/files/simple-branch/app.js"
+      ],
+      "expectations": [
+        "The response presents findings before any edits.",
+        "No repository file is modified.",
+        "The response does not claim that fixes were applied."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/unslop --apply Simplify the attached app.js and validate the result.",
+      "expected_output": "An unslop report followed by explicitly authorized fixes and project validation.",
+      "files": [
+        "evals/files/simple-branch/app.js"
+      ],
+      "expectations": [
+        "The response presents concrete findings.",
+        "The reported fixes are applied.",
+        "Available typecheck and lint commands are run after editing."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run the attached setup-layered-diff.sh with sh and an unused directory inside the evaluation workspace, enter the repository it creates, then run /unslop --check to review every current change relative to main, including new files.",
+      "expected_output": "One report covering committed, staged, unstaged, deleted, and untracked reviewable files without duplicate findings.",
+      "files": [
+        "evals/files/layered-diff/setup-layered-diff.sh"
+      ],
+      "expectations": [
+        "Committed tracked changes are reviewed.",
+        "Staged tracked changes are reviewed.",
+        "Unstaged tracked changes are reviewed.",
+        "Deleted tracked files are considered.",
+        "Untracked reviewable files are reviewed.",
+        "A path changed in more than one Git layer is not reviewed twice."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review the attached manifest and test that call an imported package directly and repeat its parsing matrix.",
+      "expected_output": "One Directive #15 finding that deletes the dependency-owned tests.",
+      "files": [
+        "evals/files/dependency-only/package.json",
+        "evals/files/dependency-only/slugify.test.js"
+      ],
+      "expectations": [
+        "The finding is classified as Directive #15.",
+        "Related test cases are grouped into one finding.",
+        "The fix uses Delete without an artificial replacement code block."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review the attached retry implementation and tests. The tests verify our retry count, telemetry callback wiring, and a documented compatibility regression.",
+      "expected_output": "No Directive #15 finding because the tests protect application-owned behavior.",
+      "files": [
+        "evals/files/owned-retry/package.json",
+        "evals/files/owned-retry/retry.js",
+        "evals/files/owned-retry/retry.test.js"
+      ],
+      "expectations": [
+        "The review identifies the application-owned configuration or integration.",
+        "Directive #15 is not reported.",
+        "The dependency is not replaced with a mock merely to avoid executing it."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Unslop the attached manifest and newly added test file. The test only imports slugify and verifies its behavior. No production code uses slugify.",
+      "expected_output": "A concrete deletion finding for the test file and unused dependency.",
+      "files": [
+        "evals/files/dependency-only/package.json",
+        "evals/files/dependency-only/slugify.test.js"
+      ],
+      "expectations": [
+        "The fix explicitly deletes the test.",
+        "The fix conditionally removes the unused dependency.",
+        "The report does not invent replacement application code."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Review this pull request for correctness, security vulnerabilities, performance regressions, and architecture problems.",
+      "expected_output": "The generic review is not replaced by an unslop-only review.",
+      "files": [],
+      "expectations": [
+        "The response does not present unslop as a complete answer to the request.",
+        "Any unslop pass is clearly scoped as optional or supplementary."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Before I open this PR, run a dedicated simplification pass on the attached files for bloated helpers, defensive checks, and tests that only verify dependencies.",
+      "expected_output": "A report-only unslop review using all relevant directives.",
+      "files": [
+        "evals/files/simple-branch/app.js",
+        "evals/files/dependency-only/package.json",
+        "evals/files/dependency-only/slugify.test.js"
+      ],
+      "expectations": [
+        "The unslop skill is used.",
+        "The report follows the canonical Summary, file findings, Recommendations order.",
+        "No edits are made without separate authorization."
+      ]
+    }
+  ]
+}

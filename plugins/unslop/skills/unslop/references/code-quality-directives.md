@@ -1,6 +1,24 @@
 # Code Quality Directives — Detailed Reference
 
-14 directives for detecting and removing AI-generated verbosity. Each directive includes the principle, reasoning, red flags, and before/after examples.
+15 directives for detecting and removing AI-generated verbosity. Each directive includes the principle, reasoning, red flags, and before/after examples.
+
+## Directive Index
+
+1. [Write Skimmable Code](#directive-1-write-skimmable-code)
+2. [Minimize Possible States](#directive-2-minimize-possible-states)
+3. [Use Discriminated Unions](#directive-3-use-discriminated-unions-to-reduce-state-space)
+4. [Handle Multi-Type Objects Exhaustively](#directive-4-exhaustively-handle-multi-type-objects-fail-on-unknown)
+5. [Trust the Types](#directive-5-trust-the-types--no-defensive-null-checks-on-non-nullable-types)
+6. [Assert on Load](#directive-6-assert-on-load-be-opinionated-about-parameters)
+7. [Remove Unrequired Changes](#directive-7-remove-changes-not-strictly-required)
+8. [Bias for Fewer Lines](#directive-8-bias-for-fewer-lines-of-code)
+9. [Avoid Complex or Clever Code](#directive-9-no-complex-or-clever-code)
+10. [Do Not Over-Split Functions](#directive-10-dont-over-split-into-too-many-functions)
+11. [Prefer Early Returns](#directive-11-early-returns-over-nested-conditionals)
+12. [Assert Instead of Catching or Defaulting](#directive-12-assert-instead-of-trycatch-or-default-values)
+13. [Keep Argument Count Low](#directive-13-keep-argument-count-low-never-pass-unnecessary-overrides)
+14. [Require Required Arguments](#directive-14-dont-make-arguments-optional-if-actually-required)
+15. [Test Owned Behavior](#directive-15-test-owned-behavior-not-dependency-behavior)
 
 ---
 
@@ -169,6 +187,7 @@ function renderResult(result: ApiResult) {
     case 'loading': return <Spinner />;
     case 'success': return <DataView data={result.data} />;
     case 'error': return <ErrorDisplay error={result.error} retries={result.retryCount} />;
+    default: return assertNever(result);
   }
 }
 ```
@@ -623,6 +642,62 @@ function createUser(name: string, email: string, role: string) {
 ```
 
 > **Library/API exception:** Public APIs and library functions legitimately use optional parameters for backward compatibility and flexibility. This directive targets application code where you control all callers. See `references/gotchas.md` for the boundary between library and application code.
+
+---
+
+## Directive #15: Test Owned Behavior, Not Dependency Behavior
+
+**Principle:** Tests should protect behavior owned by this codebase. Do not reproduce an external dependency's test suite through direct calls or a pass-through wrapper.
+
+**Why:** A dependency owns its parsing, formatting, matching, and edge cases. Repeating that matrix locally adds maintenance and runtime without proving an application decision. Keep tests for the way the application configures, adapts, combines, or deliberately exposes the dependency.
+
+**Red Flags:**
+- A test imports a manifest-declared dependency and asserts its output directly
+- A large parameterized table mirrors cases from dependency documentation or upstream tests
+- A thin wrapper is exercised, but every expectation is determined by the dependency
+- The same dependency behavior is asserted at unit and integration levels
+- A failure would require no local fix beyond changing the dependency version or expected value
+
+An import is only a signal. The dependency may be test infrastructure or fixture setup while the assertion still targets application behavior.
+
+**Before flagging, confirm all four conditions:**
+
+1. The subject behavior comes from an external dependency declared in the project manifest.
+2. Trace the assertion through the system under test and confirm the dependency determines the expected result.
+3. No local decision, transformation, configuration, contract, integration, or regression is protected.
+4. The test has no explicit compatibility purpose.
+
+Group a repeated case matrix as one finding. Prefer deleting it, collapsing it to one boundary smoke test, or retaining only the cases that protect an explicit application contract. Do not introduce mocks only to avoid executing the dependency.
+
+**Before:**
+```typescript
+import slugify from 'slugify';
+
+describe('slugify', () => {
+  test.each([
+    ['Hello World', 'hello-world'],
+    ['Multiple   Spaces', 'multiple-spaces'],
+    ['Trim!', 'trim'],
+    ['déjà vu', 'deja-vu'],
+    ['Rock & Roll', 'rock-and-roll'],
+  ])('slugifies %s', (title, expected) => {
+    expect(slugify(title, { lower: true, strict: true })).toBe(expected);
+  });
+});
+```
+
+The dependency is invoked directly. The codebase owns none of these assertions.
+
+**After:**
+```typescript
+test('builds an article path', () => {
+  expect(articlePath('Hello World')).toBe('/articles/hello-world');
+});
+```
+
+This keeps one boundary test for the application-owned path contract and leaves slug edge cases to the dependency.
+
+> **Keep:** Tests for application-specific options, mappings, error handling, compatibility constraints, regressions, and interactions with other components. See `references/gotchas.md`.
 
 ---
 

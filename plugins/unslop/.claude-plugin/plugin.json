@@ -1,9 +1,9 @@
 {
   "name": "unslop",
-  "version": "0.2.0",
-  "description": "Post-generation code quality cleanup. Reviews git diffs for AI-generated verbosity, unnecessary state, defensive coding, and complexity — then applies concrete simplifications.",
+  "version": "0.3.0",
+  "description": "Post-generation code quality cleanup. Reviews changed code for AI-generated verbosity, unnecessary state, defensive coding, redundant dependency tests, and complexity. Reports concrete simplifications and applies them only when requested.",
   "author": {
     "name": "timbo"
   },
-  "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation"]
+  "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation", "test-bloat"]
 }
