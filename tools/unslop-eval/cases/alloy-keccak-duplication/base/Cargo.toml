@@ -1,0 +1,9 @@
+[package]
+name = "alloy-keccak-duplication"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+
+[dependencies]
+alloy-primitives = "=1.6.1"
+sha3 = "0.10"

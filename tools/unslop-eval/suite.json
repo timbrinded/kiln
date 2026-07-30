@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "skill_name": "unslop",
+  "baseline_ref": "c5921a4a9bf7cc5d20a64a1e711550aaf0c75bcf",
+  "seed": 20260730,
+  "runs_per_cell": 3,
+  "timeout_seconds": 900,
+  "retry_delays_seconds": [
+    60,
+    120
+  ],
+  "providers": {
+    "codex": {
+      "model": "gpt-5.6-sol",
+      "effort": "medium"
+    },
+    "claude": {
+      "model": "opus",
+      "effort": "medium"
+    },
+    "copilot": {
+      "model": "auto",
+      "effort": "default"
+    },
+    "grok": {
+      "model": "default",
+      "effort": "default"
+    }
+  },
+  "variants": [
+    "current",
+    "candidate"
+  ],
+  "cases": [
+    {
+      "id": "dependency-only-tests",
+      "title": "Dependency-only JavaScript tests",
+      "dimension": "legacy",
+      "fixture": "cases/dependency-only-tests",
+      "grader": "dependency_only_tests",
+      "validation": [
+        [
+          "node",
+          "--test"
+        ]
+      ]
+    },
+    {
+      "id": "owned-retry-integration",
+      "title": "Owned retry integration behavior",
+      "dimension": "legacy",
+      "fixture": "cases/owned-retry-integration",
+      "grader": "owned_retry_integration",
+      "validation": [
+        [
+          "node",
+          "--test"
+        ]
+      ]
+    },
+    {
+      "id": "alloy-keccak-duplication",
+      "title": "Alloy keccak utility duplication",
+      "dimension": "directive16_positive",
+      "fixture": "cases/alloy-keccak-duplication",
+      "grader": "alloy_keccak_duplication",
+      "validation": [
+        [
+          "cargo",
+          "test",
+          "--quiet"
+        ]
+      ]
+    },
+    {
+      "id": "alloy-address-storage",
+      "title": "Lowercase address storage contract",
+      "dimension": "directive16_negative",
+      "fixture": "cases/alloy-address-storage",
+      "grader": "alloy_address_storage",
+      "validation": [
+        [
+          "cargo",
+          "test",
+          "--quiet"
+        ]
+      ]
+    },
+    {
+      "id": "workspace-only-dependency",
+      "title": "Workspace-only dependency capability",
+      "dimension": "directive16_negative",
+      "fixture": "cases/workspace-only-dependency",
+      "grader": "workspace_only_dependency",
+      "validation": [
+        [
+          "cargo",
+          "test",
+          "--quiet",
+          "-p",
+          "storage-key"
+        ]
+      ]
+    },
+    {
+      "id": "verbose-boolean-control",
+      "title": "Verbose JavaScript boolean control",
+      "dimension": "legacy",
+      "fixture": "cases/verbose-boolean-control",
+      "grader": "verbose_boolean_control",
+      "validation": [
+        [
+          "node",
+          "--test"
+        ]
+      ]
+    }
+  ]
+}

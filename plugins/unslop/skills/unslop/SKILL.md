@@ -2,19 +2,19 @@
 name: unslop
 description: >-
   This skill should be used when the user asks to "clean up", "remove slop",
-  "simplify", "unslop", "review for quality", "reduce complexity", "tighten up",
-  "cleanup before PR", "pre-PR review", "too verbose", "over-engineered",
-  "remove unnecessary code", "AI generated mess", "simplify this",
-  "reduce abstractions", or mentions "slop", "bloated code", "defensive coding",
-  "unnecessary complexity", "too many functions", "over-abstracted".
-  Also applicable when reviewing code after an AI generation session,
-  preparing a branch for PR, or when code smells like it was written by
-  a model that optimizes for looking thorough rather than being correct.
+  "simplify", "unslop", "reduce complexity", "tighten up", "cleanup before PR",
+  "review for unnecessary complexity", "too verbose", "over-engineered",
+  "remove unnecessary code", "AI generated mess", "simplify this branch",
+  "reduce abstractions", "test bloat", "bloated tests", "test case bloat", or
+  tests that only verify library or dependency behavior. Also use it for a
+  dedicated simplification pass after AI generation. Do not use it as a
+  substitute for correctness, security, performance, or architecture review.
+  Report findings by default and apply fixes only when explicitly requested.
 ---
 
 # Unslop — Post-Generation Code Quality Cleanup
 
-Reviews git diffs against 14 simplicity directives and proposes concrete fixes. Targets the specific failure mode of AI-generated code: correct but bloated.
+Reviews changed code against 15 simplicity directives and proposes concrete fixes. Targets the specific failure mode of AI-generated code: correct but bloated. Reports findings by default and applies fixes only when explicitly requested.
 
 ## Core Philosophy
 
@@ -22,22 +22,25 @@ AI code generators produce code that is usually correct but systematically verbo
 
 The result: code that works but is harder to read, has more state to track, and is more complex than necessary. This skill identifies and removes that accidental complexity.
 
-**The test is simple: does removing this code change behavior?** If not, remove it.
+**For production code, ask: does removing this code change required behavior?** If not, remove it.
 
-## How to Detect Changed Code
+**For test code, ask: which behavior owned by this codebase would become unprotected?** If there is no clear answer, remove or consolidate the test.
 
-Use git to find what changed. Try these in order:
+## Invocation and Change Detection
 
-1. **Branch diff** (most common): `git diff main...HEAD --name-only` — all changes on this branch
-2. **Staged changes**: `git diff --staged --name-only` — about to be committed
-3. **Unstaged changes**: `git diff --name-only` — modified but not staged
-4. **Explicit files**: User passes `--files path1 path2` — skip detection
+Treat every invocation as report-only unless the user explicitly asks to apply changes or supplies `--apply`. Accept `--check` as a backward-compatible report-only alias. Accept `--files path1 path2...` to restrict the review and an optional positional base ref.
 
-Filter out non-code files: lockfiles, `*.generated.*`, `vendor/`, `node_modules/`, images, fonts, `.min.*` files.
+Build one view of the current working state:
 
-For the actual diff content per file: `git diff main...HEAD -- path/to/file.ts`
+1. Resolve the base ref from the request, then `main` or `master`. Use `git merge-base HEAD <base-ref>` when the ref exists; otherwise use `HEAD`.
+2. Get tracked changes with `git diff <base-commit> --name-only` and per-file patches with `git diff <base-commit> -- <file>`. This compares the current working tree with the base and includes committed, staged, unstaged, modified, and deleted tracked content without duplicate patches.
+3. Get untracked files with `git ls-files --others --exclude-standard`. Treat the complete contents of each untracked file as added lines. Use `git diff --no-index -- /dev/null <file>` when patch context is useful; exit status 1 means a diff was found.
+4. Combine and deduplicate the paths, then apply explicit `--files` restrictions.
+5. Filter out lockfiles, `*.generated.*`, `vendor/`, `node_modules/`, images, fonts, `.min.*` files, and the generated or vendored paths listed in `references/gotchas.md`.
 
-## The 14 Directives — Summary
+If no reviewable changes remain, report "No changed files detected" and stop.
+
+## The 15 Directives — Summary
 
 | # | Directive | Red Flag |
 |---|-----------|----------|
@@ -55,13 +58,14 @@ For the actual diff content per file: `git diff main...HEAD -- path/to/file.ts`
 | 12 | Assert instead of try/catch or defaults | `try { } catch { return default }` hiding real errors |
 | 13 | Keep argument count low | Functions taking 4+ parameters, passing unchanged values through |
 | 14 | Don't make arguments optional if required | `arg?: Type` where every caller passes the argument |
+| 15 | Test owned behavior, not dependency behavior | Assertions only repeat an external package's semantics |
 
 For detailed guidance, examples, and before/after code for each directive, load **`references/code-quality-directives.md`**.
 
 ## Decision Tree — Which Reference to Load
 
 **"I need detailed guidance on a specific directive"**
-→ **`references/code-quality-directives.md`** — Full principle, reasoning, red flags, and before/after examples for all 14 directives.
+→ **`references/code-quality-directives.md`** — Full principle, reasoning, red flags, and before/after examples for all 15 directives.
 
 **"I'm not sure if this is a real issue or a false positive"**
 → **`references/gotchas.md`** — Framework conventions, language idioms, test code exceptions, and cases where complexity is genuinely warranted.
@@ -86,10 +90,8 @@ Every review produces findings in this structure:
 1. **Directive #N: [Name]** — Lines L1-L2
    - What: [One sentence describing the issue]
    - Why: [The principle violated and the concrete cost]
-   - Fix:
-   ```ts
-   [replacement code]
-   ```
+   - Fix: **[Replace | Delete | Consolidate]** — [Exact change]
+   - Resulting code: [Include a fenced code block only for Replace or Consolidate]
 
 ### Recommendations
 - [Top 3 highest-impact simplifications across all files]
@@ -98,33 +100,39 @@ Every review produces findings in this structure:
 **Rules for findings:**
 - Only flag code in the diff — unchanged code is out of scope
 - Every finding needs a concrete fix — "consider simplifying" is not acceptable
+- Use **Replace** with replacement code, **Delete** with an exact target and no artificial code block, or **Consolidate** with the retained code
 - Check gotchas before finalizing — false positives destroy trust
 - Group related findings that share a root cause
 - Estimate lines removable per finding
+- For Directive #15, inspect the dependency manifest, tested production code if any, and assertion target; an external import alone is not a finding
 
 ## Workflow
 
 ### Small diffs (≤10 files)
 
-1. Detect changed files via git
-2. For each file: read contents, get diff, evaluate against directives
-3. Load `references/code-quality-directives.md` for detailed guidance on flagged directives
-4. Check `references/gotchas.md` before finalizing
-5. Present report
-6. Apply fixes → typecheck → lint → report (skip if `--check`)
+1. Build the current-state diff
+2. Read each existing file and its patch; use the deletion patch for removed files
+3. Group all tests for the same behavior with their tested production code, if any, and dependency manifest
+4. Evaluate changed lines against the directives
+5. Load `references/code-quality-directives.md` for detailed guidance on flagged directives
+6. Check `references/gotchas.md` before finalizing
+7. Present the report
+8. Stop in report-only mode
+9. In apply mode, apply the reported fixes, run the project's typecheck and lint commands when present, repair issues introduced by the fixes, and report the validation result without discarding unrelated user changes
 
 ### Large diffs (>10 files)
 
-1. Detect changed files via git
-2. Spawn `unslop-reviewer` subagent per file or batch of related files
+1. Build the current-state diff
+2. Spawn `unslop-reviewer` per file or batch of related files; keep all tests for the same behavior with their tested production code, if any, and dependency manifest
 3. Collect reports from subagents
 4. Deduplicate and merge findings
-5. Present consolidated report
-6. Apply fixes sequentially → typecheck → lint → report (skip if `--check`)
+5. Present one consolidated report
+6. Stop in report-only mode
+7. In apply mode, apply fixes sequentially and validate as described above
 
 ## What This Skill Does NOT Do
 
-- **Correctness** — Not checking if the code works. That's what tests are for.
+- **Correctness** — Not deciding whether application or dependency behavior is correct. Test review is limited to whether changed tests protect behavior owned by this codebase.
 - **Formatting** — Not checking style, indentation, or semicolons. That's the formatter's job.
 - **Naming** — Not judging variable or function names. Too subjective, low ROI.
 - **Performance** — Not profiling or benchmarking. See the `performance-optimization` skill.
@@ -135,7 +143,7 @@ This skill has one job: reduce accidental complexity in recently changed code.
 
 ## All Reference Files
 
-| File | Content | Lines |
-|------|---------|-------|
-| **`references/code-quality-directives.md`** | Detailed per-directive guidance with before/after examples | ~900 |
-| **`references/gotchas.md`** | False positive prevention, framework exceptions, language idioms | ~250 |
+| File | Load when |
+|------|-----------|
+| **`references/code-quality-directives.md`** | Detailed guidance or examples are needed for a possible finding |
+| **`references/gotchas.md`** | Checking every possible finding for framework, language, test, or boundary exceptions |
