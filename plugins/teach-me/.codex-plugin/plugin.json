@@ -1,0 +1,37 @@
+{
+  "name": "teach-me",
+  "version": "0.1.1",
+  "description": "Tutoring-oriented coding skill that prioritizes hints, guided questions, mental models, and local project context over autonomous implementation.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "teaching",
+    "learning",
+    "tutoring",
+    "hints",
+    "debugging",
+    "exercises",
+    "education"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Teach Me",
+    "shortDescription": "Learn through hints and guided problem-solving.",
+    "longDescription": "Use local project context, guided questions, mental models, and exercises instead of receiving an immediate autonomous solution.",
+    "developerName": "timbo",
+    "category": "Education",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "Teach me how this part of the codebase works.",
+      "Guide me through this bug without giving me the answer.",
+      "Help me learn this framework from the local project."
+    ]
+  }
+}

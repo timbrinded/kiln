@@ -1,0 +1,40 @@
+{
+  "name": "infographic",
+  "version": "0.1.1",
+  "description": "Generate copy-paste-ready infographic prompts from repository documentation, and call an attached image generation tool when the user explicitly asks for an actual image.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "infographic",
+    "image-generation",
+    "prompting",
+    "design",
+    "documentation",
+    "architecture",
+    "adr",
+    "diagram",
+    "markdown"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Infographic",
+    "shortDescription": "Create infographic prompts from repository docs.",
+    "longDescription": "Turn repository documentation into copy-ready infographic prompts and optionally invoke available image-generation tools.",
+    "developerName": "timbo",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Create an infographic prompt from this repository.",
+      "Turn this architecture document into an infographic.",
+      "Design a documentation graphic for this feature."
+    ]
+  }
+}

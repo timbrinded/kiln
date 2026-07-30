@@ -1,0 +1,39 @@
+{
+  "name": "lottie-animation",
+  "version": "0.1.1",
+  "description": "Create, refine, and verify production-ready Lottie animations, including large-but-renderable JSON assets and seamless loops.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "lottie",
+    "bodymovin",
+    "animation",
+    "motion-design",
+    "svg",
+    "json",
+    "lottie-web",
+    "skottie"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Lottie Animation",
+    "shortDescription": "Create and verify production-ready Lottie files.",
+    "longDescription": "Author renderable Bodymovin JSON, refine motion, verify player compatibility, and create seamless loops.",
+    "developerName": "timbo",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Create a seamless Lottie animation for this interface.",
+      "Review this Lottie JSON for renderer compatibility.",
+      "Refine this animation while keeping it stable and compact."
+    ]
+  }
+}

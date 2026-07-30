@@ -1,6 +1,6 @@
 {
   "name": "infographic",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate copy-paste-ready infographic prompts from repository documentation, and call an attached image generation tool when the user explicitly asks for an actual image.",
   "author": {
     "name": "timbo"
