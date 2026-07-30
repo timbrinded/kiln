@@ -1,6 +1,6 @@
 {
   "name": "lottie-animation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create, refine, and verify production-ready Lottie animations, including large-but-renderable JSON assets and seamless loops.",
   "author": {
     "name": "timbo"

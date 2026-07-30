@@ -1,6 +1,6 @@
 {
   "name": "unslop",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Post-generation code quality cleanup. Reviews changed code for AI-generated verbosity, unnecessary state, defensive coding, redundant dependency tests, and complexity. Reports concrete simplifications and applies them only when requested.",
   "author": {
     "name": "timbo"

@@ -1,0 +1,41 @@
+{
+  "name": "ui-refactor",
+  "version": "0.2.1",
+  "description": "UI design reviewer distilled from Refactoring UI principles. Reviews screenshots, code, and descriptions for hierarchy, spacing, typography, color, depth, and polish — with concrete CSS fixes and named anti-patterns.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "design",
+    "css",
+    "tailwind",
+    "refactoring-ui",
+    "hierarchy",
+    "spacing",
+    "typography",
+    "color",
+    "review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "UI Refactor",
+    "shortDescription": "Review and improve web interface design.",
+    "longDescription": "Review screenshots, CSS, and Tailwind for visual hierarchy, spacing, typography, color, depth, and polish.",
+    "developerName": "timbo",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Review this interface and identify its main design defects.",
+      "Refactor this UI for clearer hierarchy and spacing.",
+      "Improve this Tailwind layout without changing its behavior."
+    ]
+  }
+}

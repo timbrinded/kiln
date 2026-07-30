@@ -1,0 +1,92 @@
+{
+  "name": "kiln",
+  "interface": {
+    "displayName": "Kiln"
+  },
+  "plugins": [
+    {
+      "name": "swift-design",
+      "source": {
+        "source": "local",
+        "path": "./plugins/swift-design"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "performance-optimization",
+      "source": {
+        "source": "local",
+        "path": "./plugins/performance-optimization"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Performance"
+    },
+    {
+      "name": "ui-refactor",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ui-refactor"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "unslop",
+      "source": {
+        "source": "local",
+        "path": "./plugins/unslop"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Code Quality"
+    },
+    {
+      "name": "teach-me",
+      "source": {
+        "source": "local",
+        "path": "./plugins/teach-me"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    },
+    {
+      "name": "infographic",
+      "source": {
+        "source": "local",
+        "path": "./plugins/infographic"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "lottie-animation",
+      "source": {
+        "source": "local",
+        "path": "./plugins/lottie-animation"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "teach-me",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tutoring-oriented Claude Code skill that prioritizes hints, guided questions, mental models, and local project context over autonomous implementation.",
   "author": {
     "name": "timbo"

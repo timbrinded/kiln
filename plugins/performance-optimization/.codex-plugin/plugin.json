@@ -1,0 +1,40 @@
+{
+  "name": "performance-optimization",
+  "version": "0.2.1",
+  "description": "Language-agnostic performance optimization skill distilled from Google's Abseil performance wisdom. Covers measurement methodology, optimization techniques, and cross-language patterns for C++, Rust, and TypeScript.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "performance",
+    "optimization",
+    "profiling",
+    "benchmarking",
+    "memory",
+    "algorithms",
+    "c++",
+    "rust",
+    "typescript"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Performance Optimization",
+    "shortDescription": "Measure and improve software performance.",
+    "longDescription": "Use measurement-led optimization guidance and cross-language techniques for C++, Rust, and TypeScript.",
+    "developerName": "timbo",
+    "category": "Performance",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Profile this code and identify the main bottleneck.",
+      "Optimize this hot path without changing behavior.",
+      "Review this change for performance regressions."
+    ]
+  }
+}

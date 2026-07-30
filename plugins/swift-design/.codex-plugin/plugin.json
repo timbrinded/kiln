@@ -1,0 +1,37 @@
+{
+  "name": "swift-design",
+  "version": "0.2.1",
+  "description": "SwiftUI design excellence — HIG-compliant code review, generation, and iteration with 40 enforceable rules, accessibility checks, and modern API enforcement.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "swiftui",
+    "ios",
+    "hig",
+    "design",
+    "accessibility",
+    "review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Swift Design",
+    "shortDescription": "Review and generate high-quality SwiftUI views.",
+    "longDescription": "Apply 40 enforceable Apple HIG, accessibility, visual design, and modern API rules to SwiftUI review and generation.",
+    "developerName": "timbo",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Review this SwiftUI code for design quality.",
+      "Improve this SwiftUI view using Apple HIG.",
+      "Generate an accessible SwiftUI view."
+    ]
+  }
+}
