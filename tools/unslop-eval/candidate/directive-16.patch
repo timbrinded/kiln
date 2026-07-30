@@ -1,0 +1,168 @@
+diff --git a/SKILL.md b/SKILL.md
+index 0aa2b6f..78cbdd3 100644
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -15,7 +15,7 @@ description: >-
+ 
+ # Unslop — Post-Generation Code Quality Cleanup
+ 
+-Reviews changed code against 15 simplicity directives and proposes concrete fixes. Targets the specific failure mode of AI-generated code: correct but bloated. Reports findings by default and applies fixes only when explicitly requested.
++Reviews changed code against 16 simplicity directives and proposes concrete fixes. Targets the specific failure mode of AI-generated code: correct but bloated. Reports findings by default and applies fixes only when explicitly requested.
+ 
+ ## Core Philosophy
+ 
+@@ -42,7 +42,7 @@ Build one view of the current working state:
+ 
+ If no reviewable changes remain, report "No changed files detected" and stop.
+ 
+-## The 15 Directives — Summary
++## The 16 Directives — Summary
+ 
+ | # | Directive | Red Flag |
+ |---|-----------|----------|
+@@ -61,13 +61,14 @@ If no reviewable changes remain, report "No changed files detected" and stop.
+ | 13 | Keep argument count low | Functions taking 4+ parameters, passing unchanged values through |
+ | 14 | Don't make arguments optional if required | `arg?: Type` where every caller passes the argument |
+ | 15 | Test owned behavior, not dependency behavior | Assertions only repeat an external package's semantics |
++| 16 | Use existing APIs before hand-rolling | Changed helpers or types duplicate an available dependency API |
+ 
+ For detailed guidance, examples, and before/after code for each directive, load **`references/code-quality-directives.md`**.
+ 
+ ## Decision Tree — Which Reference to Load
+ 
+ **"I need detailed guidance on a specific directive"**
+-→ **`references/code-quality-directives.md`** — Full principle, reasoning, red flags, and before/after examples for all 15 directives.
++→ **`references/code-quality-directives.md`** — Full principle, reasoning, red flags, and before/after examples for all 16 directives.
+ 
+ **"I'm not sure if this is a real issue or a false positive"**
+ → **`references/gotchas.md`** — Framework conventions, language idioms, test code exceptions, and cases where complexity is genuinely warranted.
+@@ -105,6 +106,7 @@ Every review produces findings in this structure:
+ - Group related findings that share a root cause
+ - Estimate lines removable per finding
+ - For Directive #15, inspect the dependency manifest, tested production code if any, and assertion target; an external import alone is not a finding
++- For Directive #16, name the exact available symbol and verify the resolved direct dependency, enabled feature, and semantic equivalence; package presence alone is not a finding
+ 
+ ## Workflow
+ 
+@@ -113,7 +115,7 @@ Every review produces findings in this structure:
+ 1. Build the current-state diff
+ 2. Read each existing file and its patch; use the deletion patch for removed files
+ 3. Group all tests for the same behavior with their tested production code, if any, and dependency manifest
+-4. Evaluate changed lines against the directives
++4. Evaluate changed lines against the directives; for hand-rolled utilities, inspect the direct dependency surface available to the owning package before proposing a replacement
+ 5. Load `references/code-quality-directives.md` for detailed guidance on flagged directives
+ 6. Check `references/gotchas.md` before finalizing
+ 7. Present the report
+diff --git a/references/code-quality-directives.md b/references/code-quality-directives.md
+index eb36b04..06e77f9 100644
+--- a/references/code-quality-directives.md
++++ b/references/code-quality-directives.md
+@@ -1,6 +1,6 @@
+ # Code Quality Directives — Detailed Reference
+ 
+-15 directives for detecting and removing AI-generated verbosity. Each directive includes the principle, reasoning, red flags, and before/after examples.
++16 directives for detecting and removing AI-generated verbosity. Each directive includes the principle, reasoning, red flags, and before/after examples.
+ 
+ ## Directive Index
+ 
+@@ -19,6 +19,7 @@
+ 13. [Keep Argument Count Low](#directive-13-keep-argument-count-low-never-pass-unnecessary-overrides)
+ 14. [Require Required Arguments](#directive-14-dont-make-arguments-optional-if-actually-required)
+ 15. [Test Owned Behavior](#directive-15-test-owned-behavior-not-dependency-behavior)
++16. [Use Existing APIs](#directive-16-use-existing-apis-before-hand-rolling)
+ 
+ ---
+ 
+@@ -697,6 +698,58 @@ This keeps one boundary test for the application-owned path contract and leaves
+ > **Keep:** Tests for application-specific options, mappings, error handling, compatibility constraints, regressions, and interactions with other components. See `references/gotchas.md`.
+ 
+ ---
++
++## Directive #16: Use Existing APIs Before Hand-Rolling
++
++**Principle:** Before retaining a changed utility, type, trait, or adapter, check whether a dependency already available to the owning package provides the same behavior. Prefer the maintained API when it is an exact semantic replacement.
++
++**Why:** AI-generated code often notices one familiar primitive from a dependency but misses the adjacent utilities and traits already designed to work with it. The result is local hashing, encoding, parsing, conversion, or wrapper code that duplicates an API the project already resolves. This creates another implementation and test surface without adding an application decision.
++
++**Red Flags:**
++- A changed helper manually hashes, encodes, parses, converts, or formats a dependency type
++- A local type or trait mirrors a public dependency type or trait
++- Code imports one primitive from a package while recreating a nearby utility from the same package
++- A custom implementation exists only to reproduce a dependency example or documented algorithm
++- Local tests primarily prove equivalence with an available dependency API
++
++Package or workspace presence is only a signal. Do not require broad adoption of a dependency, add it to a package, or enable a feature only to remove a small helper.
++
++**Before flagging, confirm all five conditions:**
++
++1. The owning package directly declares the resolved dependency version and enables the required API or feature.
++2. Name the exact public symbol that replaces the changed code. General statements such as "the library probably supports this" are not evidence.
++3. Verify semantic equivalence, including output format, error behavior, allocation or ownership, side effects, and protocol compatibility.
++4. The local code does not enforce an application invariant, preserve a public facade, provide a newtype boundary, or intentionally narrow the dependency API.
++5. The replacement removes meaningful maintenance surface without forcing unrelated migration.
++
++Inspect the manifest, lock or resolved dependency metadata, local call sites, and examples or tests already in the repository. Prefer the dependency version actually resolved by the project over current web documentation.
++
++**Before:**
++```rust
++use alloy_primitives::{B256, U256};
++use sha3::{Digest, Keccak256};
++
++fn storage_slot(key: U256) -> B256 {
++    let mut hasher = Keccak256::new();
++    hasher.update(key.to_be_bytes::<32>());
++    B256::from_slice(&hasher.finalize())
++}
++```
++
++**After:**
++```rust
++use alloy_primitives::{keccak256, B256, U256};
++
++fn storage_slot(key: U256) -> B256 {
++    keccak256(key.to_be_bytes::<32>())
++}
++```
++
++The owning crate already depends directly on an Alloy version that exports `keccak256`, and the return type and bytes are identical. Remove `sha3` only if no other target uses it.
++
++> **Keep:** Local facades, newtypes, validation, policy, protocol-specific formats, stable public boundaries, and implementations whose semantics differ from the available API. A workspace dependency that the package does not inherit, or an API behind a disabled feature, is not available. See `references/gotchas.md`.
++
++---
+ 
+ ## Cross-Directive Interactions
+ 
+@@ -709,4 +762,5 @@ Some directives pull in opposite directions. Use this priority:
+ | #12 (assert, not catch) vs. boundary code | Assert inside. Catch at boundaries. The boundary is where external data enters your system. |
+ | #13 (few arguments) vs. #14 (don't make optional) | Both reduce noise. If you have 6 required args, the function is likely doing too much (#13 first). |
++| #8 (fewer lines) vs. #16 (existing API) | Prefer the exact existing API when both are equally clear; do not change semantics or dependency boundaries merely to remove lines. |
+ 
+ When two directives conflict on a specific piece of code, prefer the one that produces fewer lines of code while remaining readable. The goal is always simplicity.
+diff --git a/references/gotchas.md b/references/gotchas.md
+index d0dc760..9defb06 100644
+--- a/references/gotchas.md
++++ b/references/gotchas.md
+@@ -103,6 +103,23 @@ Other directives may still flag test code when:
+ - The same assertion is copy-pasted 10+ times and would genuinely benefit from a loop
+ - Test setup creates objects with 15+ fields when only 2 are relevant to the test
+ 
++## Dependency Reuse
++
++A dependency in a root manifest or workspace catalog is not automatically available to every package. For Directive #16, confirm the owning package directly declares or inherits it and that the resolved version exposes the proposed API.
++
++Do not flag:
++
++- A workspace dependency that the owning package does not inherit
++- An API behind a feature that the owning package does not enable
++- A helper that deliberately changes formatting, error behavior, ownership, side effects, or protocol semantics
++- A local facade or newtype that protects application invariants or a stable public boundary
++- A small implementation when the proposed replacement requires a new dependency, feature, or unrelated migration
++- Code based only on current upstream documentation when the project resolves an older API
++
++A library can expose a similar name without providing equivalent behavior. Check exact call sites and tests. For example, a checksum address formatter is not a replacement for a lowercase, unprefixed database key.
++
++If an exact replacement exists, retain any local facade that is part of the application's public contract and replace only its duplicated internals. Remove a now-unused dependency only after checking all targets and feature-specific code.
++
+ ## When Complexity IS Warranted
+ 
+ ### State Machines

@@ -1,0 +1,11 @@
+{
+  "name": "owned-retry-integration",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "retry-driver": "1.0.0"
+  }
+}
