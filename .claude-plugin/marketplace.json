@@ -1,8 +1,8 @@
 {
   "name": "kiln",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "metadata": {
-    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, and learning workflows."
+    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, developer tooling, and learning workflows."
   },
   "owner": {
     "name": "timbo"
@@ -77,6 +77,16 @@
       "category": "design",
       "license": "MIT",
       "keywords": ["lottie", "bodymovin", "animation", "motion-design", "svg", "json", "lottie-web", "skottie"]
+    },
+    {
+      "name": "stacked-prs",
+      "source": "./plugins/stacked-prs",
+      "description": "Design and operate safe GitHub stacked pull request workflows with the official gh-stack CLI, from decomposition through review, merge, cleanup, and recovery.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "development",
+      "license": "MIT",
+      "keywords": ["github", "stacked-prs", "gh-stack", "pull-request", "branches", "code-review"]
     }
   ]
 }

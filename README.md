@@ -4,7 +4,12 @@
 
 ![Kiln](kiln.png)
 
-Kiln is a marketplace of Codex and Claude Code plugins for code quality and intelligent tooling. Design plugins encode platform-specific guidelines as machine-enforceable rules. Performance plugins distill expert optimization knowledge into actionable guidance. Learning plugins guide users through concepts, exercises, and debugging with a tutoring-first style.
+Kiln is a marketplace of Codex and Claude Code plugins for code quality and
+intelligent tooling. Design plugins encode platform-specific guidelines as
+machine-enforceable rules. Performance plugins distill expert optimization
+knowledge into actionable guidance. Developer workflow plugins make complex
+repository operations safer and repeatable. Learning plugins guide users
+through concepts, exercises, and debugging with a tutoring-first style.
 
 ---
 
@@ -19,6 +24,7 @@ Kiln is a marketplace of Codex and Claude Code plugins for code quality and inte
 | [teach-me](./plugins/teach-me/) | Education | Tutoring mode for hints, guided questions, mental models, and learning from local project context |
 | [infographic](./plugins/infographic/) | Design | Image-generation prompt writer for repo docs, with optional tool-backed image generation when explicitly requested |
 | [lottie-animation](./plugins/lottie-animation/) | Design | Lottie authoring workflow for renderable Bodymovin JSON, seamless loops, and large-but-stable animation assets |
+| [stacked-prs](./plugins/stacked-prs/) | Developer tools | Design and operate safe GitHub stacked PR workflows from decomposition through merge and recovery |
 
 ---
 
@@ -42,6 +48,7 @@ codex plugin add unslop@kiln
 codex plugin add teach-me@kiln
 codex plugin add infographic@kiln
 codex plugin add lottie-animation@kiln
+codex plugin add stacked-prs@kiln
 ```
 
 For a local clone, replace the marketplace command with:
@@ -78,6 +85,7 @@ Or install directly:
 /plugin install teach-me@kiln
 /plugin install infographic@kiln
 /plugin install lottie-animation@kiln
+/plugin install stacked-prs@kiln
 ```
 
 ### Alternative: test without installing
@@ -90,6 +98,7 @@ claude --plugin-dir /path/to/kiln/plugins/unslop
 claude --plugin-dir /path/to/kiln/plugins/teach-me
 claude --plugin-dir /path/to/kiln/plugins/infographic
 claude --plugin-dir /path/to/kiln/plugins/lottie-animation
+claude --plugin-dir /path/to/kiln/plugins/stacked-prs
 ```
 
 ### Alternative: local marketplace
