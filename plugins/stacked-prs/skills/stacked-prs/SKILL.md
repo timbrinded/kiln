@@ -85,6 +85,13 @@ commands instead of relying on TTY detection.
 - Restructure through an approved non-interactive rebuild. Do not run
   bare `gh stack modify`.
 
+In version 0.1.0, `gh stack view --json` reads saved stack metadata. Its
+`head` and `base` SHAs can lag live local refs after a normal `git commit`.
+When exact tips matter, compare each active branch with
+`git rev-parse <branch>`. A stale JSON `head` does not mean that `gh stack
+push` will omit later commits; push uses the branch refs and then refreshes
+the saved SHAs.
+
 Bare `gh stack modify` and `gh stack switch` open interactive interfaces. An
 agent can explain those human workflows, but must not run them. The recovery
 forms `gh stack modify --continue` and `gh stack modify --abort` are
