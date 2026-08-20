@@ -1,0 +1,9 @@
+{
+  "name": "stacked-prs",
+  "version": "0.1.0",
+  "description": "Design and operate safe GitHub stacked pull request workflows with the official gh-stack CLI, from decomposition through review, merge, cleanup, and recovery.",
+  "author": {
+    "name": "timbo"
+  },
+  "keywords": ["github", "stacked-prs", "gh-stack", "pull-request", "branches", "code-review"]
+}
