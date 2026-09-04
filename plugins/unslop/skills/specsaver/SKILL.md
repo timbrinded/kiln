@@ -7,14 +7,14 @@ description: >-
   technical specification", "review these requirements", "check this API or
   protocol spec", "review this migration plan", "decide whether this needs an
   ADR", or improve a software engineering design document. It reviews and
-  authors precise, concise specifications; finds missing material decisions,
-  vague requirements, negative-definition prose, fake alternatives, gratuitous
-  non-goals, and unnecessary ADRs. It performs a broad internal applicability
-  review but reports only material concerns. Existing documents are report-only
-  by default and are edited only when the user explicitly requests changes. It
-  must not invent requirements or require a universal template. It must not
-  replace a general code, security, performance, or architecture review merely
-  because a Markdown document is present.
+  authors precise, information-dense specifications; finds missing material
+  decisions, vague requirements, negative-definition prose, fake alternatives,
+  gratuitous non-goals, and unnecessary ADRs. It performs a broad internal
+  applicability review but reports only material concerns. Existing documents
+  are report-only by default and are edited only when the user explicitly
+  requests changes. It must not invent requirements or require a universal
+  template. It must not replace a general code, security, performance, or
+  architecture review merely because a Markdown document is present.
 ---
 
 # Specsavers — Technical Specification Quality
@@ -30,8 +30,22 @@ Use two governing questions:
 2. **Does the specification force a competent implementer to make a material
    product or architectural decision that the author should have made?**
 
-Keep nothing that does not constrain or explain the implementation. Omit no
-constraint whose absence forces the implementer to invent the design.
+**The review checklist may be exhaustive. The specification must not be.**
+
+Consider the full concern set privately, then investigate and surface only
+concerns activated by the design. This applies in Review, Apply, and Author
+modes. Emit no section, `N/A` tombstone, caveat, finding, mitigation, or
+boilerplate for an irrelevant concern. Visible document completeness is not
+evidence of review completeness.
+
+**Keep nothing that does not constrain the system or materially explain a
+design decision. Omit no constraint whose absence forces the implementer to
+invent the design.**
+
+Construct the intended system directly in the reader's mind. Prefer positive
+statements of responsibilities, state, and behavior over collections of
+exclusions, caveats, and scattered facts from which the reader must reconstruct
+the design.
 
 ## Modes
 
@@ -111,13 +125,13 @@ material behavior.
 
 ## Silent Applicability Pass
 
-Form a private two-to-five sentence model of the proposed system. Then inspect
-only concerns activated by its mechanisms:
+Form a private two-to-five sentence model of the proposed system. Consider the
+full concern set, then investigate only concerns activated by its mechanisms:
 
 | Design trigger | Inspect silently |
 |---|---|
 | Network or service call | Timeout, retry class and identity, partial failure, authentication, observability |
-| Queue or asynchronous worker | Job-to-input identity, immutable source revision, delivery, ordering, deduplication, leases, concurrency, terminal states, cancellation |
+| Queue or asynchronous worker | Work-to-input semantics, including snapshot or version when referenced data can change, delivery, ordering, deduplication, leases, concurrency, terminal states, cancellation |
 | Persisted schema or data ownership change | Source of truth, migration, backfill, compatibility, retention, reversal limits |
 | Public API or protocol | Schema, errors, authentication, authorization, idempotency, pagination, versioning, interoperability |
 | Key, secret, signature, or trust-boundary change | Authority, integrity, custody, rotation, recovery, replay, audit |
@@ -126,9 +140,11 @@ only concerns activated by its mechanisms:
 | Availability- or latency-critical path | Load model, threshold, capacity, degradation, recovery |
 | Deployment behavior change | Rollout, version skew, gating, abort criteria, reversal, monitoring |
 
-For queued work, distinguish the durable job, each delivery attempt, and the
-exact immutable input revision. A job identifier does not establish input
-identity when the referenced source can change between attempts.
+For queued work whose payload refers to external data, determine whether each
+attempt must use a stable input or the latest authoritative state. When
+stability matters, define how the work identity binds the input snapshot or
+version. Do not assume that a work identifier identifies mutable referenced
+data.
 
 Do not output checked-but-inapplicable rows. Silence is correct for irrelevant
 concerns.
@@ -150,7 +166,7 @@ concerns.
 | 11 | Use normative language precisely and sparingly | Does requirement force express a real, verifiable constraint? |
 | 12 | Document only live alternatives and trade-offs | Could a reasonable engineer advocate each option under the stated constraints? |
 | 13 | Record ADRs only for architectural forks | Do all four ADR gates pass, and does a separate record add value? |
-| 14 | Make every sentence and section earn attention | Would deletion change the reader's material model or compress difficult reasoning? |
+| 14 | Maximize information density; make every sentence and section earn attention | Would removal change the material interpretation, lose material decision rationale, or make necessary constraints harder to understand? |
 | 15 | Use examples, tables, and diagrams only to compress complexity | Is the representation clearer than prose and consistent with the contract? |
 | 16 | Connect verification and safe evolution to the design | Can material behavior be proved and activated delivery risks be controlled? |
 | 17 | Maintain one authoritative model | Do values, terms, ownership, transitions, examples, and references agree? |
@@ -230,6 +246,12 @@ Before reporting a finding, answer all of these questions:
 
 If any answer is missing, do not report the finding.
 
+Before stating a repair, consider whether two materially different repairs fit
+the authoritative material. If they do and no source selects one, use
+**Resolve** for an omission or **Reconcile** for a contradiction, include the
+required decision, and do not present either option as the answer. A plausible
+repair is not a derivable repair.
+
 ## Severity and Report Contract
 
 - **Blocker:** materially different implementations can claim compliance; a
@@ -247,13 +269,13 @@ Do not report nits. Use exactly one repair verb per finding:
 
 | Verb | Use when |
 |---|---|
-| **Rewrite** | Replace ambiguous or negative-definition prose. |
+| **Rewrite** | Replace ambiguous or negative-definition prose when authoritative material determines the replacement. |
 | **Split** | Separate independent obligations or concepts. |
 | **Add** | Supply missing text already derivable from authoritative material. |
 | **Move** | Put information where its role or authority is clear. |
 | **Quantify** | Replace a subjective quality with an established acceptance condition. |
 | **Resolve** | Obtain a material decision that cannot be inferred. |
-| **Reconcile** | Remove a contradiction and establish one canonical statement. |
+| **Reconcile** | Remove a contradiction; when authority does not establish which statement wins, request that decision without choosing it. |
 | **Delete** | Remove ceremonial, duplicate, or irrelevant content. |
 | **Consolidate** | Replace repeated fragments with one authoritative statement. |
 

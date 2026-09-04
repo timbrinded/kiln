@@ -137,5 +137,3 @@ not edit or create files.
   source of truth.
 - Do not call an imposed external standard a choice unless adoption of that
   standard was the live architectural fork under review.
-- Do not create an ADR for adding Specsavers as a sibling skill inside the
-  existing Unslop plugin.

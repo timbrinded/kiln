@@ -6,13 +6,18 @@ than missed minor issues.
 
 ## Concise Does Not Mean Incomplete
 
-Do not flag a document merely because it is short. A local cache-key change may
-need only the problem, key contract, and focused verification. Apply profile and
-maturity, then ask whether an omitted fact permits a materially different
-implementation.
+Do not flag a document merely because it is short. A small pure-function change
+may need only the problem, behavioral contract, and focused verification. Apply
+profile and maturity, then ask whether an omitted fact permits a materially
+different implementation.
 
 Do not add common headings to make a document look complete. Empty Security,
 Migration, Observability, Risks, and Rollback sections are not evidence of rigor.
+
+Optimize for information density, not word count. A long state table or
+protocol contract can be dense because every row constrains behavior. A short
+section of generic caveats can waste attention without adding design
+information. Preserve necessary detail and remove cognitive overhead.
 
 ## Exploratory Questions Are Valid
 
@@ -126,11 +131,19 @@ Do not add unrelated historical verbosity to the report.
 ## Rationale Can Earn Attention
 
 Descriptive text need not constrain compliance to be useful. Preserve rationale
-that compresses a difficult choice, explains an invariant, or prevents a future
-reader from reopening a rejected live option under unchanged constraints.
+that materially explains a design decision or prevents a future reader from
+reopening a rejected live option under unchanged constraints. Preserve an
+invariant because it constrains the system, not as generic explanation.
 
 Delete generic justification and repeated summaries, not every non-normative
 sentence.
+
+## A Plausible Repair Is Not an Established Repair
+
+Do not select one reasonable answer merely because it would make the document
+coherent. When two material repairs fit the available evidence, report the
+decision with **Resolve** or **Reconcile**. Supply replacement text only after an
+authoritative source selects the answer.
 
 ## Do Not Invent Precision
 

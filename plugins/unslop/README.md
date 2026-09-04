@@ -55,6 +55,11 @@ two tests:
 > Does the specification force a competent implementer to make a material
 > product or architectural decision that the author should have made?
 
+**The review checklist may be exhaustive. The specification must not be.** Keep
+nothing that does not constrain the system or materially explain a design
+decision. Omit no constraint whose absence forces the implementer to invent the
+design. Visible section coverage is not evidence of review completeness.
+
 Specsavers reads the complete target specification. It reports only material
 concerns activated by the design. It does not require a universal template,
 invent missing decisions, or recommend an ADR for routine implementation work.

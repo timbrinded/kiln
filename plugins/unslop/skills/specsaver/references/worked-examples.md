@@ -353,42 +353,45 @@ of the rationale.
 ### Source document
 
 ```markdown
-# Include render mode in local template-cache identity
+# Normalize local diagnostic timestamps
 
 ## Problem
 
-The static-site publisher caches compiled templates by template path. Preview
-and production modes compile the same path with different output rules, so one
-build can receive a template compiled for the other mode.
+The command-line diagnostics package uses the host's local date formatting.
+The same event therefore produces different text across time zones and cannot
+be compared reliably in tests or support records.
 
 ## Design
 
-Key every entry by the tuple `(renderMode, templatePath)`. The selected build
-target is the authoritative source of `renderMode`; callers cannot supply a
-different value. Cache eviction and compiled-template values are unchanged.
+Format an integer epoch-millisecond value as exactly
+`YYYY-MM-DDTHH:mm:ss.sssZ` in UTC. Accept values whose UTC year is from `0001`
+through `9999`; reject other values with `RangeError`. Existing diagnostic
+message text, severity, and event-time selection do not change.
 
 ## Verification
 
-A test compiles the same template path in preview and production modes and
-confirms that each subsequent lookup returns its own value. Existing same-mode
-cache-hit and eviction tests remain unchanged.
+Tests cover the Unix epoch, a leap-day value, both accepted year boundaries,
+and one value beyond each boundary. The same input produces the same text under
+two host time zones.
 ```
 
 ### Applicability and review result
 
-This is an implementation-ready local design. It has no network protocol,
-persisted-data migration, asynchronous state, or rollout risk. The problem,
-positive design, authority, externally important key behavior, and verification
-are complete.
+Privately classify this as an implementation-ready local design. The problem,
+positive design, input boundary, observable output, and verification are
+complete; no other concern is activated.
 
 ```markdown
 ## Specsavers
 
-No material findings. The specification fixes the render-mode isolation
-behavior and verification without adding concerns that the local cache change
-does not activate.
+No material findings. The specification fixes the timestamp behavior and
+verification without adding concerns that the local formatting change does not
+activate.
 ```
 
 Do not request goals, non-goals, alternatives, security, observability,
 migration, rollback, risks, diagrams, numerical qualities, or an ADR. The
 document is short because the design is small, not because it is incomplete.
+A longer stateful or protocol specification can be equally dense when each
+additional statement fixes behavior or materially reduces the load of
+understanding it.

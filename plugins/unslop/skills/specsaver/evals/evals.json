@@ -26,18 +26,18 @@
         "The response reports findings before editing and then modifies the target because apply mode is explicit.",
         "The vague retry sentence is rewritten using the fixture's established retryable and nonretryable local error classes, staging cleanup, and fixed delay.",
         "The unresolved retry budget remains an explicit required decision or open question.",
-        "The edit does not invent a numeric budget, widen the design, or implement the sitemap refresher."
+        "The edit does not invent a numeric budget, widen the design, implement the sitemap refresher, or add headings, caveats, or N/A markers for inactive concerns."
       ]
     },
     {
       "id": 3,
       "prompt": "Specsavers this service design. Make the component responsibility easy to understand without losing material constraints.",
-      "expected_output": "One grouped Directive 2 finding with a concise positive replacement that preserves the stable-key constraint against mutable metadata.",
+      "expected_output": "One grouped positive-specification finding with a concise replacement that preserves the stable-key constraint against mutable metadata.",
       "files": [
         "evals/files/negative-definition/thumbnail-key-builder.md"
       ],
       "expectations": [
-        "The response groups the six exclusions under one Directive 2 root cause.",
+        "The response groups the six exclusions under one positive-specification root cause.",
         "The proposed repair positively states that the Thumbnail Key Builder returns a stable key for the immutable thumbnail identifier and format while retaining the prohibition against including mutable filenames or captions.",
         "The response removes or consolidates irrelevant exclusions rather than producing six separate findings.",
         "The response does not prescribe a key encoding, add new behavior, or remove the stable-key verification."
@@ -46,7 +46,7 @@
     {
       "id": 4,
       "prompt": "Review this concise Archive Writer specification for ambiguity and documentation slop.",
-      "expected_output": "No Directive 2 finding against the prohibition because it protects the integrity of a committed export manifest.",
+      "expected_output": "No finding against the prohibition because it protects the integrity of a committed export manifest.",
       "files": [
         "evals/files/legitimate-prohibition/archive-writer.md"
       ],
@@ -59,16 +59,16 @@
     },
     {
       "id": 5,
-      "prompt": "Tighten this small TypeScript library design without replacing one kind of boilerplate with another.",
-      "expected_output": "One or two grouped Directive 3 and 14 findings that delete fake non-goals and empty N/A sections while preserving the useful tuple-based cache identity.",
+      "prompt": "Tighten this small TypeScript API design without replacing one kind of boilerplate with another.",
+      "expected_output": "One or two grouped findings that delete fake non-goals, empty N/A sections, and private handler narration while preserving the useful API contract.",
       "files": [
-        "evals/files/boilerplate/cache-key.md"
+        "evals/files/boilerplate/project-list-field.md"
       ],
       "expectations": [
-        "The response groups the ceremonial Non-Goals and N/A sections into at most two material findings.",
-        "The concrete repair deletes the empty or irrelevant material while retaining the observable `(parserMode, sourceHash)` identity and verification behavior.",
-        "The response does not demand replacement Security, Migration, Observability, Rollback, Internationalisation, or Risks prose.",
-        "The response does not prescribe a helper or string encoding, invent a security concern, or criticize the document merely because the useful design is short."
+        "The response groups the ceremonial Non-Goals, N/A sections, and obvious private handler narration into at most two material findings.",
+        "The concrete repair deletes the empty, irrelevant, and implementation-explanation material while retaining the `owner_display_name` null semantics, snapshot rule, compatibility boundary, and verification behavior.",
+        "The response does not demand replacement Security, Migration, Observability, Rollback, Internationalisation, or Risks prose and does not replace the deleted sections with an applicability recap.",
+        "The response does not prescribe handler structure, invent a security concern, or criticize the document merely because the useful design is short."
       ]
     },
     {
@@ -88,7 +88,7 @@
     {
       "id": 7,
       "prompt": "Does this thumbnail-endpoint decision warrant an ADR? Review the attached record.",
-      "expected_output": "A Directive 13 finding that treats the document as routine feature work and recommends folding useful detail into the feature specification or deleting the ADR.",
+      "expected_output": "A finding that treats the document as routine feature work and recommends folding useful detail into the feature specification or deleting the ADR.",
       "files": [
         "evals/files/gratuitous-adr/adr-add-thumbnail-endpoint.md"
       ],
@@ -132,7 +132,7 @@
     {
       "id": 10,
       "prompt": "Check whether the alternatives in this thumbnail-generation proposal help an engineer understand the decision.",
-      "expected_output": "A Directive 12 finding that deletes the three straw alternatives from a service-placement note and requests only live alternatives if any exist.",
+      "expected_output": "A finding that deletes the three straw alternatives from a service-placement note and requests only live alternatives if any exist.",
       "files": [
         "evals/files/fake-alternatives/thumbnail-generation.md"
       ],
@@ -146,7 +146,7 @@
     {
       "id": 11,
       "prompt": "Review this implementation-ready documentation link-check specification for material omissions. Do not choose missing values or mechanisms for me.",
-      "expected_output": "Grouped blocker findings under Directives 5, 8, and 10 for undefined run and result identity, mutable or unstated input semantics, duplicate delivery, concurrent work, retry exhaustion, and terminal outcomes.",
+      "expected_output": "Grouped blocker findings for undefined run and result identity, mutable or unstated input semantics, duplicate delivery, concurrent work, retry exhaustion, and terminal outcomes.",
       "files": [
         "evals/files/link-check-incomplete/link-check-run.md"
       ],
@@ -167,6 +167,7 @@
       "expectations": [
         "The response finds no material ambiguity in run and per-URL result identity, immutable input, source ownership, at-least-once delivery, duplicate concurrency, retry classification and cadence, terminal states, crash recovery, or verification.",
         "The response remains concise when there are no material findings.",
+        "The response does not treat the document's length or necessary state, concurrency, protocol, and verification detail as low-density prose.",
         "The response does not demand generic sections, a different queue, a different row-lock mechanism, or more diagrams.",
         "The response does not require an ADR merely because the design coordinates workers, a queue, and a result database."
       ]
@@ -174,7 +175,7 @@
     {
       "id": 13,
       "prompt": "Review the service quality requirements in this thumbnail-rendering design.",
-      "expected_output": "One grouped Directive 7, 9, and 11 finding that explains why the quality claims are not observable and calls for quantified acceptance conditions or deletion when a quality is not material.",
+      "expected_output": "One grouped finding that explains why the quality claims are not observable and calls for quantified acceptance conditions or deletion when a quality is not material.",
       "files": [
         "evals/files/vague-quality/thumbnail-api.md"
       ],
@@ -202,7 +203,7 @@
     {
       "id": 15,
       "prompt": "Review this approved implementation specification and identify anything that still prevents implementation.",
-      "expected_output": "Directive 17 blockers only for the naked retry-budget and retention-period TBD markers, with both choices left for the author to resolve.",
+      "expected_output": "Blockers only for the naked retry-budget and retention-period TBD markers, with both choices left for the author to resolve.",
       "files": [
         "evals/files/approved-tbd/preview-cleanup-worker.md"
       ],
@@ -223,7 +224,7 @@
       "expectations": [
         "The authored specification states the stale-cache problem, the new key construction, canonical colon-free BCP 47 locale constraint, compatibility boundary, and direct verification cases including a delimiter-boundary case.",
         "The document uses a small structure appropriate to a local TypeScript library change.",
-        "The document does not add empty Non-Goals, Risks, Security, Observability, Migration, Rollback, or ADR sections.",
+        "The document does not add empty Non-Goals, Risks, Security, Observability, Migration, Rollback, or ADR sections, or prose explaining why those inactive concerns are absent.",
         "The response does not invent network services, persistence migration, deployment phases, or product requirements absent from the brief."
       ]
     },

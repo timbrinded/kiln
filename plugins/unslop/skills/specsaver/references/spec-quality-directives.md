@@ -25,7 +25,7 @@ instead of copying the example's value or behavior.
 11. [Use normative language precisely and sparingly](#11-use-normative-language-precisely-and-sparingly)
 12. [Document only live alternatives and genuine trade-offs](#12-document-only-live-alternatives-and-genuine-trade-offs)
 13. [Record ADRs only for architectural forks](#13-record-adrs-only-for-architectural-forks)
-14. [Make every sentence and section earn attention](#14-make-every-sentence-and-section-earn-attention)
+14. [Maximize information density; make every sentence and section earn attention](#14-maximize-information-density-make-every-sentence-and-section-earn-attention)
 15. [Use supporting representations only to compress complexity](#15-use-supporting-representations-only-to-compress-complexity)
 16. [Connect verification and safe evolution to the design](#16-connect-verification-and-safe-evolution-to-the-design)
 17. [Maintain one coherent authoritative model](#17-maintain-one-coherent-authoritative-model)
@@ -70,9 +70,9 @@ motivation when the reader can already judge the design.
 
 ## 2. Specify the system positively
 
-**Principle.** State what the system is, owns, and does. Use a prohibition only
-when the prohibition is itself a security, safety, compatibility, data, or
-scope invariant.
+**Principle.** Construct the intended system directly in the reader's mind by
+stating what it is, owns, and does. Use a prohibition only when the prohibition
+is itself a security, safety, compatibility, data, or scope invariant.
 
 **Why it matters.** A list of exclusions makes the reader retain many negative
 facts while still inferring the actual model. A positive responsibility gives
@@ -516,40 +516,51 @@ Recommend a separate ADR only after showing how each gate passes.
 consistency, or persistence choices can meet the threshold. Even then, do not
 require duplication when the feature spec is already durable and discoverable.
 
-## 14. Make every sentence and section earn attention
+## 14. Maximize information density; make every sentence and section earn attention
 
-**Principle.** Keep text that constrains implementation or compresses necessary
-context and reasoning. Remove ceremonial completeness.
+**Principle.** Maximize useful engineering information per unit of reader
+attention. Keep nothing that does not constrain the system or materially
+explain a design decision. Omit no constraint whose absence forces the
+implementer to invent the design. Remove cognitive overhead that adds no design
+information.
 
-**Why it matters.** Every sentence consumes attention. Repetition and generic
-sections hide the few facts that implementers must retain.
+**Why it matters.** Every sentence adds a proposition that the reader must
+retain, classify, and reconcile. Brevity is not inherently good, and detail is
+not inherently bad. A long state table can be dense because every row fixes
+behavior; a short generic risk section can impose cognitive load without adding
+design information.
 
 **Red flags.** Repeated rationale; tautologies; generic risk prose; empty
-headings; `Not applicable` tombstones; process narration; obvious framework
-conventions; recommendation sections that repeat findings; or long summaries
-that duplicate the body.
+headings; `Not applicable` tombstones; process narration; tutorial material;
+obvious framework conventions or private helper-call sequences; recommendation
+sections that repeat findings; or long summaries that duplicate the body.
 
-**Reviewer test.** If deletion does not change a reasonable reader's model of
-the problem, design, rationale, contract, verification, or delivery, delete it.
-Preserve explanation that makes difficult reasoning easier to retain.
+**Reviewer test.** If removing a sentence would not allow a reasonable
+implementer to form a materially different interpretation of the system, remove
+it unless it materially explains a design decision whose rationale would
+otherwise be lost. Identify the unique constraint or material decision rationale
+supplied by each passage. If neither exists, delete or consolidate it.
 
-**Repair patterns.** Delete empty or generic sections. Consolidate repeated
-facts into one canonical statement. Move one necessary explanation beside the
-decision it supports.
+**Repair patterns.** Delete empty, generic, or tutorial sections. Consolidate
+repeated constraints into one canonical statement. Move one necessary
+explanation beside the decision it supports. Replace scattered lifecycle prose
+with a compact state table when that reduces working memory.
 
 **Before.**
 
+> The diagnostic timestamp is UTC RFC 3339 with millisecond precision.
 > Security: N/A. Observability: N/A. Migration: N/A. Rollback: The change can be
 > rolled back if needed. Risks: All changes carry implementation risk.
 
 **After.**
 
-> The cache-key change is verified by tests that distinguish parser modes. It
-> has no persisted-data or network-contract change.
+> The diagnostic timestamp is UTC RFC 3339 with millisecond precision.
 
-**False-positive boundary.** A concise rationale can be descriptive and still
-earn attention by compressing a complex design. Short documents are not
-incomplete merely because they omit common headings.
+**False-positive boundary.** Do not reward shortness or punish detail. Problem
+context, explicit state, protocol semantics, behavior-specific verification,
+and a representation that replaces more costly prose can all have high
+information density. Descriptive rationale earns attention only when it
+materially explains a design decision whose reasoning would otherwise be lost.
 
 ## 15. Use supporting representations only to compress complexity
 
