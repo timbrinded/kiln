@@ -40,11 +40,13 @@ and prose that unnecessarily burdens the reader. Show replacement prose when
 that is the clearest way to state the fix. Do not edit the file.
 
 **Rewrite** applies when the user asks to rewrite, edit, tighten, fix, or apply
-changes, or supplies `--apply`. Rewrite the complete document for clarity,
-structure, precision, and economy. Preserve every material constraint,
-decision, and rationale. Do not invent unresolved decisions; leave them as
-concise questions in the document. Then state briefly what changed and which
-decisions remain open.
+changes, or supplies `--apply`. Read the whole document for context, then
+rewrite only the scope the user named and leave the rest as it is; report
+defects you see outside that scope instead of fixing them uninvited. When the
+request covers the whole specification or names no narrower scope, rewrite the
+complete document. Rewrite for clarity, structure, precision, and economy.
+Preserve every material constraint, decision, and rationale. Do not invent
+unresolved decisions; leave them as concise questions in the document.
 
 **Author** applies when the user asks to write, draft, or create a
 specification. Produce the smallest document that clearly transfers the known
@@ -61,12 +63,18 @@ to name targets. Do not implement the system the specification describes.
    or reveal a contradiction.
 2. Understand the system the author intends. Form a short private model of its
    actors, owned state, boundaries, and lifecycle.
-3. Apply the directives below using engineering and editorial judgement. They
-   are overlapping lenses for one holistic judgement, not gates to pass.
-4. Remove prose that conveys no material information.
-5. Rewrite necessary prose that is harder to understand than it needs to be.
-6. Identify missing material decisions without inventing them.
-7. Re-read the result as one coherent document.
+3. Identify what the document primarily is: a design specification, a
+   requirements document, an API or protocol contract, a migration or rollout
+   plan, an ADR, or a composite of these. Use the matching artifact lens in
+   `references/directives.md` to see which of that kind's questions the design
+   activates and whether it answers them. Lenses are questions to consider, not
+   classifications to report, templates, checklists, or mandatory headings.
+4. Apply the directives below using engineering and editorial judgement. They
+   overlap and feed one holistic judgement; they are not gates to pass.
+5. Remove prose that conveys no material information.
+6. Rewrite necessary prose that is harder to understand than it needs to be.
+7. Identify missing material decisions without inventing them.
+8. Re-read the result as one coherent document.
 
 ## Directives
 
@@ -88,10 +96,15 @@ to name targets. Do not implement the system the specification describes.
    replaceable local mechanics to implementation.
 6. **Make behaviour precise.** Use stable terms, explicit actors, observable
    outcomes, clear state transitions, and measurable qualities where they
-   matter.
+   matter. Keep requirements, decisions, rationale, assumptions, examples, and
+   open questions distinguishable, and make every material behaviour
+   verifiable.
 7. **Treat boundaries as contracts.** Specify the subset of identity, schema,
    ordering, atomicity, retries, errors, authority, and compatibility needed
-   for correct interaction across each boundary the design creates.
+   for correct interaction across each boundary the design creates. Where a
+   boundary touches persisted data, public compatibility, or deployed
+   components, that includes migration, coexistence, rollout, and reversal
+   semantics.
 8. **Use real rationale only.** Document alternatives only when reasonable
    engineers could advocate them under the stated constraints. Recommend a
    separate ADR only for a genuine architectural fork with durable,
@@ -101,11 +114,6 @@ to name targets. Do not implement the system the specification describes.
    state the question plainly. A plausible answer is not an established one.
 10. **Check the finished document as a whole.** Reconcile terminology, values,
     examples, diagrams, and verification with the design.
-
-Load `references/directives.md` for the reasoning behind each directive and
-before-and-after examples. Load `references/gotchas-and-examples.md` when a
-judgement is uncertain, especially before deleting detail, flagging a
-prohibition, recommending an ADR, or quantifying a quality.
 
 ## What Readability Licenses
 
@@ -138,8 +146,10 @@ that is already clear.
 - Long is not automatically bad. Short is not automatically good. Judge
   information per unit of reader attention.
 - Keep the review proportionate to the defects. A specification is complete
-  when competent implementers would build the same system from it, not when it
-  pre-empts every operational edge case. When a document decides its material
+  when competent implementers would make the same material product,
+  architectural, and contract decisions from it and produce materially
+  equivalent observable behaviour; local mechanics may differ. It does not need
+  to pre-empt every operational edge case. When a document decides its material
   behaviour, say so briefly. Raise an edge case only when two compliant
   implementations would differ in a way the stated problem cares about, and
   call a gap blocking only when it meets that test.
@@ -155,7 +165,8 @@ the document. If there are no material findings, say so in one or two
 sentences.
 
 After a rewrite or authored document, add a short note listing what changed in
-substance and which decisions remain unresolved.
+substance, any implied reading you made explicit, and which decisions remain
+unresolved.
 
 For a large document set, delegate coherent groups to `specsaver-reviewer`
 agents, keeping documents together when their meanings depend on each other,
@@ -165,5 +176,5 @@ then merge and deduplicate their findings.
 
 | File | Load when |
 |---|---|
-| `references/directives.md` | The reasoning or a worked example for a directive would sharpen a judgement |
-| `references/gotchas-and-examples.md` | A judgement is uncertain, or before deleting detail, flagging a prohibition, recommending an ADR, or quantifying a quality |
+| `references/directives.md` | Core loop step 3 reads the artifact lens for the document's type; load the rest when the reasoning or a worked example for a directive would sharpen a judgement |
+| `references/gotchas-and-examples.md` | A judgement is uncertain; most often when deleting detail, flagging a prohibition, recommending an ADR, or quantifying a quality |

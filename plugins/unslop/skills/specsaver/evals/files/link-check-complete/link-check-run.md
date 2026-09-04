@@ -21,8 +21,8 @@ repeats the address check before each connection.
 
 ## Run input and identity
 
-The builder starts a run with `release_id`, `manifest_uri`, and
-`manifest_sha256`. A manifest entry contains the source page, source line, and
+The builder starts a run with `POST /runs` carrying `release_id`,
+`manifest_uri`, and `manifest_sha256`. A manifest entry contains the source page, source line, and
 target URL. `manifest_uri` addresses an object whose content cannot be
 replaced. Before creating a run, the Link Checker reads the complete manifest
 and verifies `manifest_sha256`. A missing object, digest mismatch, malformed
@@ -47,8 +47,8 @@ key, so one result row exists per key.
 
 Run creation inserts every result as `pending` with an immediate
 `next_probe_at` and a null `published_probe_at`. Every two minutes, a dispatcher
-selects the `pending` results and the due `retry_wait` results whose
-`published_probe_at` differs from `next_probe_at`. For each, it publishes
+selects each `pending` result and each due `retry_wait` result whose
+`published_probe_at` differs from its `next_probe_at`. For each, it publishes
 (`run_id`, result key, `scheduled_probe_at`) with `scheduled_probe_at` equal to
 `next_probe_at`, then copies that value to `published_probe_at` only after the
 queue accepts the message. A failed publish is retried. A crash after queue acceptance
@@ -64,7 +64,8 @@ probe is still running. The queue redelivers an unacknowledged message until it
 is acknowledged; it does not dead-letter. With the lock held, the worker
 acknowledges a terminal result or a message whose `scheduled_probe_at` no longer
 matches `next_probe_at`. If the message matches `next_probe_at` but the retry is
-not yet due, the worker sets `published_probe_at` to null, commits, and then
+not yet due, which can happen only through clock skew between the dispatcher
+and the worker, the worker sets `published_probe_at` to null, commits, and then
 acknowledges, so the dispatcher republishes the probe when it is due. Otherwise,
 it keeps the transaction and row lock open while it probes the URL, writes the
 outcome, and commits.
@@ -136,6 +137,6 @@ Other tests cover manifest rejection with `400`, idempotent run creation with
 canonicalisation and source-location grouping, a failed queue publication,
 each permanent and retryable classification including an egress-policy
 rejection, the HEAD-to-GET fallback and its
-`405` and `501` outcomes, both retry delays, the third-attempt `unreachable`
-transition, empty manifests, and concurrent completion of the last two results.
+`405` and `501` outcomes, both retry delays, the not-yet-due branch releasing its
+publication marker, the third-attempt `unreachable` transition, empty manifests, and concurrent completion of the last two results.
 They verify that terminal run and result states cannot be changed.

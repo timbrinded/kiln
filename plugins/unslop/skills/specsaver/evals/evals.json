@@ -110,6 +110,62 @@
         "The document does not add Non-Goals, Risks, Security, Observability, Migration, Rollback, or ADR sections, and does not explain why those are absent.",
         "The response does not invent network services, persistence, deployment phases, or product requirements absent from the brief."
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "--apply This draft is complete but hard to follow. Rewrite it so an engineer can implement it from one reading, and preserve every decision it makes.",
+      "expected_output": "A substantial rewrite of a realistic, complete but hard-to-read webhook delivery specification that preserves every material fact and materially improves readability.",
+      "files": [
+        "evals/files/realistic-rewrite/webhook-delivery.md"
+      ],
+      "expectations": [
+        "The rewrite preserves every material fact of the source, including: endpoint registration via POST /v1/webhook_endpoints with https only (http rejected 422), a 32-byte base64url secret shown once and never returned, PATCH of url and event_types with the URL read at attempt time, no secret rotation, and status values enabled, disabled, deleted; auto-disable after 20 consecutive exhausted deliveries counted in finishing order with an email to account owners, pending deliveries marked exhausted with no attempt row and no counter change, and creation of new deliveries stopped; re-enable via POST .../enable resetting the counter and returning 200 even when already enabled; DELETE as a 204 soft delete that cancels pending deliveries, keeps the row, and answers 409 to enable; a delivery as one event to one endpoint with a whd_ ULID id, at most seven attempts, the JSON body fields, the four X-Hook headers with a per-attempt timestamp, success as any 2xx with the full response within 10 seconds, failure classes including unfollowed 3xx, DNS, TLS, connection refused and timeout, the attempt row written before the status update, the attempts counter with its four outcome labels, the retry offsets 30 s, 2 min, 10 min, 1 h, 6 h, 24 h, exhaustion after the seventh failure with its counter and consecutive_exhausted increment, delivered zeroing the counter in the same transaction, at-least-once with delivery_id as the receiver's idempotency key, no ordering guarantee, and 8 in-flight attempts per endpoint per poller instance with two instances; HMAC-SHA256 over timestamp, full stop, raw body with a v1= hex header and a 300-second receiver tolerance; replay of finished deliveries only (pending 409) for 30 days from the event's created_at checked by the clock, 404 after that or when the events row is gone, a new delivery with a new delivery_id and the same event_id, 409 for disabled or deleted endpoints, and replays counting toward auto-disable; the three tables and their key columns, 30-day nightly retention, the deliveries listing with its fields, newest-first order, status and event_id filters, 50 per page up to 200, and after cursor; the poller waking every second, claiming up to 100 due deliveries with SELECT FOR UPDATE SKIP LOCKED, a 60-second lease committed before any request, re-claim after lease expiry, and lease cleared when the endpoint's 8 slots are full; the metrics including the backlog gauge excluding live leases with a page at 1,000 for 5 minutes; exactly one original delivery per (event, endpoint) created in the same transaction as the events row for enabled subscribed endpoints, replay being the only other creator; and the structured log line with host but not path or query.",
+        "The rewrite materially improves readability: one term per concept (endpoint, not subscription; disabled, not paused), attempts and deliveries defined before the retry schedule that depends on them, the auto-disable rule and the one-delivery-per-pair invariant stated beside the behaviour they govern, each fact stated once, forward references removed, and verification turned into a scannable list of obligations.",
+        "The rewrite invents no values or behaviour, does not turn decided values into open questions, and adds no template sections.",
+        "The response briefly states what changed in substance and reports that no material decisions remain open."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Use Specsavers to write the API specification for the report export feature described in the attached brief.",
+      "expected_output": "A concise, readable API specification that carries every decision in the brief, leaves the one undecided item as an explicit question, and adds no template sections.",
+      "files": [
+        "evals/files/author-api/feature-brief.md"
+      ],
+      "expectations": [
+        "The specification carries every contract decision from the brief: bearer-token auth with organisation scoping and 404 rather than 403 for foreign IDs; /v1 paths with the additive-only rule; the four operations with their methods, paths, and status codes; the create body fields and validation rules including rejection of unknown fields, RFC 3339 window semantics with inclusive start and exclusive end, and the project_ids constraints; the Idempotency-Key rules including required header, 1 to 255 printable ASCII characters, organisation scope, 24-hour memory, storage only on 202, byte-identical replay, 422 on a different body, and expiry; the lifecycle queued, running, complete, failed, cancelled with terminal states and the queued-only cancel rule with 409; the export object fields with null rather than omission, normalised filters, the error object and its three codes, the 15-minute download URL minted per GET, 7-day file retention, and 90-day record retention with 404 afterwards; cursor pagination with limit default 25 and maximum 100, the data and next_cursor shape, opaque non-expiring cursors, undecodable cursors as 400, and null download fields in lists; the cap of 5 active exports with 429 and no Retry-After; the existing error envelope and each new error code with its status; and RFC 3339 UTC timestamps with a Z suffix.",
+        "The specification records per-organisation rate limiting on export creation as an explicit open question and does not invent a limit.",
+        "The document is short and readable for its content, uses a table or list where that is clearer than prose (for example error codes or states), keeps out-of-scope items to at most a brief note, and adds no Security, Migration, Observability, Rollback, Risks, or Non-Goals sections that the brief does not activate. A verification list that names behaviours the spec fixes is acceptable.",
+        "The specification invents no fields, codes, states, or behaviour absent from the brief."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Use Specsavers to write the migration and rollout specification from the attached notes.",
+      "expected_output": "A readable migration specification with the current and target states, an ordered sequence with checks and abort behaviour, the first irreversible step, completion proof, and the soak period left as an explicit open question.",
+      "files": [
+        "evals/files/author-migration/feature-brief.md"
+      ],
+      "expectations": [
+        "The specification carries every decision from the notes: the current state (text NOT NULL, about 48M rows, seven lowercase values since 2021, mixed case and trailing whitespace on about 300k rows, about 2,100 rows spelt canceled, no NULLs, only the orders_pending_idx partial index depends on the column, Postgres 14); the target state (an order_status enum in lifecycle order, a NOT NULL state column, status dropped, no rename); the constraint that two application versions run side by side during every deploy; lock_timeout of 2 seconds on migration statements and the error-rate criterion for deploy checks; the nine ordered steps with each step's check, including the migration_progress table, dual-write deploy, backfill only after version N is gone, batches of 5,000 rows by id with a snapshotted max_id, the mapped(status) expression with lower and trim and canceled to cancelled, the IS DISTINCT FROM predicate, stopping a batch when any row does not map, 200 ms sleep, resume from last_id, five lock-timeout retries at 30 seconds, and the replication-lag pause above 5 seconds with a 30-minute stop and a post to #orders-oncall; the four verification checks on replica-1 including the 10,000-row sample; the concurrent creation of orders_state_pending_idx with the indisvalid and size check before reads switch; NOT NULL via a NOT VALID check constraint then VALIDATE then SET NOT NULL; dropping NOT NULL from status; the N+3 deploy that removes status with the git grep gate; DROP COLUMN status as the first irreversible step on the same day once N+3 is the only version; the abort and rollback behaviour for each stage; the completion criteria; and ownership by Priya with on-call as second for steps 6 to 9 and evidence recorded in ORD-412.",
+        "The specification records the soak period between switching reads and dropping the old column as an explicit open question and does not invent a duration.",
+        "The sequence, its per-step checks, and its abort behaviour are easy to follow, for example as an ordered list or table, and the first irreversible step is unmistakable; the document adds no generic sections the change does not activate and is short for its content.",
+        "The specification invents no steps, values, or safeguards absent from the notes."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Use Specsavers to write the ADR for the decision recorded in the attached meeting notes.",
+      "expected_output": "A concise ADR that states the genuine fork, the forces, the selected option, the honest alternative, the consequences including accepted costs, and the reopening conditions, and excludes meeting noise.",
+      "files": [
+        "evals/files/author-adr/decision-notes.md"
+      ],
+      "expectations": [
+        "The ADR states the fork between publishing directly from request handlers after commit and a transactional outbox drained by a relay, with the honest case for direct publishing (no new infrastructure or process, about 50 ms latency, a three-engineer team) and the dual-write loss that defeated it including the INC-31 precedent; the forces (webhooks as a customer contract, about 2k writes and 300 events per minute, one RDS Postgres and existing SNS, no Kafka or CDC, 1 s latency acceptable); the decision (outbox row in the same transaction via the unit-of-work helper as the only publish path, relay polling every 500 ms with FOR UPDATE SKIP LOCKED, one standard SNS topic core-domain-events with event_type as a message attribute, payloads of ids plus a few fields capped at 200 KB, scope limited to core-api domain events with the thumbnail enqueue excluded); the consequences including at-least-once delivery so every consumer must dedupe on event_id, no ordering promise with occurred_at and aggregate_version carried for staleness checks, about 1 s p50 latency, an extra row write per transaction, a new process to operate, 7-day pruning that bounds replay to 7 days, failed rows after 10 attempts kept out of pruning with last_error and an alert, and starting with one relay replica; the two metrics with the 60-second for 5-minute page; and the four reopening conditions.",
+        "The ADR excludes meeting noise: action items and their dates, the CI tangent, the joke, the retro reminder, and conversational attributions of who said what; a deciders or participants line is acceptable. It links to the webhooks specification in docs/specs/ rather than repeating it.",
+        "The ADR contains no straw alternatives and no rationale absent from the notes.",
+        "The ADR is concise and readable, with structure fit for a decision record rather than a template."
+      ]
     }
   ]
 }

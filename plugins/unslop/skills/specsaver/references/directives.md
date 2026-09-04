@@ -1,7 +1,8 @@
 # Specsavers Directives
 
-The reasoning and examples behind the ten directives in `SKILL.md`. Use them
-to sharpen a judgement, not to classify one. The examples are synthetic. An
+The reasoning and examples behind the ten directives in `SKILL.md`, followed by
+the artifact lenses that core loop step 3 uses. Use them to sharpen a judgement,
+not to classify one. The examples are synthetic. An
 `After` passage states a decision only because the hypothetical author supplied
 it; when a real target does not establish that decision, write the question
 instead of copying the example's value.
@@ -65,7 +66,9 @@ a defect. A rewrite that keeps every fact and reads better is the job.
 
 **Boundary.** Preserve deliberate precision. A `MUST NOT` with a specific
 object, a named state, an exact value, or a defined order of operations is
-semantics. Rephrase around it; do not soften it.
+semantics: keep the object, state, value, or order exactly as stated. The
+sentence that carries it may be rewritten, split, moved, or merged like any
+other; what may not change is what it asserts.
 
 ## 3. Describe the system positively
 
@@ -194,7 +197,9 @@ a pure local function.
 
 **Principle.** Use one stable term per concept, name the actor responsible for
 each effect, state observable outcomes, define legal state transitions, and
-give material quality attributes a measurable form.
+give material quality attributes a measurable form. Keep requirements,
+decisions, rationale, assumptions, examples, and open questions
+distinguishable, and make every material behaviour verifiable.
 
 **Why it matters.** Synonym drift makes the reader maintain a mapping that may
 be wrong. Passive voice can hide who owns a transition. `Handle gracefully`
@@ -207,25 +212,45 @@ Indexer sets the state to `indexed`" when responsibility matters.
 
 **Observable behaviour.** A useful behavioural statement names its trigger when
 one is relevant, its actor, and one observable response. Split obligations that
-can pass or fail independently. `Handle`, `support`, `manage`, and `ensure`
-are fine when the surrounding text makes the result observable; flag them only
-when it does not.
+can pass or fail independently.
 
-**Normative force.** Ordinary `must` is valid. Declared BCP 14 uppercase is
-valid. Consistency matters more than convention. Use `should` only when a real
-exception exists and the reader can understand its consequences. Use `may`
-only for genuinely optional behaviour. A `should` on an integrity invariant is
-a defect; make it `must`.
+**Statement roles.** Facts, requirements, decisions, rationale, assumptions,
+examples, tasks, and open questions carry different authority. An example
+mistaken for a contract constrains clients by accident. An assumption written
+as fact hides risk. Rationale phrased as a requirement makes the reason hard to
+revise without appearing to change behaviour. A `TODO` hides a material
+unknown. Clear prose carries these roles without labels; add a label only where
+prose cannot make the authority obvious.
 
-**Qualifiers.** `Generally`, `where possible`, `as appropriate`, `promptly`,
-`eventually`, `sufficient`, and `gracefully` are not banned. Flag them when
-they carry requirement force and leave compliance undefined. Leave them alone
-in descriptive context.
+> Example: `{ "ingestionId": "123", "sourceRevision": "2026-09" }`. We use a
+> UUID so retries work. TODO source handling.
+
+becomes
+
+> Each import requires an ingestion identifier and a source revision. Retries
+> reuse the ingestion identifier. UUIDs are the current representation, not
+> part of the external contract. Open question: which public feeds may clients
+> import, and where is that allow-list authoritative?
+
+**Normative force and vague words.** Ordinary `must` and declared BCP 14
+uppercase are both valid; be consistent, use `should` only where a real
+exception exists, and use `may` only for genuinely optional behaviour. A
+`should` on an integrity invariant is a defect; make it `must`. Verbs such as
+`handle`, `support`, and `ensure`, and qualifiers such as `promptly`,
+`gracefully`, and `where possible`, are not banned. Flag one only when it
+carries requirement force and leaves compliance undefined.
 
 **Quality attributes.** When a quality claim would change architecture, cost,
 or acceptance under different thresholds, it needs an operating condition, a
 measurement, and a bound. If the value is unknown, ask for it. Never choose it.
 Delete adjectives that are not actually requirements.
+
+**Verifiability.** Every material behaviour should map to evidence that can
+fail: a test, an inspection, or a measurement. "Add unit and integration
+tests" shows nothing. Name the behaviours the tests demonstrate in the
+document's own terms. One focused test can be the whole verification section
+for a small change; a stateful design needs its claims about exclusion,
+recovery, and terminal states demonstrated individually.
 
 **Before.**
 
@@ -248,18 +273,21 @@ EARS; use such forms only where they clarify timing or condition.
 ## 7. Treat boundaries as contracts
 
 **Principle.** At each boundary the design creates, state the semantics both
-sides need to act correctly and independently.
+sides need to act correctly and independently. Where a boundary touches
+persisted data, public compatibility, or deployed components, that includes how
+the system moves from its current state to the target.
 
 **Why it matters.** Route names and component arrows do not define nulls,
 units, validation, identity, ordering, atomicity, errors, authority, or
 evolution. Those gaps produce integration failures even when each component is
 locally correct.
 
-**What to inspect, only where the design activates it.** Schema authority and
-where it lives. Required, optional, and null semantics. Validation and error
-shape. Authentication and authorisation. Identity and idempotency. Delivery,
-ordering, and duplicate handling. Transaction and atomicity boundaries.
-Versioning and the compatibility window.
+**What to inspect.** Only the semantics the design activates; the API or
+protocol lens below lists them. When the boundary touches persisted data, a
+public contract, or independently deployed components, the contract includes
+the transition, and the migration lens lists what it must fix. "Roll back if
+needed" is false after an irreversible data change. Where none of this applies,
+as for a pure local function, say nothing.
 
 **Before.**
 
@@ -271,6 +299,18 @@ Versioning and the compatibility window.
 > schema is authoritative for the request and response; what durable identity
 > a job carries; how a worker recognises and discards a duplicate delivery;
 > and whether a retry reuses the original identity.
+
+**Before.**
+
+> Add the new column, backfill it, and switch the reads. Roll back the
+> migration if anything goes wrong.
+
+**After.**
+
+> Open questions: which application versions must run against both column
+> shapes during the deploy; how the backfill is validated before reads switch;
+> what stops the backfill and what state that leaves; and which step, once
+> taken, cannot be reversed. Do not claim rollback until those are known.
 
 **Boundary.** Do not copy an authoritative OpenAPI, Protobuf, JSON Schema, or
 ABI into the document. Link it and state local semantics or deviations.
@@ -347,7 +387,9 @@ document declares its state table authoritative and one paragraph uses a stale
 state name, reconciling the paragraph to the table is derivation, not a guess.
 If a document defines retryable and non-retryable error classes and a fixed
 delay, rewriting "retries where appropriate" in terms of those classes is
-derivation. The line is whether the source determines the answer.
+derivation. The line is whether the source determines the answer. When a
+rewrite makes an implied reading explicit, say so in the closing note so the
+author can confirm it.
 
 ## 10. Check the finished document as a whole
 
@@ -367,40 +409,92 @@ markers in a document that claims implementation readiness.
 
 **Boundary.** Managed open questions are correct in exploratory documents.
 Only an approved or implementation-ready document is defective for leaving
-material behaviour open.
+material behaviour open. Where a document describes deployed behaviour, its
+material claims must agree with the code; read code only to check them. Take
+maturity from the document's own status where it states one; do not classify or
+report it, and mention it only when it changes a finding. In a scoped rewrite,
+report rather than edit an inconsistency with a section outside the scope.
 
-## Optional Lenses: Document Profiles and Maturity
+## Artifact Lenses
 
-These are mental models for deciding which concerns a document activates. They
-are not headings, templates, or a required classification step.
+The core loop asks what a document primarily is, then uses the matching lens.
+A lens is the set of questions a reader needs answered before they can act on
+that kind of document. It is not a classification to report, a template, a
+checklist to walk, or a list of required headings. Not every question is
+material to every design; an unanswered lens question is a finding only when
+the completeness test in the SKILL.md boundaries says so. Answer the questions
+the design activates, in whatever structure serves the reader.
 
-**Profiles** by primary question:
+### Design or feature specification
 
-- *Design or feature specification:* what system will be built, and why this
-  design? Inspect problem, positive model, responsibilities, activated
-  contracts and state, real trade-offs, verification.
-- *Requirements:* what observable behaviour must hold? Inspect actors,
-  triggers, responses, invariants, measurable qualities, verifiability.
-- *API or protocol:* what exact contract permits independent implementation?
-  Inspect schema authority, null semantics, errors, identity, ordering,
-  delivery, versioning, compatibility.
-- *Migration or rollout:* how does the system move safely between states?
-  Inspect preconditions, compatibility window, first irreversible step, abort
-  criteria, completion proof.
-- *ADR:* which architectural fork was chosen, and why? Apply the four gates.
-- *Composite:* one coherent model that borrows from several of the above.
+*What system will be built, and why this design?*
 
-**Maturity** from explicit status, then language and context:
+- What problem does it solve, for whom, and what observable outcome replaces
+  the current failure?
+- What is the system model: components, the state each owns, sources of truth,
+  which inputs must stay fixed while work is in flight, boundaries, and
+  lifecycle?
+- Who owns each responsibility and each state transition?
+- Which material decisions are made, and which are deliberately left to
+  implementation?
+- What rationale would be lost if it were not written down?
+- How will material behaviour be demonstrated?
 
-- *Exploratory:* open questions and live alternatives are expected. Flag only
-  assumptions dressed as facts, hidden blockers, and contradictions.
-- *Decision-ready:* the problem, constraints, and options let an owner choose.
-  Flag missing decision criteria and straw alternatives.
-- *Implementation-ready:* no material choice remains for the implementer. Flag
-  `TBD` values and deferred material behaviour. Do not over-specify local
-  mechanics.
-- *As-built:* claims about deployed behaviour must agree with the code. Inspect
-  code only to verify the document's material claims.
+### Requirements
 
-A document can be exploratory in one bounded area and implementation-ready in
-another. Say so only when it changes a finding.
+*What observable behaviour and constraints must hold?*
+
+- Who are the actors, human and system?
+- What triggers each behaviour, and what observable response follows?
+- What invariants hold at all times?
+- Which qualities matter, measured how, under what conditions, with what bound?
+- Can each requirement be verified independently of the others?
+- Are examples, assumptions, and rationale distinguishable from the contract?
+
+### API or protocol
+
+*What exact contract permits correct use or independent implementation?*
+
+- Where is the authoritative schema, and what do required, optional, absent,
+  and null mean for each field?
+- What errors exist, how are they shaped, and which condition produces each?
+- Who has authority over each resource and transition?
+- What identifies a request, resource, or message, and what does a repeat do?
+- What ordering, delivery, and atomicity guarantees hold? Where a client could
+  plausibly assume a guarantee the design does not give, is the absence stated?
+- If consumers deploy independently of the provider, how is the contract
+  versioned and what compatibility window is promised?
+- Which examples expose a boundary case rather than decorate the text?
+
+### Migration or rollout
+
+*How does the system move safely from one state to another?*
+
+- What is the current state, including its data-quality problems, and what is
+  the target state?
+- In what sequence do the steps run, and what precondition gates each?
+- Which old and new versions, schemas, or data shapes coexist, and for how
+  long?
+- How is each step validated before the next begins?
+- What aborts a step, and what does abort leave behind?
+- Which step is the first irreversible one?
+- What proves completion, and who owns partial progress and repair?
+
+### Architecture decision record
+
+*Which architectural fork was chosen, and why?* Apply the four gates in
+directive 8 first.
+
+- What is the fork, stated so that a reasonable engineer could advocate each
+  side?
+- What forces drove the decision?
+- Which option was selected?
+- What is the honest case for each credible alternative, and what defeated it?
+- What consequences follow, including the costs the team accepts?
+- What condition would reopen the decision?
+- Does the record link to the feature specification rather than copy it?
+
+### Composite
+
+Pick the applicable questions from several lenses and answer them in one
+coherent model. Do not make three documents or fill three templates.

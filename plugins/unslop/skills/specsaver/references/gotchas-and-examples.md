@@ -1,9 +1,10 @@
 # Gotchas and Worked Examples
 
 Counterweights for the directives, then complete examples of good judgement.
-Read the relevant part when a call is uncertain. Default to no change when the
-evidence is uncertain; a confident wrong edit costs more than a missed minor
-one.
+Read the relevant part when a call is uncertain. When it is uncertain whether a
+passage carries material information, default to leaving it in. That default
+does not apply to a readability rewrite that keeps every fact; there the check
+is that each fact survives, not whether to rewrite at all.
 
 ## Gotchas
 
@@ -27,66 +28,49 @@ state, or source of truth open is incomplete however tidy it looks.
 The natural output for a complete, well-written specification is a sentence or
 two saying so, perhaps with one or two minor notes. A long review of a good
 document is a failure of proportion, not a sign of rigour. Distributed and
-asynchronous designs always admit further edge cases; before raising one, ask
-whether two competent implementers reading the document as written would build
-observably different systems in a way the stated problem cares about. If they
-would build the same system, the edge case is not a finding. Reserve
-"blocking" for gaps that fail that test, and do not escalate a minor ambiguity
-to make the review look thorough.
+asynchronous designs always admit further edge cases; before raising one, apply
+the completion test in the SKILL.md boundaries. Reserve "blocking" for gaps
+where two compliant implementations would differ in that way, and do not
+escalate a minor ambiguity to make the review look thorough.
+
+### Rewrite the scope that was asked for
+
+When the user names a section, a concern, or a set of findings, change nothing
+outside it. Report defects seen outside that scope, and any inconsistency the
+rewrite creates with unchanged sections, in the closing note.
 
 ### Preserve meaningful prohibitions
 
 Negative language is not slop. Keep concise prohibitions that constrain
 authority, mutation, replay, disclosure, compatibility, or safety, especially
-when the positive model would otherwise permit the behaviour. "The Archive
-Writer MUST NOT add, remove, rename, or reorder manifest entries" protects a
-committed manifest and stays. "This retry fix does not add a mobile app" goes.
+when the positive model would otherwise permit the behaviour. "This retry fix
+does not add a mobile app" goes; "MUST NOT reorder manifest entries" stays.
 
 ### Do not invent precision
 
 A vague material target is a missing decision, not permission to choose a
-number. Ask for the retry budget, percentile, load, retention period, or
-compatibility window. In a rewrite, place the question in the document where
-the value belongs. Never write a plausible default into the specification.
-
-### Derivation is not invention
-
-If the document itself determines the answer, use it. A stale state name that
-contradicts a table the document declares authoritative is reconciled to the
-table. A vague retry sentence in a document that already defines its retryable
-error classes and delay is rewritten in those terms. The line is whether the
-source determines the answer, not whether the reviewer had to think.
+number. In a rewrite, place the question in the document where the value
+belongs. Never write a plausible default into the specification.
 
 ### Do not add inactive sections
 
 Security, migration, observability, rollback, capacity, and internationalisation
-are conditional. A pure local function activates none of them. When a design
-does activate one, ask for the exact missing contract or decision. Do not
-replace one empty template with another, and do not write a paragraph
-explaining why a section is absent.
+are conditional. When a design does activate one, ask for the exact missing
+contract or decision; do not replace one empty template with another, and do
+not explain why a section is absent.
 
 ### Do not create gratuitous ADRs
 
-Importance is not a fork. Choosing to implement a required feature is not a
-decision. Following an existing repository pattern is not architecture. When
-the canonical feature specification is durable and discoverable, an
-architecturally significant decision can live there without a separate record.
-Recommend an ADR only when all four gates in `directives.md` hold, and create
-one only when the user asks.
+Importance is not a fork, and following a repository pattern is not
+architecture. When the canonical feature specification is durable and
+discoverable, a significant decision can live there. Recommend an ADR only when
+all four gates in directive 8 hold; create one only when the user asks.
 
 ### Exploratory questions are valid
 
-An exploratory or decision-ready document may hold live alternatives and open
-questions. Do not demand implementation decisions at that maturity. Flag a
-question disguised as a decision, a hidden blocker, or a contradiction. A clear
-"this choice blocks implementation" is good, not a defect. Do not demand owners
-or dates unless the repository's workflow makes them material.
-
-### Ordinary terms need no glossary
-
-Familiar domain vocabulary shared by the intended readers needs no definition.
-Define a term only when it is central and unfamiliar, overloaded, or used
-inconsistently.
+A clear "this choice blocks implementation" in an exploratory note is good, not
+a defect. Do not demand owners or dates unless the repository's workflow makes
+them material.
 
 ### Similar examples can cover different boundaries
 
@@ -108,26 +92,12 @@ Do not request a diagram because a system has several components. A diagram or
 table earns its place when it compresses relationships, order, or state more
 clearly than prose and agrees with the normative text. Prose is often clearer.
 
-### Rationale can earn attention
-
-Descriptive text need not constrain compliance to be useful. Keep rationale
-that explains a material decision or stops a future reader from reopening a
-rejected live option under unchanged constraints. Delete generic justification
-and repeated summaries, not every non-normative sentence.
-
 ### Whole-document reading, changed-proposal reporting
 
 When the request is to review a change, read the whole document to understand
 terms and detect contradictions, but report only issues introduced by or
 materially related to the changed proposal. Unrelated legacy verbosity is not
 part of that review unless the user asks for it.
-
-### Stay in your lane
-
-A request for a correctness, security, performance, or architecture review of
-code is not a Specsavers request, even when a Markdown file is nearby. Route it
-to the appropriate review and offer a specification pass separately if a
-specification exists.
 
 ## Worked Examples
 

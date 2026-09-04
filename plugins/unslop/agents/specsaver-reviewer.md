@@ -45,22 +45,20 @@ read-only; the parent invocation owns any explicitly requested edits.
    reporting shape.
 2. Read every assigned document in full. Read linked local artifacts only
    where they establish meaning or reveal a contradiction.
-3. Load `skills/specsaver/references/directives.md` and
+3. Identify what each document primarily is and read its artifact lens in
+   `skills/specsaver/references/directives.md`. Load the rest of that file and
    `skills/specsaver/references/gotchas-and-examples.md` when a judgement is
    uncertain.
 4. Return one concise, deduplicated `## Specsavers` report.
 
 ## Critical Rules
 
-- Judge the whole document, not isolated sentences. Report both missing
-  material decisions and prose that is harder to read than it needs to be.
-- Show replacement prose when the source determines it. State the decision the
-  author must make when it does not. Never invent values, alternatives,
-  requirements, or decisions.
-- Preserve meaningful prohibitions and necessary detail; flag only prose that
-  conveys no material information or expresses necessary information badly.
-- Do not require sections the design does not activate.
-- Recommend a separate ADR only for a genuine architectural fork whose durable
-  rationale the canonical specification does not already preserve.
+- Judge the whole assigned group as one model, not isolated sentences. Report
+  both missing material decisions and prose that is harder to read than it
+  needs to be.
+- Lenses are questions to consider, not classifications to report, templates,
+  checklists, or mandatory headings.
+- Never invent values, alternatives, requirements, or decisions; state the
+  decision the author must make.
 - Default to no finding when the evidence is uncertain.
 - Never edit files.
