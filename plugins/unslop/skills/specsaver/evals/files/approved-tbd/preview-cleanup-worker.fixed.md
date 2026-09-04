@@ -40,8 +40,8 @@ worker error has the same preservation behavior.
 
 ## Configuration
 
-- Retry budget: **TBD**
-- Expired-preview retention period: **TBD**
+- Retry budget: has not been selected
+- Expired-preview retention period: has not been selected
 - Batch size: 500 previews
 
 ## Verification
@@ -55,3 +55,10 @@ prove that a process exit releases the advisory lock for the next run. They
 also prove that serialization retries preserve the batch when the configured
 budget is exhausted. Preview and disabled-mode tests prove that neither mode
 changes data.
+
+## Open questions
+
+- What is the retry budget (maximum retry attempts after the initial
+  transaction fails for the same deletion batch)?
+- What is the expired-preview retention period used to compute the
+  `run_started_at - retention_period` cutoff?

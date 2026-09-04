@@ -129,7 +129,7 @@
     {
       "id": 10,
       "prompt": "Specsavers this technical design before I send it for review.",
-      "expected_output": "A report-only Specsavers review that groups the exclusion-heavy component definition under specification Directive 2 rather than applying code-quality directives.",
+      "expected_output": "A report-only Specsavers review that treats the exclusion-heavy component definition as negative-definition prose to be stated positively, rather than applying code-quality directives.",
       "files": [
         "evals/files/spec-routing/thumbnail-key-builder.md"
       ],

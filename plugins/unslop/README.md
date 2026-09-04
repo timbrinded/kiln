@@ -46,23 +46,19 @@ The explicit Claude Code identifiers are `/unslop:codesaver` and
 
 ## Doctrine
 
-Codesavers preserves the original Unslop code-quality doctrine. Specsavers uses
-two tests:
+Codesavers preserves the original Unslop code-quality doctrine. Specsavers has
+one central instruction:
 
-> If this sentence were removed, could a reasonable implementer form a
-> materially different interpretation of the required system?
+> Make the specification as easy as possible for a competent engineer to
+> understand and implement. Preserve its meaning, not its original wording.
 
-> Does the specification force a competent implementer to make a material
-> product or architectural decision that the author should have made?
-
-**The review checklist may be exhaustive. The specification must not be.** Keep
-nothing that does not constrain the system or materially explain a design
-decision. Omit no constraint whose absence forces the implementer to invent the
-design. Visible section coverage is not evidence of review completeness.
-
-Specsavers reads the complete target specification. It reports only material
-concerns activated by the design. It does not require a universal template,
-invent missing decisions, or recommend an ADR for routine implementation work.
+A passage can be necessary and still be badly written. Specsavers rewrites
+awkward, dense, repetitive, or badly ordered prose even when its information is
+required, deletes prose that conveys no material information, and never deletes
+a material constraint, decision, or rationale. It reads the complete document,
+identifies missing material decisions without inventing answers, does not
+require a universal template, and recommends an ADR only for a genuine
+architectural fork.
 
 ## Structure
 

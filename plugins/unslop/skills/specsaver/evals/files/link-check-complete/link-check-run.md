@@ -10,8 +10,9 @@ The Link Checker owns check runs and their results. The existing queue provides
 at-least-once delivery; it is a transport and is not the source of result
 state.
 
-The Link Checker checks absolute HTTP and HTTPS links. The builder checks
-relative links as part of its existing build validation.
+The builder's manifest lists only absolute HTTP and HTTPS links; the builder
+checks relative links as part of its existing build validation. A manifest
+entry with any other target is therefore a builder defect and is rejected.
 
 All probes use the existing public-web egress client without cookies or
 application credentials. That client rejects URL credentials and any literal,
@@ -25,12 +26,13 @@ The builder starts a run with `release_id`, `manifest_uri`, and
 target URL. `manifest_uri` addresses an object whose content cannot be
 replaced. Before creating a run, the Link Checker reads the complete manifest
 and verifies `manifest_sha256`. A missing object, digest mismatch, malformed
-entry, or non-HTTP target rejects the request without creating a run.
+entry, or non-HTTP target returns `400 invalid_manifest` and creates no run.
 
 The pair (`release_id`, `manifest_sha256`) identifies one run. The Link Checker
-assigns that run a UUID `run_id`. Repeating a request with the same pair returns
-the existing `run_id`. Reusing `release_id` with a different manifest digest
-returns `409 release_manifest_mismatch` and changes nothing.
+assigns that run a UUID `run_id` and returns it with `201`. Repeating a request
+with the same pair returns `200` with the existing `run_id`. Reusing
+`release_id` with a different manifest digest returns
+`409 release_manifest_mismatch` and changes nothing.
 
 Run creation copies the manifest entries into the Link Checker database in one
 transaction. The copied source locations and URLs are immutable. A URL is
@@ -38,28 +40,34 @@ canonicalised by lowercasing its scheme and host, removing its fragment and a
 default port, and preserving its path and query. One result covers every source
 location with the same canonical URL. The WHATWG URL serializer supplies all
 other normalisation. A result's stable key is
-`sha256(run_id + "\n" + canonical_url)`. A unique constraint permits one result
-row per key.
+`sha256(run_id + "\n" + canonical_url)`, and it is the result table's primary
+key, so one result row exists per key.
 
 ## Queue and worker behaviour
 
 Run creation inserts every result as `pending` with an immediate
-`next_probe_at` and a null `published_probe_at`. A dispatcher scans `pending`
-results and due `retry_wait` results every two minutes when
-`published_probe_at` differs from `next_probe_at`. It publishes (`run_id`,
-result key, `scheduled_probe_at`) with `scheduled_probe_at` equal to
+`next_probe_at` and a null `published_probe_at`. Every two minutes, a dispatcher
+selects the `pending` results and the due `retry_wait` results whose
+`published_probe_at` differs from `next_probe_at`. For each, it publishes
+(`run_id`, result key, `scheduled_probe_at`) with `scheduled_probe_at` equal to
 `next_probe_at`, then copies that value to `published_probe_at` only after the
-queue accepts it. A failed publish is retried. A crash after queue acceptance
+queue accepts the message. A failed publish is retried. A crash after queue acceptance
 but before the database update can publish the same scheduled probe twice; this
 is expected. Workers read the immutable URL from the result row.
 
 Before it probes a URL, a worker begins a transaction and selects the result row
-by its full primary key with `FOR UPDATE NOWAIT`. If another transaction holds
-the row lock, it acknowledges the duplicate delivery without changing state.
-With the lock held, the worker also acknowledges a terminal result, a message
-whose `scheduled_probe_at` no longer matches `next_probe_at`, or a retry that is
-not yet due. Otherwise, it keeps the transaction and row lock open while it
-probes the URL, writes the outcome, and commits.
+by its primary key with `FOR UPDATE NOWAIT`. If another transaction holds
+the row lock, the worker leaves the message unacknowledged and changes nothing;
+the queue redelivers it after its redelivery delay, and the redelivered message
+finds a terminal row, acquires the lock, or repeats this no-op while the earlier
+probe is still running. The queue redelivers an unacknowledged message until it
+is acknowledged; it does not dead-letter. With the lock held, the worker
+acknowledges a terminal result or a message whose `scheduled_probe_at` no longer
+matches `next_probe_at`. If the message matches `next_probe_at` but the retry is
+not yet due, the worker sets `published_probe_at` to null, commits, and then
+acknowledges, so the dispatcher republishes the probe when it is due. Otherwise,
+it keeps the transaction and row lock open while it probes the URL, writes the
+outcome, and commits.
 
 A worker acknowledges its queue delivery only after it commits the outcome.
 If the process or database connection fails first, PostgreSQL rolls back the
@@ -74,11 +82,13 @@ a 12-second timeout for each request. If the final HEAD response is `405` or
 repeat the fallback within that attempt. The HEAD request and its optional GET
 are one probe attempt. Each later scheduled attempt starts with HEAD again.
 
-The worker classifies the final response after the optional fallback. A
-response from `200` through `399` is `valid`. Any `408`, `429`, or `5xx`
+The worker classifies the final response after the optional fallback. A final
+response from `200` through `299` is `valid`. Any `408`, `429`, or `5xx`
 response is retryable. DNS failures, connection failures, and timeouts are also
-retryable. All other `4xx` responses, invalid TLS certificates, redirect loops,
-and more than eight redirects are `broken`. Thus, a fallback GET response of
+retryable. All other `4xx` responses, any final `3xx` response, invalid TLS
+certificates, redirect loops, more than eight redirects, and any egress-client
+rejection of a blocked address or URL credentials are `broken`; an egress
+rejection stores the failure class `blocked_by_policy`. Thus, a fallback GET response of
 `405` is `broken`, while a fallback GET response of `501` is retryable.
 
 After the first retryable outcome commits, `next_probe_at` is two minutes after
@@ -102,6 +112,12 @@ the run row. It changes the run to `passed` when all results are `valid`, or to
 `unreachable`. A manifest with no external links is created directly as
 `passed`. `passed` and `failed` are terminal.
 
+The builder polls `GET /runs/{run_id}`. The response carries the run state and,
+once the run is terminal, every `broken` or `unreachable` result with its
+canonical URL, outcome, and the source page and line of each manifest entry
+grouped under it. A `failed` run does not block release publication; the
+builder attaches the report to the release.
+
 Metrics count results by state and outcome and report the age of the oldest
 `pending` or due `retry_wait` result. Logs for dispatch, probe, and completion
 use `run_id` and the result key.
@@ -109,15 +125,17 @@ use `run_id` and the result key.
 ## Verification
 
 Integration tests deliver the same result key concurrently to two workers and
-verify that only one probe is active, one terminal row exists, and the duplicate
-delivery is acknowledged. A crash test closes the first worker's transaction
+verify that only one probe is active, one terminal row exists, and the losing
+delivery is redelivered and then acknowledged against the terminal row. A crash test closes the first worker's transaction
 after its probe but before its result commit; PostgreSQL must roll back and
 release the row lock, and redelivery must repeat the safe probe and complete the
 same result row.
 
-Other tests cover manifest digest rejection, idempotent run creation, URL
+Other tests cover manifest rejection with `400`, idempotent run creation with
+`201` then `200`, the run report with grouped source locations, URL
 canonicalisation and source-location grouping, a failed queue publication,
-each permanent and retryable classification, the HEAD-to-GET fallback and its
+each permanent and retryable classification including an egress-policy
+rejection, the HEAD-to-GET fallback and its
 `405` and `501` outcomes, both retry delays, the third-attempt `unreachable`
 transition, empty manifests, and concurrent completion of the last two results.
 They verify that terminal run and result states cannot be changed.

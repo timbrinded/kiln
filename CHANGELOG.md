@@ -244,7 +244,7 @@ Source:
 ### Added
 
 - Added Specsavers for concise technical-specification review and authoring.
-- Added 17 specification-quality directives, focused references, a read-only
+- Added ten specification-quality directives, two focused references, a read-only
   reviewer agent, and positive and negative behavioral evals.
 
 ### Changed

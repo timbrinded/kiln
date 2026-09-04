@@ -156,7 +156,7 @@ class HarnessTest(unittest.TestCase):
                 / "specsaver"
                 / "evals"
                 / "evals.json",
-                18,
+                8,
             ),
         }
 
