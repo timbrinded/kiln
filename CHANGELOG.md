@@ -236,6 +236,34 @@ Source:
 [`a66fff2`](https://github.com/timbrinded/kiln/commit/a66fff2d9219d2c1d6712c552345e5fddf7647f1).
 <!-- /release:ui-refactor-v0.1.0 -->
 
+## unslop v0.4.0
+
+<!-- release:unslop-v0.4.0 -->
+**Release date:** 2026-09-04
+
+### Added
+
+- Added Specsavers for concise technical-specification review and authoring.
+- Added 17 specification-quality directives, focused references, a read-only
+  reviewer agent, and positive and negative behavioral evals.
+
+### Changed
+
+- Renamed the internal `unslop` code-cleanup skill and reviewer to Codesavers.
+- Repositioned Unslop as one post-generation engineering-quality plugin with
+  sibling Codesavers and Specsavers skills.
+
+### Compatibility
+
+- Legacy natural-language requests such as `Unslop this branch` continue to
+  select the same code-cleanup doctrine and report-only default.
+- Explicit skill identifiers are now `/unslop:codesaver` in Claude Code and
+  `$unslop:codesaver` in Codex.
+- Existing code-quality directives, gotchas, fixtures, and Directive #15
+  behavior are preserved.
+
+<!-- /release:unslop-v0.4.0 -->
+
 ## unslop v0.3.1
 
 <!-- release:unslop-v0.3.1 -->

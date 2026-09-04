@@ -1,10 +1,10 @@
 {
-  "skill_name": "unslop",
+  "skill_name": "codesaver",
   "evals": [
     {
       "id": 1,
-      "prompt": "/unslop Review the attached app.js for unnecessary complexity.",
-      "expected_output": "A report-only unslop review that does not modify the working tree.",
+      "prompt": "Use Codesavers to review the attached app.js for unnecessary complexity.",
+      "expected_output": "A report-only Codesavers review that does not modify the working tree.",
       "files": [
         "evals/files/simple-branch/app.js"
       ],
@@ -16,8 +16,8 @@
     },
     {
       "id": 2,
-      "prompt": "/unslop --apply Simplify the attached app.js and validate the result.",
-      "expected_output": "An unslop report followed by explicitly authorized fixes and project validation.",
+      "prompt": "Use Codesavers with --apply to simplify the attached app.js and validate the result.",
+      "expected_output": "A Codesavers report followed by explicitly authorized fixes and project validation.",
       "files": [
         "evals/files/simple-branch/app.js"
       ],
@@ -29,7 +29,7 @@
     },
     {
       "id": 3,
-      "prompt": "Run the attached setup-layered-diff.sh with sh and an unused directory inside the evaluation workspace, enter the repository it creates, then run /unslop --check to review every current change relative to main, including new files.",
+      "prompt": "Run the attached setup-layered-diff.sh with sh and an unused directory inside the evaluation workspace, enter the repository it creates, then use Codesavers with --check to review every current change relative to main, including new files.",
       "expected_output": "One report covering committed, staged, unstaged, deleted, and untracked reviewable files without duplicate findings.",
       "files": [
         "evals/files/layered-diff/setup-layered-diff.sh"
@@ -89,26 +89,55 @@
     {
       "id": 7,
       "prompt": "Review this pull request for correctness, security vulnerabilities, performance regressions, and architecture problems.",
-      "expected_output": "The generic review is not replaced by an unslop-only review.",
+      "expected_output": "The generic review is not replaced by a Codesavers-only review.",
       "files": [],
       "expectations": [
-        "The response does not present unslop as a complete answer to the request.",
-        "Any unslop pass is clearly scoped as optional or supplementary."
+        "The response does not present Codesavers as a complete answer to the request.",
+        "Any Codesavers pass is clearly scoped as optional or supplementary."
       ]
     },
     {
       "id": 8,
       "prompt": "Before I open this PR, run a dedicated simplification pass on the attached files for bloated helpers, defensive checks, and tests that only verify dependencies.",
-      "expected_output": "A report-only unslop review using all relevant directives.",
+      "expected_output": "A report-only Codesavers review using all relevant directives.",
       "files": [
         "evals/files/simple-branch/app.js",
         "evals/files/dependency-only/package.json",
         "evals/files/dependency-only/slugify.test.js"
       ],
       "expectations": [
-        "The unslop skill is used.",
+        "The Codesavers skill is used.",
         "The report follows the canonical Summary, file findings, Recommendations order.",
-        "No edits are made without separate authorization."
+        "No edits are made without separate authorization.",
+        "The response does not apply specification-quality directives."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Unslop this branch.",
+      "expected_output": "Legacy Unslop activation invokes the Codesavers code-cleanup review in report-only mode.",
+      "files": [
+        "evals/files/simple-branch/app.js"
+      ],
+      "expectations": [
+        "The Codesavers skill reviews the changed code for accidental complexity.",
+        "The response does not require the user to rename the request to Codesavers.",
+        "No edits are made without explicit authorization.",
+        "The response does not apply specification-quality directives."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Specsavers this technical design before I send it for review.",
+      "expected_output": "A report-only Specsavers review that groups the exclusion-heavy component definition under specification Directive 2 rather than applying code-quality directives.",
+      "files": [
+        "evals/files/spec-routing/thumbnail-key-builder.md"
+      ],
+      "expectations": [
+        "Specsavers identifies the negative-definition prose and proposes a positive Thumbnail Key Builder responsibility.",
+        "Codesavers is not presented as the specification reviewer.",
+        "No code-quality directive is reported against specification prose.",
+        "The response preserves Specsavers report-only semantics."
       ]
     }
   ]

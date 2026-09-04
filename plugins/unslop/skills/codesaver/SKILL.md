@@ -1,18 +1,19 @@
 ---
-name: unslop
+name: codesaver
 description: >-
-  This skill should be used when the user asks to "clean up", "remove slop",
-  "simplify", "unslop", "reduce complexity", "tighten up", "cleanup before PR",
-  "review for unnecessary complexity", "too verbose", "over-engineered",
-  "remove unnecessary code", "AI generated mess", "simplify this branch",
-  "reduce abstractions", "test bloat", "bloated tests", "test case bloat", or
-  tests that only verify library or dependency behavior. Also use it for a
-  dedicated simplification pass after AI generation. Do not use it as a
-  substitute for correctness, security, performance, or architecture review.
-  Report findings by default and apply fixes only when explicitly requested.
+  This skill should be used when the user asks for "Codesavers", "use
+  Codesavers", "clean up", "remove slop", "simplify", "unslop", "reduce
+  complexity", "tighten up", "cleanup before PR", "review for unnecessary
+  complexity", "too verbose", "over-engineered", "remove unnecessary code",
+  "AI generated mess", "simplify this branch", "reduce abstractions", "test
+  bloat", "bloated tests", "test case bloat", or tests that only verify library
+  or dependency behavior. Also use it for a dedicated simplification pass after
+  AI generation. Do not use it as a substitute for correctness, security,
+  performance, architecture, or technical-specification review. Report findings
+  by default and apply fixes only when explicitly requested.
 ---
 
-# Unslop — Post-Generation Code Quality Cleanup
+# Codesavers — Post-Generation Code Quality Cleanup
 
 Reviews changed code against 15 simplicity directives and proposes concrete fixes. Targets the specific failure mode of AI-generated code: correct but bloated. Reports findings by default and applies fixes only when explicitly requested.
 
@@ -78,7 +79,7 @@ For detailed guidance, examples, and before/after code for each directive, load 
 Every review produces findings in this structure:
 
 ```
-## Unslop Review
+## Codesavers Review
 
 ### Summary
 - Files reviewed: N
@@ -123,7 +124,7 @@ Every review produces findings in this structure:
 ### Large diffs (>10 files)
 
 1. Build the current-state diff
-2. Spawn `unslop-reviewer` per file or batch of related files; keep all tests for the same behavior with their tested production code, if any, and dependency manifest
+2. Spawn `codesaver-reviewer` per file or batch of related files; keep all tests for the same behavior with their tested production code, if any, and dependency manifest
 3. Collect reports from subagents
 4. Deduplicate and merge findings
 5. Present one consolidated report
@@ -138,6 +139,7 @@ Every review produces findings in this structure:
 - **Performance** — Not profiling or benchmarking. See the `performance-optimization` skill.
 - **Security** — Not scanning for vulnerabilities. Separate concern entirely.
 - **Architecture** — Not redesigning the module structure. Just cleaning up within it.
+- **Technical specifications** — Not reviewing design documents or requirements. Use Specsavers for specification work.
 
 This skill has one job: reduce accidental complexity in recently changed code.
 

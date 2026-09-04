@@ -1,0 +1,259 @@
+{
+  "skill_name": "specsaver",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review the attached technical specification.",
+      "expected_output": "A report-only Specsavers review that identifies only the vague retry rule and unresolved retry budget without changing the document.",
+      "files": [
+        "evals/files/sitemap-refresh/sitemap-refresh.md"
+      ],
+      "expectations": [
+        "The response reports the vague retry sentence with evidence, consequence, and a concrete repair.",
+        "The response identifies the retry budget as a required human decision because the fixture does not determine it.",
+        "The target file is not modified and the response does not claim that fixes were applied.",
+        "The response does not invent a retry count, require an ADR, demand unrelated template sections, or report gaps in the specified source snapshot, atomic local replacement, error classification, cleanup, or verification behavior."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "--apply Tighten the attached specification and preserve any decision that the source material does not determine.",
+      "expected_output": "A Specsavers report followed by a minimal edit that makes the inferable retry behavior precise and leaves the retry budget as an explicit unresolved decision.",
+      "files": [
+        "evals/files/sitemap-refresh/sitemap-refresh.md"
+      ],
+      "expectations": [
+        "The response reports findings before editing and then modifies the target because apply mode is explicit.",
+        "The vague retry sentence is rewritten using the fixture's established retryable and nonretryable local error classes, staging cleanup, and fixed delay.",
+        "The unresolved retry budget remains an explicit required decision or open question.",
+        "The edit does not invent a numeric budget, widen the design, or implement the sitemap refresher."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Specsavers this service design. Make the component responsibility easy to understand without losing material constraints.",
+      "expected_output": "One grouped Directive 2 finding with a concise positive replacement that preserves the stable-key constraint against mutable metadata.",
+      "files": [
+        "evals/files/negative-definition/thumbnail-key-builder.md"
+      ],
+      "expectations": [
+        "The response groups the six exclusions under one Directive 2 root cause.",
+        "The proposed repair positively states that the Thumbnail Key Builder returns a stable key for the immutable thumbnail identifier and format while retaining the prohibition against including mutable filenames or captions.",
+        "The response removes or consolidates irrelevant exclusions rather than producing six separate findings.",
+        "The response does not prescribe a key encoding, add new behavior, or remove the stable-key verification."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this concise Archive Writer specification for ambiguity and documentation slop.",
+      "expected_output": "No Directive 2 finding against the prohibition because it protects the integrity of a committed export manifest.",
+      "files": [
+        "evals/files/legitimate-prohibition/archive-writer.md"
+      ],
+      "expectations": [
+        "The response recognizes the prohibition against adding, removing, renaming, or reordering entries as a material integrity invariant.",
+        "The response leaves the concise positive model, BCP 14 declaration, and prohibition intact.",
+        "The response does not classify the MUST NOT sentence as negative-definition slop.",
+        "The response does not infer missing lifecycle behavior from this explicitly bounded integrity-requirements excerpt or request non-goals, an ADR, or generic operational sections."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Tighten this small TypeScript library design without replacing one kind of boilerplate with another.",
+      "expected_output": "One or two grouped Directive 3 and 14 findings that delete fake non-goals and empty N/A sections while preserving the useful tuple-based cache identity.",
+      "files": [
+        "evals/files/boilerplate/cache-key.md"
+      ],
+      "expectations": [
+        "The response groups the ceremonial Non-Goals and N/A sections into at most two material findings.",
+        "The concrete repair deletes the empty or irrelevant material while retaining the observable `(parserMode, sourceHash)` identity and verification behavior.",
+        "The response does not demand replacement Security, Migration, Observability, Rollback, Internationalisation, or Risks prose.",
+        "The response does not prescribe a helper or string encoding, invent a security concern, or criticize the document merely because the useful design is short."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Review this CSV export design. Check whether its stated non-goal is useful or ceremonial.",
+      "expected_output": "A restrained review that preserves the JSON-export non-goal because replacement is a plausible interpretation of the feature.",
+      "files": [
+        "evals/files/csv-export-non-goal/csv-export.md"
+      ],
+      "expectations": [
+        "The response explains or demonstrates that retaining JSON export closes a plausible scope ambiguity.",
+        "The non-goal is preserved as material information.",
+        "The response does not report the non-goal as Directive 3 or 14 ceremony and does not misclassify the two managed decision-ready questions as hidden implementation claims.",
+        "The response does not invent a retention rule or require a separate ADR."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Does this thumbnail-endpoint decision warrant an ADR? Review the attached record.",
+      "expected_output": "A Directive 13 finding that treats the document as routine feature work and recommends folding useful detail into the feature specification or deleting the ADR.",
+      "files": [
+        "evals/files/gratuitous-adr/adr-add-thumbnail-endpoint.md"
+      ],
+      "expectations": [
+        "The response applies the ADR threshold and identifies that there is no credible architectural fork.",
+        "The repair folds the useful route wiring into ordinary feature documentation or deletes the gratuitous ADR while preserving ThumbnailService ownership and request validation.",
+        "The response does not manufacture alternatives to justify keeping an ADR.",
+        "The response does not treat choosing to implement the requested endpoint as an architectural decision or claim that the route changes a system boundary."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Review this documentation-search design and decide whether its architectural choice needs a separate ADR.",
+      "expected_output": "A review that recognizes build-time static search versus a server-side search service as an architectural fork but does not require duplicate ADR text because the canonical feature spec already preserves the decision and consequences.",
+      "files": [
+        "evals/files/static-search-feature/search-delivery.md"
+      ],
+      "expectations": [
+        "The response recognizes a build-time static bundle versus a server-side search service as a real architectural fork.",
+        "The response accepts the canonical feature specification as the durable record of the selected static-bundle approach, decision forces, and consequences.",
+        "The response recognizes the release manifest, versioned bundle, browser reader, compatibility rule, and build verification as one coherent design rather than demanding unrelated runtime-service detail.",
+        "The response does not report a missing ADR merely because the decision is important.",
+        "Any mention of a separate ADR is conditional on independent discoverability or longevity adding value and does not duplicate or invent rationale."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Review this transient delivery plan and repository convention. Does the media-storage ownership choice need an ADR?",
+      "expected_output": "A reasoned ADR recommendation that explicitly satisfies all four gates for the durable cross-service data-ownership decision.",
+      "files": [
+        "evals/files/media-storage-plan/project-plan.md",
+        "evals/files/media-storage-plan/repository-conventions.md"
+      ],
+      "expectations": [
+        "The response explicitly establishes the real fork, architectural significance, durable rationale, and added value of a separate record.",
+        "The recommendation connects the repository's durable ADR convention to the transient nature of the delivery plan.",
+        "The response does not create or edit an ADR in report-only mode.",
+        "The response does not invent a third ownership model, unstated failure scenario, or decision rationale absent from the fixtures."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Check whether the alternatives in this thumbnail-generation proposal help an engineer understand the decision.",
+      "expected_output": "A Directive 12 finding that deletes the three straw alternatives from a service-placement note and requests only live alternatives if any exist.",
+      "files": [
+        "evals/files/fake-alternatives/thumbnail-generation.md"
+      ],
+      "expectations": [
+        "The response identifies do nothing, rewrite everything, and use an unspecified third party as process theatre under the stated constraints.",
+        "The repair deletes the fake alternatives and keeps the direct rationale for placing the established thumbnail contract in the media service.",
+        "The response does not require an Alternatives heading when no live alternative is established.",
+        "The response does not promote a straw option into an ADR-worthy fork or report absent endpoint semantics that this placement note delegates to the authoritative feature specification."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Review this implementation-ready documentation link-check specification for material omissions. Do not choose missing values or mechanisms for me.",
+      "expected_output": "Grouped blocker findings under Directives 5, 8, and 10 for undefined run and result identity, mutable or unstated input semantics, duplicate delivery, concurrent work, retry exhaustion, and terminal outcomes.",
+      "files": [
+        "evals/files/link-check-incomplete/link-check-run.md"
+      ],
+      "expectations": [
+        "The response reports grouped blockers covering run and result identity, immutable input, lifecycle and retry exhaustion, and concurrent or duplicate queue delivery semantics.",
+        "Each finding includes exact evidence or omission, consequence, `Fix: Resolve`, and a `Required decision` because no answer is derivable from the fixture.",
+        "The response does not invent a retry count, result key, row-lock or claiming strategy, state name, or deduplication mechanism.",
+        "The response does not emit a checklist of unrelated security, migration, or observability concerns."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Specsavers this asynchronous documentation link-check design before implementation.",
+      "expected_output": "A one- or two-sentence no-material-findings result for a complete, compact asynchronous contract.",
+      "files": [
+        "evals/files/link-check-complete/link-check-run.md"
+      ],
+      "expectations": [
+        "The response finds no material ambiguity in run and per-URL result identity, immutable input, source ownership, at-least-once delivery, duplicate concurrency, retry classification and cadence, terminal states, crash recovery, or verification.",
+        "The response remains concise when there are no material findings.",
+        "The response does not demand generic sections, a different queue, a different row-lock mechanism, or more diagrams.",
+        "The response does not require an ADR merely because the design coordinates workers, a queue, and a result database."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Review the service quality requirements in this thumbnail-rendering design.",
+      "expected_output": "One grouped Directive 7, 9, and 11 finding that explains why the quality claims are not observable and calls for quantified acceptance conditions or deletion when a quality is not material.",
+      "files": [
+        "evals/files/vague-quality/thumbnail-api.md"
+      ],
+      "expectations": [
+        "The response groups the vague fast, scalable, highly available, and gracefully wording by its shared unverifiability.",
+        "The repair asks the author to quantify only material qualities under stated operating conditions or remove unsupported claims.",
+        "The response does not invent latency, availability, capacity, or recovery targets.",
+        "The response does not turn the review into generic grammar or Markdown linting."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Review this exploratory archive-delivery note at its stated maturity.",
+      "expected_output": "A restrained no-finding result that accepts two clearly managed open questions, including the one explicitly marked as blocking implementation.",
+      "files": [
+        "evals/files/exploratory-archive-delivery/archive-delivery.md"
+      ],
+      "expectations": [
+        "The response respects the document's exploratory status and distinguishes the two open questions from settled constraints.",
+        "The response recognizes that the implementation-blocking effect is stated clearly and that the candidate model preserves a consistent documentation snapshot.",
+        "The response does not flag the document merely because real questions remain open.",
+        "The response does not force answers, owner names, dates, a fixed template, or implementation-ready status."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Review this approved implementation specification and identify anything that still prevents implementation.",
+      "expected_output": "Directive 17 blockers only for the naked retry-budget and retention-period TBD markers, with both choices left for the author to resolve.",
+      "files": [
+        "evals/files/approved-tbd/preview-cleanup-worker.md"
+      ],
+      "expectations": [
+        "The response treats both TBD values as blockers because the document claims to be implementation-ready.",
+        "The findings explain how the missing retry and retention decisions can cause materially different compliant implementations.",
+        "The response does not fabricate numeric values or silently downgrade the document's maturity.",
+        "The response does not report additional gaps in cutoff semantics, batching, advisory-lock crash release, overlap prevention, failure preservation, enablement, irreversibility, or verification and does not edit the file in default review mode."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Use Specsavers to draft a technical specification from the attached feature brief. Keep it proportionate to this local cache-key change.",
+      "expected_output": "A short authored specification with problem, positive design, relevant cache contract, and verification, without inactive template sections.",
+      "files": [
+        "evals/files/author-cache/feature-brief.md"
+      ],
+      "expectations": [
+        "The authored specification states the stale-cache problem, the new key construction, canonical colon-free BCP 47 locale constraint, compatibility boundary, and direct verification cases including a delimiter-boundary case.",
+        "The document uses a small structure appropriate to a local TypeScript library change.",
+        "The document does not add empty Non-Goals, Risks, Security, Observability, Migration, Rollback, or ADR sections.",
+        "The response does not invent network services, persistence migration, deployment phases, or product requirements absent from the brief."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Run the attached setup-spec-diff.sh with sh and an unused directory inside the evaluation workspace, enter the repository it creates, then review my current specification changes relative to main. Use the whole document as context, but report only issues introduced by or materially related to this proposal.",
+      "expected_output": "A whole-document diff review that reports the changed `released` state contradicting the unchanged authoritative state table and ignores unrelated legacy verbosity.",
+      "files": [
+        "evals/files/whole-document-diff/setup-spec-diff.sh"
+      ],
+      "expectations": [
+        "The response reads the complete changed specification and uses the unchanged state table as evidence.",
+        "The response reports the new released state as a contradiction related to the changed proposal.",
+        "The response does not report the unchanged verbose Historical context prose as legacy cleanup.",
+        "The response remains report-only and does not rewrite the document."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "Review this thumbnail-rendering implementation for correctness, security vulnerabilities, performance regressions, and architecture problems.",
+      "expected_output": "A general code review response in which Specsavers is not presented as a substitute for code correctness, security, performance, or architecture analysis.",
+      "files": [
+        "evals/files/scope-discipline/thumbnail-renderer.ts"
+      ],
+      "expectations": [
+        "The response routes the request to a general code review or the relevant specialist review process.",
+        "Any mention of Specsavers is limited to an optional specification review when separately requested.",
+        "The response does not use the Specsavers finding contract as the complete answer to the code review.",
+        "The response does not analyze the TypeScript file as if it were a technical specification."
+      ]
+    }
+  ]
+}

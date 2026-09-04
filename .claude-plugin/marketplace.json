@@ -41,12 +41,12 @@
     {
       "name": "unslop",
       "source": "./plugins/unslop",
-      "description": "Post-generation code quality cleanup. Reviews changed code for AI-generated verbosity, unnecessary state, defensive coding, redundant dependency tests, and complexity. Reports concrete simplifications and applies them only when requested.",
-      "version": "0.3.1",
+      "description": "Post-generation engineering quality. Codesavers removes avoidable complexity from changed code; Specsavers authors and reviews technical software specifications for precision, information density, and decision completeness.",
+      "version": "0.4.0",
       "author": { "name": "timbo" },
       "category": "code-quality",
       "license": "MIT",
-      "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation", "test-bloat"]
+      "keywords": ["code-quality", "cleanup", "review", "simplification", "refactoring", "ai-slop", "post-generation", "test-bloat", "technical-spec", "specification", "architecture", "design-doc", "requirements", "adr", "documentation"]
     },
     {
       "name": "teach-me",

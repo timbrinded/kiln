@@ -15,7 +15,11 @@ from typing import Any
 
 TOOL_ROOT = Path(__file__).resolve().parent
 SUITE_PATH = TOOL_ROOT / "suite.json"
-SKILL_PATH = Path("plugins/unslop/skills/unslop")
+# The benchmark is a historical Directive 16 experiment. Keep extracting the
+# pre-rename skill from its path at the pinned baseline instead of turning the
+# migration into a third benchmark variant.
+HISTORICAL_SKILL_PATH = Path("plugins/unslop/skills/unslop")
+LIVE_CODESAVER_PATH = Path("plugins/unslop/skills/codesaver")
 
 
 @dataclass(frozen=True)
@@ -178,7 +182,7 @@ def hash_tree(root: Path) -> str:
 
 def extract_skill(repo_root: Path, baseline_ref: str, destination: Path) -> None:
     archive = subprocess.run(
-        ["git", "archive", baseline_ref, SKILL_PATH.as_posix()],
+        ["git", "archive", baseline_ref, HISTORICAL_SKILL_PATH.as_posix()],
         cwd=repo_root,
         check=True,
         capture_output=True,
@@ -197,7 +201,7 @@ def prepare_skill_variants(
     extracted = skills_root / "extracted"
     extracted.mkdir(parents=True)
     extract_skill(repo_root, suite["baseline_ref"], extracted)
-    baseline_source = extracted / SKILL_PATH
+    baseline_source = extracted / HISTORICAL_SKILL_PATH
 
     current = skills_root / "current"
     candidate = skills_root / "candidate"
