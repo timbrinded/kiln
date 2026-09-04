@@ -117,7 +117,7 @@ only concerns activated by its mechanisms:
 | Design trigger | Inspect silently |
 |---|---|
 | Network or service call | Timeout, retry class and identity, partial failure, authentication, observability |
-| Queue or asynchronous worker | Delivery, ordering, deduplication, leases, concurrency, terminal states, cancellation |
+| Queue or asynchronous worker | Job-to-input identity, immutable source revision, delivery, ordering, deduplication, leases, concurrency, terminal states, cancellation |
 | Persisted schema or data ownership change | Source of truth, migration, backfill, compatibility, retention, reversal limits |
 | Public API or protocol | Schema, errors, authentication, authorization, idempotency, pagination, versioning, interoperability |
 | Key, secret, signature, or trust-boundary change | Authority, integrity, custody, rotation, recovery, replay, audit |
@@ -125,6 +125,10 @@ only concerns activated by its mechanisms:
 | User or regulated data | Collection purpose, access, retention, deletion, disclosure |
 | Availability- or latency-critical path | Load model, threshold, capacity, degradation, recovery |
 | Deployment behavior change | Rollout, version skew, gating, abort criteria, reversal, monitoring |
+
+For queued work, distinguish the durable job, each delivery attempt, and the
+exact immutable input revision. A job identifier does not establish input
+identity when the referenced source can change between attempts.
 
 Do not output checked-but-inapplicable rows. Silence is correct for irrelevant
 concerns.
