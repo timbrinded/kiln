@@ -58,30 +58,74 @@ to name targets. Do not implement the system the specification describes.
 
 ## Core Loop
 
-1. Read the whole specification and the local context it depends on: linked
-   schemas, decisions, conventions, and code only where they establish meaning
-   or reveal a contradiction.
-2. Understand the system the author intends. Form a short private model of its
-   actors, owned state, boundaries, and lifecycle.
-3. Identify what the document primarily is: a design specification, a
+1. Establish the requested mode and scope. Read the whole specification and
+   linked schemas, decisions, conventions, and code where they establish
+   meaning or reveal a contradiction. Preserve the original before rewriting;
+   retain the brief and supporting sources when authoring.
+2. Form a short private model of the actors, owned state, boundaries, and
+   lifecycle. Identify what the document primarily is: a design specification, a
    requirements document, an API or protocol contract, a migration or rollout
    plan, an ADR, or a composite of these. Use the matching artifact lens in
-   `references/directives.md` to see which of that kind's questions the design
-   activates and whether it answers them. Lenses are questions to consider, not
-   classifications to report, templates, checklists, or mandatory headings.
-4. Apply the directives below using engineering and editorial judgement. They
-   overlap and feed one holistic judgement; they are not gates to pass.
-5. Remove prose that conveys no material information.
-6. Rewrite necessary prose that is harder to understand than it needs to be.
-7. Identify missing material decisions without inventing them.
-8. Re-read the result as one coherent document.
+   [directives](references/directives.md). Lenses are questions to consider,
+   not classifications to report, templates, or mandatory headings.
+3. Review from both technical and readability perspectives. For substantial
+   work, follow the delegation workflow below. For authoring, first produce a
+   draft from the supplied sources and review that draft against those sources.
+4. Adjudicate findings against the original sources. In review mode, report
+   findings without editing. In rewrite or author mode, the parent alone
+   produces one coherent document: remove non-information, clarify necessary
+   prose, and leave unresolved material decisions as questions.
+5. Verify the result against the original sources and read it as a whole.
+   After substantial edits, return the candidate to both specialists for
+   verification. Correct concrete defects and recheck the affected passages;
+   stop requesting stylistic alternatives once the checks pass.
+
+## Independent Review
+
+Delegate automatically when the work involves interacting sections, linked
+documents, substantial lifecycle or contract reasoning, or document-wide
+restructuring. For small, self-contained passages, the parent applies both
+perspectives directly. Honour explicit requests to use or avoid delegation.
+
+Load [the review workflow](references/review-workflow.md) when delegating or
+preparing a substantial rewrite or draft. Use two read-only specialists:
+
+- **Technical:** load [technical reviewer](references/technical-reviewer.md)
+  to check material behaviour, contracts, contradictions, and missing decisions.
+- **Structure and readability:** load
+  [readability reviewer](references/readability-reviewer.md) to check how the
+  reader learns the design, including organization and sentence connections.
+
+Give both the same unchanged source, relevant authority, mode, and scope. They
+read the source independently before seeing each other's findings. Use native
+subagent tools and pass the packaged role instructions or their resolved paths;
+do not assume that a named agent is installed. Give reviewers focused context
+without the parent's proposed diagnoses or outline. Inherit the parent's model and
+reasoning settings. Reviewers do not edit files, delegate further, or address
+the user separately. A delegated reviewer follows its role reference rather
+than running this parent workflow again.
+
+The parent waits for both reviews, resolves conflicts through source evidence,
+and owns all edits. Technical completeness does not veto an evidenced
+readability finding. Reviewer agreement does not establish an unstated fact.
+The original remains authoritative; findings never substitute for it.
+
+For a large document set, keep semantically dependent documents together and
+review coherent groups with the same two perspectives within available
+concurrency. The parent reconciles findings across groups before editing.
+
+When delegation is unavailable or a pass cannot complete, finish the available
+work and apply the missing perspective in the parent. Disclose the lack of
+independent review or verification; never describe a sequential parent pass as
+a successful parallel review.
 
 ## Directives
 
 1. **Write for the human reader.** Make the design easy to scan, understand,
    and retain. Order material the way the system executes or the way a reader
    must learn it. Rewrite necessary information when its current expression is
-   difficult.
+   difficult. Make sentence connections and important claims easy to follow;
+   use the readability reference when diagnosing a difficult passage.
 2. **Preserve semantics, not prose.** Do not delete material constraints, but
    do not treat their wording, order, or paragraph structure as sacred.
 3. **Describe the system positively.** Establish what components own and do
@@ -112,6 +156,8 @@ to name targets. Do not implement the system the specification describes.
    preserve.
 9. **Do not invent.** When the source does not determine a material answer,
    state the question plainly. A plausible answer is not an established one.
+   Polishing must not introduce causation, guarantees, or changes to condition
+   scope, obligation strength, or ordering.
 10. **Check the finished document as a whole.** Reconcile terminology, values,
     examples, diagrams, and verification with the design.
 
@@ -166,15 +212,16 @@ sentences.
 
 After a rewrite or authored document, add a short note listing what changed in
 substance, any implied reading you made explicit, and which decisions remain
-unresolved.
-
-For a large document set, delegate coherent groups to `specsaver-reviewer`
-agents, keeping documents together when their meanings depend on each other,
-then merge and deduplicate their findings.
+unresolved. Mention incomplete independent checks when applicable. Before
+replacing a target file, compare it with the original snapshot and reconcile
+intervening user edits; never overwrite them with a stale candidate.
 
 ## Reference Files
 
 | File | Load when |
 |---|---|
-| `references/directives.md` | Core loop step 3 reads the artifact lens for the document's type; load the rest when the reasoning or a worked example for a directive would sharpen a judgement |
+| `references/directives.md` | Core loop step 2 reads the artifact lens for the document's type; load the rest when the reasoning or a worked example for a directive would sharpen a judgement |
+| `references/review-workflow.md` | Delegating reviews or preparing a substantial rewrite or draft |
+| `references/technical-reviewer.md` | Performing the technical review or verifying preservation of the contract |
+| `references/readability-reviewer.md` | Performing the readability review, diagnosing difficult prose, or verifying a coherent rewrite |
 | `references/gotchas-and-examples.md` | A judgement is uncertain; most often when deleting detail, flagging a prohibition, recommending an ADR, or quantifying a quality |

@@ -8,6 +8,30 @@ is that each fact survives, not whether to rewrite at all.
 
 ## Gotchas
 
+### Technical completeness does not settle readability
+
+A specification can answer every material question and still force readers to
+assemble the explanation from scattered sections. The technical reviewer can
+correctly find no contract gap while the readability reviewer correctly
+recommends a new outline. Adjudicate each against its evidence; do not let one
+verdict cancel the other. Conversely, changing headings alone does not prove
+that a rewrite improved understanding.
+
+### Repeating a term can help the reader
+
+"The worker creates a delivery. This delivery retains its original payload
+across attempts" uses repetition to connect a new rule to its subject. Do not
+delete that connection merely because "delivery" appears twice. Remove repeated
+assertions that add nothing; preserve precise terms that maintain continuity.
+
+### A fluent connection can invent a decision
+
+"The client retries. The server stores request identifiers" does not establish
+deduplication. Rewriting it as "The server stores request identifiers so client
+retries cannot create duplicates" introduces a guarantee. Preserve the two
+facts and ask about duplicate handling when it is material. Do not select a
+mechanism to make the explanation flow.
+
 ### Long is not automatically bad
 
 A state table with twelve rows can be dense because every row fixes behaviour.

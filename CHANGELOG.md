@@ -8,6 +8,19 @@ Historical GitHub releases were reconstructed from the first commit on
 that commit's date. GitHub does not permit changing a release's publication
 timestamp, so retroactive release notes state the original release date.
 
+## Unreleased — Unslop
+
+- Specsavers uses independent technical and readability reviewers for
+  substantial specifications, with one parent editor and verification against
+  the original sources. Small passages retain a single-agent workflow.
+- Added reader-expectation diagnostics for organization, sentence connections,
+  emphasis, and direct actions, with safeguards against inventing logical
+  relationships while rewriting.
+- Packaged shared specialist instructions inside the skill for native Codex
+  delegation and thin Claude Code adapters. Added Specsavers interface metadata
+  and evaluation cases for the workflow. Independent passes use additional
+  model work and tokens; unavailable checks are disclosed.
+
 ## Kiln v0.4.0
 
 <!-- release:v0.4.0 -->

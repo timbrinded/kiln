@@ -1,0 +1,6 @@
+interface:
+  display_name: "Specsavers"
+  short_description: "Review and rewrite clear technical specifications"
+  default_prompt: "Use $specsaver to review this technical specification for precise behaviour and clear explanation."
+policy:
+  allow_implicit_invocation: true

@@ -60,16 +60,47 @@ identifies missing material decisions without inventing answers, does not
 require a universal template, and recommends an ADR only for a genuine
 architectural fork.
 
+## Independent specification review
+
+For substantial specifications, Specsavers runs two read-only reviews against
+the same unchanged source. The technical reviewer checks contracts, decisions,
+and contradictions. The structure and readability reviewer checks how an
+engineer learns the design, including organization, sentence connections, and
+buried constraints. A technically complete document can still need a substantial
+readability rewrite.
+
+The parent checks both reports against the sources and owns all edits. Reviews
+remain report-only. Requested rewrites and authored drafts go back to both
+specialists for verification against the original documents or brief. Small,
+self-contained passages use both perspectives within the parent. Explicit
+requests to use or avoid delegation take precedence.
+
+This workflow uses more model work and tokens than one review. Codex uses its
+native subagent tools with role instructions packaged inside the skill; no
+personal agent setup is required. Claude Code has thin specialist adapters to
+the same references. If independent review or verification cannot run, the
+parent applies the missing perspective and reports that limitation.
+
+The readability guidance draws on George Gopen's reader-expectation approach
+in *The New Science of Scientific Writing*: clear topic continuity, context
+before new information, direct actions, and visible emphasis. These are
+diagnostics, not a house style or a requirement to comply with ASD-STE100.
+
 ## Structure
 
 ```text
 plugins/unslop/
 ├── agents/
 │   ├── codesaver-reviewer.md
-│   └── specsaver-reviewer.md
+│   ├── specsaver-technical-reviewer.md
+│   └── specsaver-readability-reviewer.md
 └── skills/
     ├── codesaver/
     └── specsaver/
+        ├── SKILL.md
+        ├── agents/openai.yaml
+        ├── references/
+        └── evals/
 ```
 
 ## Sources

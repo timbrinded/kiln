@@ -1,7 +1,7 @@
 # Specsavers Directives
 
 The reasoning and examples behind the ten directives in `SKILL.md`, followed by
-the artifact lenses that core loop step 3 uses. Use them to sharpen a judgement,
+the artifact lenses that core loop step 2 uses. Use them to sharpen a judgement,
 not to classify one. The examples are synthetic. An
 `After` passage states a decision only because the hypothetical author supplied
 it; when a real target does not establish that decision, write the question
@@ -23,6 +23,12 @@ described out of order. One paragraph that mixes trigger, action, failure, and
 telemetry. Verification written as a wall of prose. A fact the reader must
 already know before the sentence that introduces it. Circular explanation that
 restates a term instead of defining it.
+
+At sentence level, inspect the topic, action, backward connection, and main
+takeaway. A paragraph of individually clear sentences can still leave the
+reader to reconstruct their relationships. Use the
+[readability reviewer](readability-reviewer.md) for these diagnostics and their
+limits, including subject–verb proximity and useful repetition of key terms.
 
 **Before.**
 
@@ -382,6 +388,13 @@ selection. A missing state name is asked for, not coined. In a rewrite, the
 question goes into the document as a concise open question where the decision
 belongs.
 
+Logical relationships are also material information. Adding "therefore" to
+two adjacent statements asserts a causal or inferential connection; moving an
+"only if" condition can change which obligation it limits. A stronger verb can
+turn an observation into a guarantee. Make these changes only when the source
+establishes the relationship, scope, or strength. Fluency does not establish
+authority, even when both reviewers agree on a plausible interpretation.
+
 **Boundary.** Inference from the document itself is not invention. If a
 document declares its state table authoritative and one paragraph uses a stale
 state name, reconciling the paragraph to the table is derivation, not a guess.
@@ -493,6 +506,12 @@ directive 8 first.
 - What consequences follow, including the costs the team accepts?
 - What condition would reopen the decision?
 - Does the record link to the feature specification rather than copy it?
+
+When authoring from meeting notes, retain the durable decision, its rationale,
+accepted costs, and reopening conditions. Leave task assignments, due dates,
+administrative reminders, and conversational tangents in the notes unless the
+user requests them. A follow-up action is not automatically a design decision,
+an acceptance condition, or an ongoing operational obligation.
 
 ### Composite
 

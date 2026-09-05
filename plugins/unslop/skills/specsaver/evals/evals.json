@@ -166,6 +166,95 @@
         "The ADR contains no straw alternatives and no rationale absent from the notes.",
         "The ADR is concise and readable, with structure fit for a decision record rather than a template."
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "--apply Rewrite the attached route-manifest specification so that an engineer can follow the design and implement it. Preserve every decision.",
+      "expected_output": "A coherent rewrite of a complete contract with its input rules, encoding, publication, failure behavior, and results arranged in a useful conceptual and execution order.",
+      "files": [
+        "evals/files/organization/route-manifest.md"
+      ],
+      "expectations": [
+        "The rewrite preserves the publishManifest interface, immutable two-field input entries, absolute destination with an existing parent, same-filesystem and serialized-caller preconditions, both validation alphabets, the root-path and empty-input cases, duplicate-path rejection, validation before file operations, bytewise path sorting, UTF-8 JSON encoding and field order, the existing string-escaping helper, exactly one trailing LF, non-mutation of input, SHA-256 digest and count, private same-directory temporary file, complete write and close before atomic replacement, helper success/failure guarantees, old-reader behavior, invalid_input and io_error outcomes, no retries, cleanup behavior and diagnostic metadata, no crash-durability promise, success-only logging after replacement, and every verification obligation.",
+        "The organization materially improves: input validity precedes the operations it gates; encoding and digest calculation connect to the bytes being written; the unchanged-destination guarantee sits with atomic publication and its failure behavior; results and success logging follow successful publication. Equivalent clear organizations are acceptable; merely shortening sentences is insufficient.",
+        "The technical review recognizes that the source settles the material contract and does not invent open questions, durability requirements, concurrency mechanisms, or new sections. The readability review can justify substantial restructuring even when the technical review finds no defect.",
+        "The trace shows independent technical and readability agents reading the same unchanged original before either receives the other's findings. Only the parent edits the target, adjudicates from the source, and returns the candidate and original to both specialists for focused verification. The final response accurately reflects any unavailable pass instead of claiming independent review without trace evidence."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "--apply Improve the attached delivery-inputs note so its explanation is easy to follow. Keep the existing contract and scope.",
+      "expected_output": "A connected explanation of immutable delivery data, endpoint data read per attempt, and signing, without inventing delivery lifecycle decisions.",
+      "files": [
+        "evals/files/connections/delivery-inputs.md"
+      ],
+      "expectations": [
+        "The rewrite preserves all stored fields, capture of serialized payload at delivery creation, stable payload and delivery/event identities across attempts, mutable endpoint URL, uneditable secret, reading both endpoint fields before every attempt, timestamp generation immediately before signing, Unix seconds, exact timestamp-full-stop-payload input, HMAC-SHA256 with the endpoint secret, lowercase hexadecimal signature, all three header names and their values, and all four verification obligations.",
+        "The document connects the stable delivery data and the values obtained per attempt, introduces signing inputs before their relationships and headers, and groups related verification obligations sensibly. Useful repeated nouns remain when they identify what a sentence develops; vocabulary substitution or shorter disconnected sentences alone do not pass.",
+        "The rewrite does not claim a guaranteed different timestamp on every retry, an atomic snapshot of URL and secret, a secret-rotation mechanism, new retry behavior, or a full lifecycle specification. The timestamp may repeat when attempts fall within the same second.",
+        "The parent performs the requested edit and describes the substantive improvement without manufacturing a technical gap or asking the author to settle already-decided behavior. If delegated reviewers are used, they remain read-only and independently read the source."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "--check Review the attached receipt-processing design for technical completeness and clarity before implementation. Leave the file unchanged.",
+      "expected_output": "A read-only, adjudicated review that exposes the unsupported ordering and exactly-once relationships without choosing new coordination or idempotency mechanisms.",
+      "files": [
+        "evals/files/logical-relationships/receipt-processing.md"
+      ],
+      "expectations": [
+        "The review identifies that FIFO dequeueing with four worker replicas does not establish the stated per-customer processing or effect order, and asks what ordering the customer contract requires and how overlapping work preserves it. It does not assume completion order follows dequeue order.",
+        "The review identifies the check-then-handler-then-completion sequence as insufficient to establish exactly-once external effects under overlapping redelivery or a crash after an effect but before the completion row. It distinguishes the already-complete receipt check that is specified from the stronger guarantee that remains unsupported.",
+        "Findings cite the relevant source claims, explain the implementation or reader consequence, and leave needed decisions as questions. They do not prescribe a queue partition scheme, lock, outbox, transaction boundary across external systems, or handler idempotency scheme absent from the source.",
+        "Any example prose or suggested connective preserves uncertainty: the response does not turn the adjacency of FIFO, completion rows, and reliability claims into an asserted causal explanation. It does not quietly downgrade a stated customer guarantee to make the mechanism appear complete.",
+        "The file remains byte-for-byte unchanged. The trace shows independent technical and readability review of the original and one parent-adjudicated report; reviewers neither edit the file nor publish competing final reports to the user."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "--apply --files evals/files/scoped-rewrite/export-worker.md Rewrite only the Worker processing section. Use the attached API overview as context and report relevant inconsistencies outside that section. Correct what the sources establish and leave missing decisions open.",
+      "expected_output": "A clearer worker-processing section with the authoritative state name corrected, the unknown attempt limit retained, and outside inconsistencies reported without editing them.",
+      "files": [
+        "evals/files/scoped-rewrite/export-worker.md",
+        "evals/files/scoped-rewrite/export-api.md"
+      ],
+      "expectations": [
+        "Only the body of Worker processing changes. The heading, all surrounding export-worker.md content, and the entire export-api.md file remain byte-for-byte unchanged.",
+        "The edited section follows claiming, rendering, committing success, and failure behavior. It replaces done with complete because the source explicitly makes its state table authoritative, while preserving the zero-row-claim behavior, renderer contract, URL visibility after commit, transient requeueing, final-error transaction, and immediate permanent failure.",
+        "The total attempt limit remains an explicit open decision. The parent does not choose three merely because the API overview states it; the worker note says the value is undecided and neither source establishes precedence for attempt counts.",
+        "The final response reports the API overview's stale done name with a source-supported correction and separately reports its three-attempt assertion as conflicting with the open decision. It distinguishes determined corrections from decisions requiring the author.",
+        "The trace shows both specialists independently receiving the same source set and exact edit boundary. Only the parent writes the authorized section. Verification compares the original and candidate, checks surrounding-file preservation, and does not expand the writable scope."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Use the Specsavers skill's references/technical-reviewer.md in verification mode. Compare original evals/files/verification/upload-original.md with candidate evals/files/verification/upload-candidate.md. Report concrete changes to the contract with source and candidate locations. Keep both files unchanged.",
+      "expected_output": "A focused, read-only technical verification report that finds semantic defects introduced by a fluent candidate rewrite.",
+      "files": [
+        "evals/files/verification/upload-original.md",
+        "evals/files/verification/upload-candidate.md"
+      ],
+      "expectations": [
+        "The report detects cancellation broadening from queued only to queued or running and explains that running cancellation changes the allowed transition and previously required 409 behavior.",
+        "The report detects the changed chunk limit from 8 MiB to 16 MiB, while recognizing that the MiB definition is unchanged.",
+        "The report detects reversal of the prohibition against logging bearer tokens into an instruction to include them.",
+        "The report detects loss of the mandatory temporary-chunk deletion before marking failed, including the candidate's resulting conflict between marking failed and keeping running on cleanup failure. It treats these as related effects of one failure-path defect rather than unrelated cosmetic findings.",
+        "Findings point to original and candidate passages, use the original as the authority, and propose restoration of its contract rather than new upload behavior. Reordering, added headings, and terminology changes with unchanged meaning are not reported as defects.",
+        "Both files remain byte-for-byte unchanged. The trace shows that the technical-reviewer reference and both raw documents were read. The verifier does not recursively delegate, rewrite files, or claim a readability or full-plugin evaluation occurred."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "--apply Make the attached cache-removal note clearer where it needs improvement, preserving its behavior.",
+      "expected_output": "A concise response recognizing that the small note is already clear and complete, with no unnecessary rewrite or delegation.",
+      "files": [
+        "evals/files/already-clear/cache-removal.md"
+      ],
+      "expectations": [
+        "The note remains byte-for-byte unchanged because its behavior, key distinctions, and verification are already clear. The response does not manufacture findings, alternate terminology, template sections, or unactivated cache-concurrency requirements.",
+        "The response briefly states that no substantive change is needed. It does not claim external tests or independent reviewers were used.",
+        "The trace contains no subagent delegation for this small self-contained note; the parent applies both technical and readability perspectives locally."
+      ]
     }
   ]
 }
