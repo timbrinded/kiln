@@ -46,12 +46,9 @@ For difficult passages, use these reader-expectation diagnostics:
   clear explanation requires a guess, flag the missing relationship rather
   than supplying it.
 
-These are flexible diagnostics adapted from George Gopen's reader-expectation
-approach in *The New Science of Scientific Writing*. They are not grammar
-tests, universal claims about cognition, or ASD-STE100 compliance rules. Do
-not enforce word counts, punctuation patterns, passive-voice bans, or replacing
-necessary technical vocabulary. A longer explanation may be clearer. Leave
-already-clear prose alone.
+Use these diagnostics where they reduce reader effort. Do not enforce word
+counts, passive-voice bans, or replacement of necessary technical vocabulary.
+Leave already-clear prose alone.
 
 ## Examples of judgement
 

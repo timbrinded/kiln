@@ -81,11 +81,6 @@ personal agent setup is required. Claude Code has thin specialist adapters to
 the same references. If independent review or verification cannot run, the
 parent applies the missing perspective and reports that limitation.
 
-The readability guidance draws on George Gopen's reader-expectation approach
-in *The New Science of Scientific Writing*: clear topic continuity, context
-before new information, direct actions, and visible emphasis. These are
-diagnostics, not a house style or a requirement to comply with ASD-STE100.
-
 ## Structure
 
 ```text
@@ -104,6 +99,12 @@ plugins/unslop/
 ```
 
 ## Sources
+
+Thanks to George Gopen's *The New Science of Scientific Writing* for the
+reader-expectation techniques behind Specsavers' readability guidance:
+topic continuity, context before new information, subject–verb proximity,
+direct actions, and visible emphasis. These are practical diagnostics, not
+a house style or a requirement to comply with ASD-STE100.
 
 Specsavers draws on [Nygard's ADR proposal](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions),
 [BCP 14](https://www.rfc-editor.org/rfc/rfc8174), the

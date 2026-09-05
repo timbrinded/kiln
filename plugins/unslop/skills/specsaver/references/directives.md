@@ -1,22 +1,15 @@
 # Specsavers Directives
 
-The reasoning and examples behind the ten directives in `SKILL.md`, followed by
-the artifact lenses that core loop step 2 uses. Use them to sharpen a judgement,
-not to classify one. The examples are synthetic. An
-`After` passage states a decision only because the hypothetical author supplied
-it; when a real target does not establish that decision, write the question
-instead of copying the example's value.
+Consult these explanations when a judgement is uncertain, and the artifact
+lenses for questions relevant to the document type. Examples are synthetic:
+their decisions are assumed to come from the author. Never copy an example's
+answer into a target whose sources leave that decision open.
 
 ## 1. Write for the human reader
 
 **Principle.** A specification transfers a design from one engineer's head into
 another's. Optimise for the reader's comprehension and retention, not for the
 author's order of discovery.
-
-**Why it matters.** Every sentence is a proposition the reader must classify,
-retain, and reconcile. Scattered facts, buried invariants, and prose that runs
-against execution order force the reader to rebuild the model themselves. A
-design can be correct and still fail because it is hard to hold in one's head.
 
 **What to look for.** A rule stated far from the behaviour it governs. Steps
 described out of order. One paragraph that mixes trigger, action, failure, and
@@ -30,25 +23,8 @@ reader to reconstruct their relationships. Use the
 [readability reviewer](readability-reviewer.md) for these diagnostics and their
 limits, including subject–verb proximity and useful repetition of key terms.
 
-**Before.**
-
-> The metric is incremented after commit, by the committed count. Deletion of
-> rendered output, build logs, and previews happens in one transaction per
-> batch, and batches are at most 500, and the set that is drained is the one
-> selected at the start of the run, not previews that became eligible later
-> (those wait). Ordering of the drain is by `(expired_at, preview_id)`.
-
-**After.**
-
-> The worker drains the start-of-run set in batches of at most 500 previews,
-> ordered by `(expired_at, preview_id)`. For each batch, one transaction
-> deletes the rendered-output rows, build-log rows, and preview rows. After
-> commit, the worker adds the committed preview count to
-> `preview_cleanup_deleted_total`. Previews that become eligible after
-> `run_started_at` wait for the next run.
-
-Nothing was removed. The facts now appear in the order the worker performs
-them, and the exception sits after the rule it modifies.
+The [cleanup-worker example](gotchas-and-examples.md#1-rewrite-a-necessary-but-badly-written-passage)
+shows a complete rewrite into execution order while preserving each fact.
 
 **Boundary.** Do not rewrite prose that is already clear, and do not impose a
 house style. Readability is a property of the reader's effort, not of sentence
@@ -60,11 +36,6 @@ length or heading count.
 decisions, and the rationale that would otherwise be lost. Its wording,
 paragraph structure, and section order are means to convey that content and
 may be replaced freely.
-
-**Why it matters.** A reviewer who treats every semantically loaded sentence as
-protected will leave a badly written document badly written. A reviewer who
-treats wording as disposable but meaning as sacred can rewrite freely and
-safely.
 
 **What to look for.** Before rewriting a passage, list the facts it carries.
 After rewriting, check that each fact survives. A rewrite that drops a fact is
@@ -82,12 +53,6 @@ other; what may not change is what it asserts.
 does not do. Keep a prohibition only when it is itself an integrity, security,
 compatibility, or scope invariant that the positive model does not already
 close.
-
-**Why it matters.** A list of exclusions forces the reader to hold many negative
-facts and still infer the actual responsibility. One positive statement of
-actor, input, action, and effect gives them the model directly. Precise
-prohibitions remain essential when the positive statement would otherwise
-permit a dangerous or plausible wrong behaviour.
 
 **Deciding whether a prohibition earns its place.** Ask:
 
@@ -121,10 +86,6 @@ through what it is not, not the word `not`.
 
 **Principle.** Delete text that constrains nothing, explains no decision, and
 resolves no plausible ambiguity.
-
-**Why it matters.** Ceremony hides the design. A reader who has just skipped
-four `N/A` headings and a generic risk paragraph is less alert when the one
-material sentence arrives.
 
 **What to look for.** Empty or `Not applicable` headings. Non-goals that no
 reasonable implementer would have inferred. Alternatives that no engineer would
@@ -165,12 +126,6 @@ paragraph explaining why the ceremony was absent.
 failure, and compatibility decisions. The implementer owns replaceable local
 mechanics.
 
-**Why it matters.** When a specification leaves the retry model, the source of
-truth, or the terminal failure state open, implementation becomes an unreviewed
-design exercise, and two compliant implementations can behave materially
-differently. When a specification dictates helper names and loop structure, it
-adds brittle detail that controls nothing the product cares about.
-
 **Test.** Could two competent implementations both comply while differing in
 externally observable behaviour, security, persistence, interoperability,
 operability, or reversibility? If yes, the decision is material and belongs to
@@ -206,10 +161,6 @@ each effect, state observable outcomes, define legal state transitions, and
 give material quality attributes a measurable form. Keep requirements,
 decisions, rationale, assumptions, examples, and open questions
 distinguishable, and make every material behaviour verifiable.
-
-**Why it matters.** Synonym drift makes the reader maintain a mapping that may
-be wrong. Passive voice can hide who owns a transition. `Handle gracefully`
-and `fast` cannot be tested, so they cannot be implemented consistently.
 
 **Terms and actors.** If `request`, `job`, and `item` are one record, use the
 repository's canonical term. If `source` means both an upstream feed and an
@@ -283,11 +234,6 @@ sides need to act correctly and independently. Where a boundary touches
 persisted data, public compatibility, or deployed components, that includes how
 the system moves from its current state to the target.
 
-**Why it matters.** Route names and component arrows do not define nulls,
-units, validation, identity, ordering, atomicity, errors, authority, or
-evolution. Those gaps produce integration failures even when each component is
-locally correct.
-
 **What to inspect.** Only the semantics the design activates; the API or
 protocol lens below lists them. When the boundary touches persisted data, a
 public contract, or independently deployed components, the contract includes
@@ -329,11 +275,6 @@ long it runs.
 advocate it under the stated constraints. Recommend a separate ADR only for a
 genuine architectural fork with durable, non-obvious reasoning that the
 canonical specification does not already preserve.
-
-**Why it matters.** Straw alternatives are process theatre; they teach the
-reader nothing about the forces that drove the decision. A gratuitous ADR
-dilutes the decision log and creates a second authority that drifts from the
-feature specification.
 
 **Live alternatives.** For each option, can you state the advocate's credible
 case and the constraint that defeats it? If not, delete it. Do not invent a
@@ -377,10 +318,6 @@ Exploratory documents may keep unresolved live alternatives.
 **Principle.** When the source does not determine a material answer, state the
 question. A plausible answer is not an established one.
 
-**Why it matters.** A reviewer who fills gaps with reasonable defaults produces
-a document that looks complete and is wrong in ways no one will check. The
-author's intent is the only authority.
-
 **What this looks like in practice.** A vague retry rule becomes an open
 question about the budget, not a chosen number. Two contradictory values with
 no authority become a request for the author to pick one, not a silent
@@ -410,10 +347,6 @@ author can confirm it.
 coherent document. Values, terms, ownership, state transitions, examples,
 diagrams, and verification must agree with the design and with each other.
 
-**Why it matters.** Piecewise edits introduce new inconsistencies. A rewritten
-paragraph may now use a term the state table does not. A deleted section may
-have been the only place a value was defined.
-
 **What to look for.** The same quantity with two values. A state used in prose
 but absent from the table. An example that violates normative text. A diagram
 that shows a component the design removed. Verification that tests behaviour
@@ -430,13 +363,9 @@ report rather than edit an inconsistency with a section outside the scope.
 
 ## Artifact Lenses
 
-The core loop asks what a document primarily is, then uses the matching lens.
-A lens is the set of questions a reader needs answered before they can act on
-that kind of document. It is not a classification to report, a template, a
-checklist to walk, or a list of required headings. Not every question is
-material to every design; an unanswered lens question is a finding only when
-the completeness test in the SKILL.md boundaries says so. Answer the questions
-the design activates, in whatever structure serves the reader.
+Use the questions the design activates, in whatever structure serves the
+reader. An unanswered question is a finding only when it meets the materiality
+test in `SKILL.md`; these are not mandatory headings or a template.
 
 ### Design or feature specification
 

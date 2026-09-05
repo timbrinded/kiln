@@ -8,15 +8,6 @@ is that each fact survives, not whether to rewrite at all.
 
 ## Gotchas
 
-### Technical completeness does not settle readability
-
-A specification can answer every material question and still force readers to
-assemble the explanation from scattered sections. The technical reviewer can
-correctly find no contract gap while the readability reviewer correctly
-recommends a new outline. Adjudicate each against its evidence; do not let one
-verdict cancel the other. Conversely, changing headings alone does not prove
-that a rewrite improved understanding.
-
 ### Repeating a term can help the reader
 
 "The worker creates a delivery. This delivery retains its original payload
@@ -32,63 +23,12 @@ retries cannot create duplicates" introduces a guarantee. Preserve the two
 facts and ask about duplicate handling when it is material. Do not select a
 mechanism to make the explanation flow.
 
-### Long is not automatically bad
-
-A state table with twelve rows can be dense because every row fixes behaviour.
-A protocol section can run three pages and contain nothing removable. Judge
-information per unit of reader attention, not word count. Preserve necessary
-state, concurrency, protocol, and verification detail in full. Improve how it
-reads; do not shorten what it says.
-
-### Short is not automatically good
-
-A small change may need only a problem paragraph, the behavioural contract, and
-focused verification. That is complete, not thin. Do not add headings to make
-it look thorough. But a short document that leaves the retry model, terminal
-state, or source of truth open is incomplete however tidy it looks.
-
-### A good document deserves a short review
-
-The natural output for a complete, well-written specification is a sentence or
-two saying so, perhaps with one or two minor notes. A long review of a good
-document is a failure of proportion, not a sign of rigour. Distributed and
-asynchronous designs always admit further edge cases; before raising one, apply
-the completion test in the SKILL.md boundaries. Reserve "blocking" for gaps
-where two compliant implementations would differ in that way, and do not
-escalate a minor ambiguity to make the review look thorough.
-
-### Rewrite the scope that was asked for
-
-When the user names a section, a concern, or a set of findings, change nothing
-outside it. Report defects seen outside that scope, and any inconsistency the
-rewrite creates with unchanged sections, in the closing note.
-
 ### Preserve meaningful prohibitions
 
 Negative language is not slop. Keep concise prohibitions that constrain
 authority, mutation, replay, disclosure, compatibility, or safety, especially
 when the positive model would otherwise permit the behaviour. "This retry fix
 does not add a mobile app" goes; "MUST NOT reorder manifest entries" stays.
-
-### Do not invent precision
-
-A vague material target is a missing decision, not permission to choose a
-number. In a rewrite, place the question in the document where the value
-belongs. Never write a plausible default into the specification.
-
-### Do not add inactive sections
-
-Security, migration, observability, rollback, capacity, and internationalisation
-are conditional. When a design does activate one, ask for the exact missing
-contract or decision; do not replace one empty template with another, and do
-not explain why a section is absent.
-
-### Do not create gratuitous ADRs
-
-Importance is not a fork, and following a repository pattern is not
-architecture. When the canonical feature specification is durable and
-discoverable, a significant decision can live there. Recommend an ADR only when
-all four gates in directive 8 hold; create one only when the user asks.
 
 ### Exploratory questions are valid
 
