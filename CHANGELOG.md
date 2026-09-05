@@ -8,6 +8,19 @@ Historical GitHub releases were reconstructed from the first commit on
 that commit's date. GitHub does not permit changing a release's publication
 timestamp, so retroactive release notes state the original release date.
 
+## Unreleased — Unslop
+
+- Specsavers uses independent technical and readability reviewers for
+  substantial specifications, with one parent editor and verification against
+  the original sources. Small passages retain a single-agent workflow.
+- Added reader-expectation diagnostics for organization, sentence connections,
+  emphasis, and direct actions, with safeguards against inventing logical
+  relationships while rewriting.
+- Packaged shared specialist instructions inside the skill for native Codex
+  delegation and thin Claude Code adapters. Added Specsavers interface metadata
+  and evaluation cases for the workflow. Independent passes use additional
+  model work and tokens; unavailable checks are disclosed.
+
 ## Kiln v0.4.0
 
 <!-- release:v0.4.0 -->
@@ -235,6 +248,35 @@ Compare
 Source:
 [`a66fff2`](https://github.com/timbrinded/kiln/commit/a66fff2d9219d2c1d6712c552345e5fddf7647f1).
 <!-- /release:ui-refactor-v0.1.0 -->
+
+## unslop v0.4.0
+
+<!-- release:unslop-v0.4.0 -->
+**Release date:** 2026-09-04
+
+### Added
+
+- Added Specsavers for concise technical-specification review and authoring.
+- Added ten specification-quality directives with per-artifact lenses, two
+  focused references, a read-only reviewer agent, and twelve outcome-based
+  evals covering review, rewrite, and authoring.
+
+### Changed
+
+- Renamed the internal `unslop` code-cleanup skill and reviewer to Codesavers.
+- Repositioned Unslop as one post-generation engineering-quality plugin with
+  sibling Codesavers and Specsavers skills.
+
+### Compatibility
+
+- Legacy natural-language requests such as `Unslop this branch` continue to
+  select the same code-cleanup doctrine and report-only default.
+- Explicit skill identifiers are now `/unslop:codesaver` in Claude Code and
+  `$unslop:codesaver` in Codex.
+- Existing code-quality directives, gotchas, fixtures, and Directive #15
+  behavior are preserved.
+
+<!-- /release:unslop-v0.4.0 -->
 
 ## unslop v0.3.1
 

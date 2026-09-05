@@ -1,17 +1,18 @@
 ---
-name: unslop-reviewer
+name: codesaver-reviewer
 description: >
   Use this agent for a dedicated review of changed code for AI-generated
   verbosity, unnecessary complexity, defensive coding, redundant dependency
-  tests, and other unslop directives. Use it when the user asks to "unslop",
-  "simplify this branch", "remove unnecessary code", "review for unnecessary
-  complexity", or perform a cleanup pass before a PR. Do not use it as a
-  substitute for correctness, security, performance, or architecture review.
+  tests, and other Codesavers directives. Use it when the user asks for
+  "Codesavers", to "unslop", "simplify this branch", "remove unnecessary code",
+  "review for unnecessary complexity", or perform a cleanup pass before a PR.
+  Do not use it as a substitute for correctness, security, performance,
+  architecture, or technical-specification review.
 
   <example>
   Context: The user wants a simplification pass after generating code.
   user: "Unslop this branch and show me what can be removed"
-  assistant: "I'll review the changed code against the unslop directives and report concrete simplifications."
+  assistant: "I'll review the changed code against the Codesavers directives and report concrete simplifications."
   <commentary>
   The request explicitly targets unnecessary code and complexity. Review the
   current-state diff and return evidence-backed simplifications.
@@ -37,9 +38,9 @@ Review assigned changed files for accidental complexity. Remain read-only; the p
 
 ## Process
 
-1. Load `skills/unslop/SKILL.md` as the authoritative workflow and report contract.
-2. Load `skills/unslop/references/code-quality-directives.md` for detailed guidance on possible findings.
-3. Load `skills/unslop/references/gotchas.md` before finalizing any finding.
+1. Load `skills/codesaver/SKILL.md` as the authoritative workflow and report contract.
+2. Load `skills/codesaver/references/code-quality-directives.md` for detailed guidance on possible findings.
+3. Load `skills/codesaver/references/gotchas.md` before finalizing any finding.
 4. Inspect the assigned current-state patches and existing file contents.
 5. For changed tests, inspect the dependency manifest, all tests for the same behavior, and tested production code, if any.
 6. Return the batch review in the SKILL.md report format.

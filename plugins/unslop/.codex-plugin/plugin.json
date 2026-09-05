@@ -1,7 +1,7 @@
 {
   "name": "unslop",
-  "version": "0.3.1",
-  "description": "Post-generation code quality cleanup. Reviews changed code for AI-generated verbosity, unnecessary state, defensive coding, redundant dependency tests, and complexity. Reports concrete simplifications and applies them only when requested.",
+  "version": "0.4.0",
+  "description": "Post-generation engineering quality. Codesavers removes avoidable complexity from changed code; Specsavers authors and reviews technical software specifications for precision, information density, and decision completeness.",
   "author": {
     "name": "timbo",
     "url": "https://github.com/timbrinded"
@@ -17,13 +17,20 @@
     "refactoring",
     "ai-slop",
     "post-generation",
-    "test-bloat"
+    "test-bloat",
+    "technical-spec",
+    "specification",
+    "architecture",
+    "design-doc",
+    "requirements",
+    "adr",
+    "documentation"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Unslop",
-    "shortDescription": "Remove avoidable complexity from changed code.",
-    "longDescription": "Review changed code for generated-code verbosity, unnecessary state, defensive coding, redundant dependency tests, and complexity. Report concrete simplifications and apply them only when requested.",
+    "shortDescription": "Tighten generated code and technical specifications.",
+    "longDescription": "Use Codesavers to remove avoidable complexity from changed code and Specsavers to author or review precise, concise, implementation-ready technical specifications.",
     "developerName": "timbo",
     "category": "Code Quality",
     "capabilities": [
@@ -31,9 +38,11 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Review my current changes for avoidable complexity.",
       "Unslop this implementation and report concrete simplifications.",
-      "Find redundant abstractions, dependency tests, and defensive code in this diff."
+      "Use Codesavers to review my current changes for avoidable complexity.",
+      "Specsavers this technical design before I send it for review.",
+      "Use Specsavers to write an implementation-ready spec for this feature.",
+      "Does this design actually warrant an ADR?"
     ]
   }
 }

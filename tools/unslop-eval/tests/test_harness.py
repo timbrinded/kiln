@@ -11,6 +11,7 @@ TOOL_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOL_ROOT))
 
 from eval_lib import (  # noqa: E402
+    LIVE_CODESAVER_PATH,
     RunSpec,
     atomic_write_text,
     build_prompt,
@@ -63,6 +64,139 @@ class HarnessTest(unittest.TestCase):
                 self.skills["candidate"] / "references" / "code-quality-directives.md"
             ).read_text(),
         )
+
+    def test_codesaver_move_preserves_directives_gotchas_and_fixtures(self) -> None:
+        live = self.repo_root / LIVE_CODESAVER_PATH
+        historical = self.skills["current"]
+
+        self.assertEqual(
+            hash_tree(historical / "references"),
+            hash_tree(live / "references"),
+        )
+        historical_fixtures = tree_hashes(historical / "evals" / "files")
+        live_fixtures = tree_hashes(live / "evals" / "files")
+        self.assertEqual(
+            historical_fixtures,
+            {path: live_fixtures[path] for path in historical_fixtures},
+        )
+        skill_text = (live / "SKILL.md").read_text()
+        for directive_number in range(1, 16):
+            self.assertIn(f"| {directive_number} |", skill_text)
+        self.assertNotIn("| 16 |", skill_text)
+
+    def test_codesaver_retains_original_eval_scenarios_and_routing(self) -> None:
+        historical = json.loads(
+            (self.skills["current"] / "evals" / "evals.json").read_text()
+        )
+        live = json.loads(
+            (self.repo_root / LIVE_CODESAVER_PATH / "evals" / "evals.json").read_text()
+        )
+        historical_by_id = {case["id"]: case for case in historical["evals"]}
+        live_by_id = {case["id"]: case for case in live["evals"]}
+
+        self.assertEqual(set(historical_by_id), set(range(1, 9)))
+        self.assertEqual(set(live_by_id), set(range(1, 11)))
+
+        overrides = {
+            1: {
+                "prompt": "Use Codesavers to review the attached app.js for unnecessary complexity.",
+                "expected_output": "A report-only Codesavers review that does not modify the working tree.",
+            },
+            2: {
+                "prompt": "Use Codesavers with --apply to simplify the attached app.js and validate the result.",
+                "expected_output": "A Codesavers report followed by explicitly authorized fixes and project validation.",
+            },
+            3: {
+                "prompt": "Run the attached setup-layered-diff.sh with sh and an unused directory inside the evaluation workspace, enter the repository it creates, then use Codesavers with --check to review every current change relative to main, including new files.",
+            },
+            7: {
+                "expected_output": "The generic review is not replaced by a Codesavers-only review.",
+                "expectations": [
+                    "The response does not present Codesavers as a complete answer to the request.",
+                    "Any Codesavers pass is clearly scoped as optional or supplementary.",
+                ],
+            },
+            8: {
+                "expected_output": "A report-only Codesavers review using all relevant directives.",
+                "expectations": [
+                    "The Codesavers skill is used.",
+                    "The report follows the canonical Summary, file findings, Recommendations order.",
+                    "No edits are made without separate authorization.",
+                    "The response does not apply specification-quality directives.",
+                ],
+            },
+        }
+        for case_id, historical_case in historical_by_id.items():
+            expected_case = {**historical_case, **overrides.get(case_id, {})}
+            self.assertEqual(live_by_id[case_id], expected_case)
+
+        prompts = [case["prompt"] for case in live["evals"]]
+        self.assertIn("Unslop this branch.", prompts)
+        self.assertTrue(any("Use Codesavers" in prompt for prompt in prompts))
+        self.assertTrue(any("Specsavers" in prompt for prompt in prompts))
+        self.assertIn("--apply", live_by_id[2]["prompt"])
+        self.assertIn("No repository file is modified.", live_by_id[1]["expectations"])
+        self.assertIn("Directive #15", live_by_id[4]["expected_output"])
+        self.assertIn("No Directive #15", live_by_id[5]["expected_output"])
+
+    def test_live_skill_eval_manifests_are_well_formed(self) -> None:
+        manifests = {
+            "codesaver": (
+                self.repo_root
+                / LIVE_CODESAVER_PATH
+                / "evals"
+                / "evals.json",
+                10,
+            ),
+            "specsaver": (
+                self.repo_root
+                / "plugins"
+                / "unslop"
+                / "skills"
+                / "specsaver"
+                / "evals"
+                / "evals.json",
+                12,
+            ),
+        }
+
+        for skill_name, (manifest_path, expected_count) in manifests.items():
+            with self.subTest(skill_name=skill_name):
+                self.assertTrue(manifest_path.is_file())
+                manifest = json.loads(manifest_path.read_text())
+                self.assertEqual(manifest["skill_name"], skill_name)
+                cases = manifest["evals"]
+                self.assertEqual(len(cases), expected_count)
+                ids = [case["id"] for case in cases]
+                self.assertTrue(all(isinstance(case_id, int) for case_id in ids))
+                self.assertEqual(len(ids), len(set(ids)))
+
+                for case in cases:
+                    self.assertTrue(
+                        {
+                            "id",
+                            "prompt",
+                            "expected_output",
+                            "files",
+                            "expectations",
+                        }.issubset(case)
+                    )
+                    self.assertIsInstance(case["prompt"], str)
+                    self.assertTrue(case["prompt"].strip())
+                    self.assertIsInstance(case["expected_output"], str)
+                    self.assertTrue(case["expected_output"].strip())
+                    self.assertIsInstance(case["files"], list)
+                    self.assertIsInstance(case["expectations"], list)
+                    self.assertTrue(case["expectations"])
+                    self.assertTrue(
+                        all(
+                            isinstance(expectation, str) and expectation.strip()
+                            for expectation in case["expectations"]
+                        )
+                    )
+                    skill_root = manifest_path.parents[1]
+                    for fixture in case["files"]:
+                        self.assertTrue((skill_root / fixture).is_file(), fixture)
 
     def test_prompt_embeds_skill_usage_without_grader_answers(self) -> None:
         prompt = build_prompt("diff --git a/a.js b/a.js\n+sloppy\n")

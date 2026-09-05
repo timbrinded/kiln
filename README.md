@@ -20,7 +20,7 @@ through concepts, exercises, and debugging with a tutoring-first style.
 | [swift-design](./plugins/swift-design/) | Design | 40 HIG rules for SwiftUI — letter grading, visual review, accessibility checks, modern API enforcement |
 | [ui-refactor](./plugins/ui-refactor/) | Design | Refactoring UI principles — review screenshots, CSS, and Tailwind for hierarchy, spacing, typography, color, depth, and polish |
 | [performance-optimization](./plugins/performance-optimization/) | Performance | Abseil-derived optimization guidance — measurement methodology, cross-language patterns for C++, Rust, and TypeScript |
-| [unslop](./plugins/unslop/) | Code quality | Post-generation cleanup for avoidable state, defensive code, verbosity, and complexity |
+| [unslop](./plugins/unslop/) | Code quality | Post-generation engineering quality: Codesavers simplifies changed code; Specsavers authors and reviews precise technical specifications |
 | [teach-me](./plugins/teach-me/) | Education | Tutoring mode for hints, guided questions, mental models, and learning from local project context |
 | [infographic](./plugins/infographic/) | Design | Image-generation prompt writer for repo docs, with optional tool-backed image generation when explicitly requested |
 | [lottie-animation](./plugins/lottie-animation/) | Design | Lottie authoring workflow for renderable Bodymovin JSON, seamless loops, and large-but-stable animation assets |

@@ -1,0 +1,260 @@
+{
+  "skill_name": "specsaver",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "--apply Rewrite the attached specification so that an engineer can implement it with the least effort. Preserve every material constraint.",
+      "expected_output": "A substantial semantic-preserving rewrite of a complete but badly written specification, followed by a short note on what changed.",
+      "files": [
+        "evals/files/badly-written/preview-cleanup-worker.md"
+      ],
+      "expectations": [
+        "The rewritten document preserves every material fact from the source: hourly runs by an enabled worker; a dedicated PostgreSQL session, session-level advisory lock, and recorded run_started_at; exit without selecting or deleting when another session holds the lock; lock release on disconnect or crash; eligibility as expired_at earlier than run_started_at minus the 14-day retention period, with later-eligible previews waiting for the next run; batches of at most 500 ordered by (expired_at, preview_id); one transaction per batch deleting rendered-output, build-log, and preview rows; preview_cleanup_deleted_total incremented after commit by the committed count with the database as source of truth; retry of the same batch after a serialization failure with a budget of 3; exhaustion and any other error ending the run, rolling back the batch, and preserving the batch and unprocessed previews; deletion disabled by default, with the worker then running on the same schedule in preview mode and logging the eligible count and oldest expired_at without changing data; explicit maintainer enablement after reviewing preview output; and irreversibility with recovery only from an external backup.",
+        "The rewrite materially improves readability: each fact is stated once, the cutoff definition sits with the eligibility rule, the design reads in execution order, circular or filler phrasing is gone, and verification is scannable.",
+        "The rewrite does not add template sections, does not turn decided values into open questions, and does not invent values or behaviour absent from the source.",
+        "The response briefly states what changed in substance and lists any decisions it left open; it does not manufacture questions about values or behaviour the source already decides."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Specsavers this asynchronous documentation link-check design before implementation.",
+      "expected_output": "A concise result that leaves a long, dense, and complete asynchronous contract largely alone.",
+      "files": [
+        "evals/files/link-check-complete/link-check-run.md"
+      ],
+      "expectations": [
+        "The response reports no material missing decision, contradiction, or ambiguity. At most it notes one or two genuinely minor items, and it stays concise.",
+        "The response does not treat the necessary state, concurrency, protocol, or verification detail as excess prose and does not propose shortening it.",
+        "The response does not demand generic sections, an ADR, a different mechanism, or a diagram, and does not manufacture speculative edge cases to fill a review."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review this implementation-ready documentation link-check specification for anything that still prevents implementation. Do not choose missing values or mechanisms for me.",
+      "expected_output": "A review that names the missing material decisions as questions for the author without proposing answers.",
+      "files": [
+        "evals/files/link-check-incomplete/link-check-run.md"
+      ],
+      "expectations": [
+        "The response identifies run and per-URL result identity, whether the input manifest is stable once a run starts, exclusive claiming or duplicate-delivery handling across worker replicas, retry bounds and what exhaustion produces, and terminal states as material decisions the document leaves open.",
+        "Each open decision is stated as a question for the author together with the consequence of leaving it open.",
+        "The response does not invent a retry count, result key, locking mechanism, state name, or deduplication scheme.",
+        "The response does not pad the review with concerns the design does not activate."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Specsavers this component note. Make the component's responsibility easy to understand without losing material constraints.",
+      "expected_output": "A positive statement of the Thumbnail Key Builder's responsibility that keeps the one prohibition protecting key stability.",
+      "files": [
+        "evals/files/negative-definition/thumbnail-key-builder.md"
+      ],
+      "expectations": [
+        "The response replaces the cluster of exclusions with a positive statement that the Thumbnail Key Builder returns a stable ASCII key unique to the immutable (thumbnail_id, format) tuple.",
+        "The response retains the prohibition against including the mutable filename or caption because it protects key stability, and removes the exclusions that no implementer would have inferred.",
+        "The response does not prescribe a key encoding, add behaviour, or remove the verification."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Two decision records are attached, along with the repository's documentation convention. Which of them warrants a separate ADR, and why?",
+      "expected_output": "A judgement that the thumbnail endpoint record is routine feature work and the media-storage ownership choice is a genuine architectural fork that needs a durable record.",
+      "files": [
+        "evals/files/gratuitous-adr/adr-add-thumbnail-endpoint.md",
+        "evals/files/media-storage-plan/project-plan.md",
+        "evals/files/media-storage-plan/repository-conventions.md"
+      ],
+      "expectations": [
+        "The response treats the thumbnail endpoint record as routine feature work with no credible alternative approach and recommends folding its useful content into the feature specification rather than keeping an ADR.",
+        "The response treats media-catalogue ownership versus renderer-owned copies as a genuine architectural fork with durable rationale, and explains that the transient delivery plan and the repository convention make a separate ADR the right durable home.",
+        "The response does not manufacture alternatives for the endpoint, invent a third ownership model or additional rationale, or create or edit any file."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "--apply Tighten this small API design. Keep the useful contract and remove anything that does not inform an implementer.",
+      "expected_output": "A rewrite that strips ceremonial sections and handler narration while keeping the complete API contract.",
+      "files": [
+        "evals/files/boilerplate/project-list-field.md"
+      ],
+      "expectations": [
+        "The rewrite deletes the fanciful Non-Goals, the N/A and Not applicable sections, the generic Risks paragraph, and the narration of private handler calls.",
+        "The rewrite retains the owner_display_name null semantics, the same-snapshot rule, the unchanged authorization, filters, ordering, and pagination, the version 1 client compatibility rule, and the verification cases.",
+        "The rewrite does not add replacement sections, does not explain why inactive concerns are absent, and does not invent security or migration content."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "--apply Reconcile this export job specification. Correct anything the document itself determines and leave anything it does not as an explicit question.",
+      "expected_output": "A rewrite that fixes the stale state name from the authoritative table and leaves the conflicting attempt bound as an open question.",
+      "files": [
+        "evals/files/contradictory/export-job-lifecycle.md"
+      ],
+      "expectations": [
+        "The rewrite changes the stale `done` reference to `complete` because the document declares its state table authoritative.",
+        "The rewrite does not choose between three total attempts and a fifth attempt; it records the attempt bound as an explicit open question in the document and names it as the remaining decision in the response.",
+        "The rewrite preserves the claim semantics, the transient-error return to `queued`, the commit-then-visible polling rule, and the verification cases, adjusting only the attempt-count test to depend on the open decision.",
+        "The rewrite does not invent additional states, values, or behaviour."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Use Specsavers to draft a technical specification from the attached feature brief. Keep it proportionate to this local cache-key change.",
+      "expected_output": "A short, natural specification that transfers the known design without template sections.",
+      "files": [
+        "evals/files/author-cache/feature-brief.md"
+      ],
+      "expectations": [
+        "The authored specification states the stale-cache problem, the new key built from locale and message ID with a colon delimiter, the canonical colon-free BCP 47 locale constraint that makes the delimiter safe, the unchanged 1,000-entry LRU behaviour and public API, the shared key helper for lookup and invalidation, and the verification cases including the delimiter-boundary case.",
+        "The document is short and reads naturally, with a structure fit for a local library change.",
+        "The document does not add Non-Goals, Risks, Security, Observability, Migration, Rollback, or ADR sections, and does not explain why those are absent.",
+        "The response does not invent network services, persistence, deployment phases, or product requirements absent from the brief."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "--apply This draft is complete but hard to follow. Rewrite it so an engineer can implement it from one reading, and preserve every decision it makes.",
+      "expected_output": "A substantial rewrite of a realistic, complete but hard-to-read webhook delivery specification that preserves every material fact and materially improves readability.",
+      "files": [
+        "evals/files/realistic-rewrite/webhook-delivery.md"
+      ],
+      "expectations": [
+        "The rewrite preserves every material fact of the source, including: endpoint registration via POST /v1/webhook_endpoints with https only (http rejected 422), a 32-byte base64url secret shown once and never returned, PATCH of url and event_types with the URL read at attempt time, no secret rotation, and status values enabled, disabled, deleted; auto-disable after 20 consecutive exhausted deliveries counted in finishing order with an email to account owners, pending deliveries marked exhausted with no attempt row and no counter change, and creation of new deliveries stopped; re-enable via POST .../enable resetting the counter and returning 200 even when already enabled; DELETE as a 204 soft delete that cancels pending deliveries, keeps the row, and answers 409 to enable; a delivery as one event to one endpoint with a whd_ ULID id, at most seven attempts, the JSON body fields, the four X-Hook headers with a per-attempt timestamp, success as any 2xx with the full response within 10 seconds, failure classes including unfollowed 3xx, DNS, TLS, connection refused and timeout, the attempt row written before the status update, the attempts counter with its four outcome labels, the retry offsets 30 s, 2 min, 10 min, 1 h, 6 h, 24 h, exhaustion after the seventh failure with its counter and consecutive_exhausted increment, delivered zeroing the counter in the same transaction, at-least-once with delivery_id as the receiver's idempotency key, no ordering guarantee, and 8 in-flight attempts per endpoint per poller instance with two instances; HMAC-SHA256 over timestamp, full stop, raw body with a v1= hex header and a 300-second receiver tolerance; replay of finished deliveries only (pending 409) for 30 days from the event's created_at checked by the clock, 404 after that or when the events row is gone, a new delivery with a new delivery_id and the same event_id, 409 for disabled or deleted endpoints, and replays counting toward auto-disable; the three tables and their key columns, 30-day nightly retention, the deliveries listing with its fields, newest-first order, status and event_id filters, 50 per page up to 200, and after cursor; the poller waking every second, claiming up to 100 due deliveries with SELECT FOR UPDATE SKIP LOCKED, a 60-second lease committed before any request, re-claim after lease expiry, and lease cleared when the endpoint's 8 slots are full; the metrics including the backlog gauge excluding live leases with a page at 1,000 for 5 minutes; exactly one original delivery per (event, endpoint) created in the same transaction as the events row for enabled subscribed endpoints, replay being the only other creator; and the structured log line with host but not path or query.",
+        "The rewrite materially improves readability: one term per concept (endpoint, not subscription; disabled, not paused), attempts and deliveries defined before the retry schedule that depends on them, the auto-disable rule and the one-delivery-per-pair invariant stated beside the behaviour they govern, each fact stated once, forward references removed, and verification turned into a scannable list of obligations.",
+        "The rewrite invents no values or behaviour, does not turn decided values into open questions, and adds no template sections.",
+        "The response briefly states what changed in substance and reports that no material decisions remain open."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Use Specsavers to write the API specification for the report export feature described in the attached brief.",
+      "expected_output": "A concise, readable API specification that carries every decision in the brief, leaves the one undecided item as an explicit question, and adds no template sections.",
+      "files": [
+        "evals/files/author-api/feature-brief.md"
+      ],
+      "expectations": [
+        "The specification carries every contract decision from the brief: bearer-token auth with organisation scoping and 404 rather than 403 for foreign IDs; /v1 paths with the additive-only rule; the four operations with their methods, paths, and status codes; the create body fields and validation rules including rejection of unknown fields, RFC 3339 window semantics with inclusive start and exclusive end, and the project_ids constraints; the Idempotency-Key rules including required header, 1 to 255 printable ASCII characters, organisation scope, 24-hour memory, storage only on 202, byte-identical replay, 422 on a different body, and expiry; the lifecycle queued, running, complete, failed, cancelled with terminal states and the queued-only cancel rule with 409; the export object fields with null rather than omission, normalised filters, the error object and its three codes, the 15-minute download URL minted per GET, 7-day file retention, and 90-day record retention with 404 afterwards; cursor pagination with limit default 25 and maximum 100, the data and next_cursor shape, opaque non-expiring cursors, undecodable cursors as 400, and null download fields in lists; the cap of 5 active exports with 429 and no Retry-After; the existing error envelope and each new error code with its status; and RFC 3339 UTC timestamps with a Z suffix.",
+        "The specification records per-organisation rate limiting on export creation as an explicit open question and does not invent a limit.",
+        "The document is short and readable for its content, uses a table or list where that is clearer than prose (for example error codes or states), keeps out-of-scope items to at most a brief note, and adds no Security, Migration, Observability, Rollback, Risks, or Non-Goals sections that the brief does not activate. A verification list that names behaviours the spec fixes is acceptable.",
+        "The specification invents no fields, codes, states, or behaviour absent from the brief."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Use Specsavers to write the migration and rollout specification from the attached notes.",
+      "expected_output": "A readable migration specification with the current and target states, an ordered sequence with checks and abort behaviour, the first irreversible step, completion proof, and the soak period left as an explicit open question.",
+      "files": [
+        "evals/files/author-migration/feature-brief.md"
+      ],
+      "expectations": [
+        "The specification carries every decision from the notes: the current state (text NOT NULL, about 48M rows, seven lowercase values since 2021, mixed case and trailing whitespace on about 300k rows, about 2,100 rows spelt canceled, no NULLs, only the orders_pending_idx partial index depends on the column, Postgres 14); the target state (an order_status enum in lifecycle order, a NOT NULL state column, status dropped, no rename); the constraint that two application versions run side by side during every deploy; lock_timeout of 2 seconds on migration statements and the error-rate criterion for deploy checks; the nine ordered steps with each step's check, including the migration_progress table, dual-write deploy, backfill only after version N is gone, batches of 5,000 rows by id with a snapshotted max_id, the mapped(status) expression with lower and trim and canceled to cancelled, the IS DISTINCT FROM predicate, stopping a batch when any row does not map, 200 ms sleep, resume from last_id, five lock-timeout retries at 30 seconds, and the replication-lag pause above 5 seconds with a 30-minute stop and a post to #orders-oncall; the four verification checks on replica-1 including the 10,000-row sample; the concurrent creation of orders_state_pending_idx with the indisvalid and size check before reads switch; NOT NULL via a NOT VALID check constraint then VALIDATE then SET NOT NULL; dropping NOT NULL from status; the N+3 deploy that removes status with the git grep gate; DROP COLUMN status as the first irreversible step on the same day once N+3 is the only version; the abort and rollback behaviour for each stage; the completion criteria; and ownership by Priya with on-call as second for steps 6 to 9 and evidence recorded in ORD-412.",
+        "The specification records the soak period between switching reads and dropping the old column as an explicit open question and does not invent a duration.",
+        "The sequence, its per-step checks, and its abort behaviour are easy to follow, for example as an ordered list or table, and the first irreversible step is unmistakable; the document adds no generic sections the change does not activate and is short for its content.",
+        "The specification invents no steps, values, or safeguards absent from the notes."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Use Specsavers to write the ADR for the decision recorded in the attached meeting notes.",
+      "expected_output": "A concise ADR that states the genuine fork, the forces, the selected option, the honest alternative, the consequences including accepted costs, and the reopening conditions, and excludes meeting noise.",
+      "files": [
+        "evals/files/author-adr/decision-notes.md"
+      ],
+      "expectations": [
+        "The ADR states the fork between publishing directly from request handlers after commit and a transactional outbox drained by a relay, with the honest case for direct publishing (no new infrastructure or process, about 50 ms latency, a three-engineer team) and the dual-write loss that defeated it including the INC-31 precedent; the forces (webhooks as a customer contract, about 2k writes and 300 events per minute, one RDS Postgres and existing SNS, no Kafka or CDC, 1 s latency acceptable); the decision (outbox row in the same transaction via the unit-of-work helper as the only publish path, relay polling every 500 ms with FOR UPDATE SKIP LOCKED, one standard SNS topic core-domain-events with event_type as a message attribute, payloads of ids plus a few fields capped at 200 KB, scope limited to core-api domain events with the thumbnail enqueue excluded); the consequences including at-least-once delivery so every consumer must dedupe on event_id, no ordering promise with occurred_at and aggregate_version carried for staleness checks, about 1 s p50 latency, an extra row write per transaction, a new process to operate, 7-day pruning that bounds replay to 7 days, failed rows after 10 attempts kept out of pruning with last_error and an alert, and starting with one relay replica; the two metrics with the 60-second for 5-minute page; and the four reopening conditions.",
+        "The ADR excludes meeting noise: action items and their dates, the CI tangent, the joke, the retro reminder, and conversational attributions of who said what; a deciders or participants line is acceptable. It links to the webhooks specification in docs/specs/ rather than repeating it.",
+        "The ADR contains no straw alternatives and no rationale absent from the notes.",
+        "The ADR is concise and readable, with structure fit for a decision record rather than a template."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "--apply Rewrite the attached route-manifest specification so that an engineer can follow the design and implement it. Preserve every decision.",
+      "expected_output": "A coherent rewrite of a complete contract with its input rules, encoding, publication, failure behavior, and results arranged in a useful conceptual and execution order.",
+      "files": [
+        "evals/files/organization/route-manifest.md"
+      ],
+      "expectations": [
+        "The rewrite preserves the publishManifest interface, immutable two-field input entries, absolute destination with an existing parent, same-filesystem and serialized-caller preconditions, both validation alphabets, the root-path and empty-input cases, duplicate-path rejection, validation before file operations, bytewise path sorting, UTF-8 JSON encoding and field order, the existing string-escaping helper, exactly one trailing LF, non-mutation of input, SHA-256 digest and count, private same-directory temporary file, complete write and close before atomic replacement, helper success/failure guarantees, old-reader behavior, invalid_input and io_error outcomes, no retries, cleanup behavior and diagnostic metadata, no crash-durability promise, success-only logging after replacement, and every verification obligation.",
+        "The organization materially improves: input validity precedes the operations it gates; encoding and digest calculation connect to the bytes being written; the unchanged-destination guarantee sits with atomic publication and its failure behavior; results and success logging follow successful publication. Equivalent clear organizations are acceptable; merely shortening sentences is insufficient.",
+        "The technical review recognizes that the source settles the material contract and does not invent open questions, durability requirements, concurrency mechanisms, or new sections. The readability review can justify substantial restructuring even when the technical review finds no defect.",
+        "The trace shows independent technical and readability agents reading the same unchanged original before either receives the other's findings. Only the parent edits the target, adjudicates from the source, and returns the candidate and original to both specialists for focused verification. The final response accurately reflects any unavailable pass instead of claiming independent review without trace evidence."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "--apply Improve the attached delivery-inputs note so its explanation is easy to follow. Keep the existing contract and scope.",
+      "expected_output": "A connected explanation of immutable delivery data, endpoint data read per attempt, and signing, without inventing delivery lifecycle decisions.",
+      "files": [
+        "evals/files/connections/delivery-inputs.md"
+      ],
+      "expectations": [
+        "The rewrite preserves all stored fields, capture of serialized payload at delivery creation, stable payload and delivery/event identities across attempts, mutable endpoint URL, uneditable secret, reading both endpoint fields before every attempt, timestamp generation immediately before signing, Unix seconds, exact timestamp-full-stop-payload input, HMAC-SHA256 with the endpoint secret, lowercase hexadecimal signature, all three header names and their values, and all four verification obligations.",
+        "The document connects the stable delivery data and the values obtained per attempt, introduces signing inputs before their relationships and headers, and groups related verification obligations sensibly. Useful repeated nouns remain when they identify what a sentence develops; vocabulary substitution or shorter disconnected sentences alone do not pass.",
+        "The rewrite does not claim a guaranteed different timestamp on every retry, an atomic snapshot of URL and secret, a secret-rotation mechanism, new retry behavior, or a full lifecycle specification. The timestamp may repeat when attempts fall within the same second.",
+        "The parent performs the requested edit and describes the substantive improvement without manufacturing a technical gap or asking the author to settle already-decided behavior. If delegated reviewers are used, they remain read-only and independently read the source."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "--check Review the attached receipt-processing design for technical completeness and clarity before implementation. Leave the file unchanged.",
+      "expected_output": "A read-only, adjudicated review that exposes the unsupported ordering and exactly-once relationships without choosing new coordination or idempotency mechanisms.",
+      "files": [
+        "evals/files/logical-relationships/receipt-processing.md"
+      ],
+      "expectations": [
+        "The review identifies that FIFO dequeueing with four worker replicas does not establish the stated per-customer processing or effect order, and asks what ordering the customer contract requires and how overlapping work preserves it. It does not assume completion order follows dequeue order.",
+        "The review identifies the check-then-handler-then-completion sequence as insufficient to establish exactly-once external effects under overlapping redelivery or a crash after an effect but before the completion row. It distinguishes the already-complete receipt check that is specified from the stronger guarantee that remains unsupported.",
+        "Findings cite the relevant source claims, explain the implementation or reader consequence, and leave needed decisions as questions. They do not prescribe a queue partition scheme, lock, outbox, transaction boundary across external systems, or handler idempotency scheme absent from the source.",
+        "Any example prose or suggested connective preserves uncertainty: the response does not turn the adjacency of FIFO, completion rows, and reliability claims into an asserted causal explanation. It does not quietly downgrade a stated customer guarantee to make the mechanism appear complete.",
+        "The file remains byte-for-byte unchanged. The trace shows independent technical and readability review of the original and one parent-adjudicated report; reviewers neither edit the file nor publish competing final reports to the user."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "--apply --files evals/files/scoped-rewrite/export-worker.md Rewrite only the Worker processing section. Use the attached API overview as context and report relevant inconsistencies outside that section. Correct what the sources establish and leave missing decisions open.",
+      "expected_output": "A clearer worker-processing section with the authoritative state name corrected, the unknown attempt limit retained, and outside inconsistencies reported without editing them.",
+      "files": [
+        "evals/files/scoped-rewrite/export-worker.md",
+        "evals/files/scoped-rewrite/export-api.md"
+      ],
+      "expectations": [
+        "Only the body of Worker processing changes. The heading, all surrounding export-worker.md content, and the entire export-api.md file remain byte-for-byte unchanged.",
+        "The edited section follows claiming, rendering, committing success, and failure behavior. It replaces done with complete because the source explicitly makes its state table authoritative, while preserving the zero-row-claim behavior, renderer contract, URL visibility after commit, transient requeueing, final-error transaction, and immediate permanent failure.",
+        "The total attempt limit remains an explicit open decision. The parent does not choose three merely because the API overview states it; the worker note says the value is undecided and neither source establishes precedence for attempt counts.",
+        "The final response reports the API overview's stale done name with a source-supported correction and separately reports its three-attempt assertion as conflicting with the open decision. It distinguishes determined corrections from decisions requiring the author.",
+        "The trace shows both specialists independently receiving the same source set and exact edit boundary. Only the parent writes the authorized section. Verification compares the original and candidate, checks surrounding-file preservation, and does not expand the writable scope."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Use the Specsavers skill's references/technical-reviewer.md in verification mode. Compare original evals/files/verification/upload-original.md with candidate evals/files/verification/upload-candidate.md. Report concrete changes to the contract with source and candidate locations. Keep both files unchanged.",
+      "expected_output": "A focused, read-only technical verification report that finds semantic defects introduced by a fluent candidate rewrite.",
+      "files": [
+        "evals/files/verification/upload-original.md",
+        "evals/files/verification/upload-candidate.md"
+      ],
+      "expectations": [
+        "The report detects cancellation broadening from queued only to queued or running and explains that running cancellation changes the allowed transition and previously required 409 behavior.",
+        "The report detects the changed chunk limit from 8 MiB to 16 MiB, while recognizing that the MiB definition is unchanged.",
+        "The report detects reversal of the prohibition against logging bearer tokens into an instruction to include them.",
+        "The report detects loss of the mandatory temporary-chunk deletion before marking failed, including the candidate's resulting conflict between marking failed and keeping running on cleanup failure. It treats these as related effects of one failure-path defect rather than unrelated cosmetic findings.",
+        "Findings point to original and candidate passages, use the original as the authority, and propose restoration of its contract rather than new upload behavior. Reordering, added headings, and terminology changes with unchanged meaning are not reported as defects.",
+        "Both files remain byte-for-byte unchanged. The trace shows that the technical-reviewer reference and both raw documents were read. The verifier does not recursively delegate, rewrite files, or claim a readability or full-plugin evaluation occurred."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "--apply Make the attached cache-removal note clearer where it needs improvement, preserving its behavior.",
+      "expected_output": "A concise response recognizing that the small note is already clear and complete, with no unnecessary rewrite or delegation.",
+      "files": [
+        "evals/files/already-clear/cache-removal.md"
+      ],
+      "expectations": [
+        "The note remains byte-for-byte unchanged because its behavior, key distinctions, and verification are already clear. The response does not manufacture findings, alternate terminology, template sections, or unactivated cache-concurrency requirements.",
+        "The response briefly states that no substantive change is needed. It does not claim external tests or independent reviewers were used.",
+        "The trace contains no subagent delegation for this small self-contained note; the parent applies both technical and readability perspectives locally."
+      ]
+    }
+  ]
+}
