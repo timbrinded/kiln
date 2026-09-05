@@ -1,6 +1,6 @@
 {
   "name": "kiln",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "metadata": {
     "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, developer tooling, and learning workflows."
   },

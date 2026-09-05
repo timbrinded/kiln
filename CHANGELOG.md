@@ -8,18 +8,33 @@ Historical GitHub releases were reconstructed from the first commit on
 that commit's date. GitHub does not permit changing a release's publication
 timestamp, so retroactive release notes state the original release date.
 
-## Unreleased — Unslop
+## Kiln v0.6.0
 
-- Specsavers uses independent technical and readability reviewers for
-  substantial specifications, with one parent editor and verification against
-  the original sources. Small passages retain a single-agent workflow.
-- Added reader-expectation diagnostics for organization, sentence connections,
-  emphasis, and direct actions, with safeguards against inventing logical
-  relationships while rewriting.
-- Packaged shared specialist instructions inside the skill for native Codex
-  delegation and thin Claude Code adapters. Added Specsavers interface metadata
-  and evaluation cases for the workflow. Independent passes use additional
-  model work and tokens; unavailable checks are disclosed.
+<!-- release:v0.6.0 -->
+**Release date:** 2026-09-05
+
+Unslop now includes Codesavers for code cleanup and Specsavers for technical
+specification review and authoring, available to Codex and Claude Code.
+
+### Included plugin versions
+
+| Plugin | Version |
+|---|---:|
+| swift-design | 0.2.1 |
+| performance-optimization | 0.2.1 |
+| ui-refactor | 0.2.1 |
+| unslop | 0.4.0 |
+| teach-me | 0.1.1 |
+| infographic | 0.1.1 |
+| lottie-animation | 0.1.1 |
+| stacked-prs | 0.1.0 |
+
+See the Unslop v0.4.0 notes below and
+[PR #12](https://github.com/timbrinded/kiln/pull/12).
+
+Compare
+[`v0.5.0...v0.6.0`](https://github.com/timbrinded/kiln/compare/v0.5.0...v0.6.0).
+<!-- /release:v0.6.0 -->
 
 ## Kiln v0.4.0
 
@@ -252,14 +267,23 @@ Source:
 ## unslop v0.4.0
 
 <!-- release:unslop-v0.4.0 -->
-**Release date:** 2026-09-04
+**Release date:** 2026-09-05
 
 ### Added
 
 - Added Specsavers for concise technical-specification review and authoring.
-- Added ten specification-quality directives with per-artifact lenses, two
-  focused references, a read-only reviewer agent, and twelve outcome-based
-  evals covering review, rewrite, and authoring.
+- Added ten specification-quality directives with per-artifact lenses and
+  eighteen outcome-based evals covering review, rewrite, and authoring.
+- Added independent technical and readability reviewers for substantial
+  specifications, with one parent editor and verification against the original
+  sources. Small passages retain a single-agent workflow.
+- Added reader-expectation diagnostics for organization, sentence connections,
+  emphasis, and direct actions, with safeguards against inventing logical
+  relationships while rewriting.
+- Packaged shared specialist instructions inside the skill for native Codex
+  delegation and thin Claude Code adapters, plus Specsavers interface metadata.
+  Independent passes use additional model work and tokens; unavailable checks
+  are disclosed.
 
 ### Changed
 
@@ -276,6 +300,10 @@ Source:
 - Existing code-quality directives, gotchas, fixtures, and Directive #15
   behavior are preserved.
 
+See [PR #12](https://github.com/timbrinded/kiln/pull/12).
+
+Compare
+[`unslop-v0.3.1...unslop-v0.4.0`](https://github.com/timbrinded/kiln/compare/unslop-v0.3.1...unslop-v0.4.0).
 <!-- /release:unslop-v0.4.0 -->
 
 ## unslop v0.3.1
