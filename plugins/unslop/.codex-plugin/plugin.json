@@ -1,6 +1,6 @@
 {
   "name": "unslop",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Post-generation engineering quality. Codesavers removes avoidable complexity from changed code; Specsavers authors and reviews technical software specifications for precision, information density, and decision completeness.",
   "author": {
     "name": "timbo",

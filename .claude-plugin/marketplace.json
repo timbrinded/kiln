@@ -1,6 +1,6 @@
 {
   "name": "kiln",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "metadata": {
     "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, developer tooling, and learning workflows."
   },
@@ -42,7 +42,7 @@
       "name": "unslop",
       "source": "./plugins/unslop",
       "description": "Post-generation engineering quality. Codesavers removes avoidable complexity from changed code; Specsavers authors and reviews technical software specifications for precision, information density, and decision completeness.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": { "name": "timbo" },
       "category": "code-quality",
       "license": "MIT",

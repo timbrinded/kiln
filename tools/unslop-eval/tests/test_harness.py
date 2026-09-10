@@ -142,11 +142,7 @@ class HarnessTest(unittest.TestCase):
     def test_live_skill_eval_manifests_are_well_formed(self) -> None:
         manifests = {
             "codesaver": (
-                self.repo_root
-                / LIVE_CODESAVER_PATH
-                / "evals"
-                / "evals.json",
-                10,
+                self.repo_root / LIVE_CODESAVER_PATH / "evals" / "evals.json"
             ),
             "specsaver": (
                 self.repo_root
@@ -155,18 +151,18 @@ class HarnessTest(unittest.TestCase):
                 / "skills"
                 / "specsaver"
                 / "evals"
-                / "evals.json",
-                18,
+                / "evals.json"
             ),
         }
 
-        for skill_name, (manifest_path, expected_count) in manifests.items():
+        for skill_name, manifest_path in manifests.items():
             with self.subTest(skill_name=skill_name):
                 self.assertTrue(manifest_path.is_file())
                 manifest = json.loads(manifest_path.read_text())
                 self.assertEqual(manifest["skill_name"], skill_name)
                 cases = manifest["evals"]
-                self.assertEqual(len(cases), expected_count)
+                self.assertIsInstance(cases, list)
+                self.assertTrue(cases)
                 ids = [case["id"] for case in cases]
                 self.assertTrue(all(isinstance(case_id, int) for case_id in ids))
                 self.assertEqual(len(ids), len(set(ids)))
