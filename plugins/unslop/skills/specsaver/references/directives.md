@@ -12,16 +12,16 @@ another's. Optimise for the reader's comprehension and retention, not for the
 author's order of discovery.
 
 **What to look for.** A rule stated far from the behaviour it governs. Steps
-described out of order. One paragraph that mixes trigger, action, failure, and
-telemetry. Verification written as a wall of prose. A fact the reader must
-already know before the sentence that introduces it. Circular explanation that
-restates a term instead of defining it.
+described out of order. A paragraph that obscures the relationships between
+trigger, action, failure, and telemetry. Verification written as a wall of prose.
+A fact the reader must already know before the sentence that introduces it.
+Circular explanation that restates a term instead of defining it.
 
 At sentence level, inspect the topic, action, backward connection, and main
 takeaway. A paragraph of individually clear sentences can still leave the
 reader to reconstruct their relationships. Use the
-[readability reviewer](readability-reviewer.md) for these diagnostics and their
-limits, including subject–verb proximity and useful repetition of key terms.
+[readability guidance](readability.md) for these diagnostics and their limits,
+including descriptive voice, sentence flow, and useful repetition of key terms.
 
 The [cleanup-worker example](gotchas-and-examples.md#1-rewrite-a-necessary-but-badly-written-passage)
 shows a complete rewrite into execution order while preserving each fact.
@@ -84,15 +84,15 @@ through what it is not, not the word `not`.
 
 ## 4. Remove non-information
 
-**Principle.** Delete text that constrains nothing, explains no decision, and
-resolves no plausible ambiguity.
+**Principle.** Delete text that adds no constraint, explanation, needed context,
+or resolution of a plausible ambiguity.
 
 **What to look for.** Empty or `Not applicable` headings. Non-goals that no
 reasonable implementer would have inferred. Alternatives that no engineer would
 advocate: `do nothing`, `rewrite everything`, `use some third party`. Generic
-caveats: `appropriate care will be taken`. Restated summaries. Narration of
-private handler calls that the contract does not fix. Rationale repeated in
-three places.
+caveats: `appropriate care will be taken`. Summaries that repeat claims without
+helping the reader follow the design. Narration of private handler calls that
+the contract does not fix. Rationale repeated in three places.
 
 **Before.**
 
@@ -168,8 +168,10 @@ ingested dataset, give each a name. Rewrite "the status is updated" as "the
 Indexer sets the state to `indexed`" when responsibility matters.
 
 **Observable behaviour.** A useful behavioural statement names its trigger when
-one is relevant, its actor, and one observable response. Split obligations that
-can pass or fail independently.
+one is relevant, its actor, and its observable responses. Make each obligation
+independently identifiable and verifiable. Related obligations may share a
+sentence when this clarifies their relationship and preserves the scope of
+their conditions.
 
 **Statement roles.** Facts, requirements, decisions, rationale, assumptions,
 examples, tasks, and open questions carry different authority. An example

@@ -44,8 +44,10 @@ Accept `--files path...` to name targets. Do not implement the described system.
    Use the questions relevant to this design, not as mandatory headings or a
    classification to report. Load the directive explanations only when needed
    to sharpen a judgement.
-3. Review from both technical and readability perspectives. For substantial
-   work, follow the delegation workflow below.
+3. Read [readability guidance](references/readability.md) before drafting,
+   rewriting, or assessing prose, including small tasks handled without
+   delegation. Review from both technical and readability perspectives. For
+   substantial work, follow the delegation workflow below.
 4. Check findings against the original sources and resolve conflicts through
    evidence. Group findings with the same cause. In rewrite or author mode,
    the parent alone produces one coherent document from accepted findings.
@@ -87,16 +89,17 @@ perspective in the parent and disclose the missing independent check.
 ## Directives
 
 1. **Write for the human reader.** Order material by execution or learning
-   dependencies. Keep related rules together and make important claims and
-   sentence connections clear. Use the readability reference for diagnostics.
+   dependencies. Keep related rules together and explain how facts connect.
+   Use descriptive prose and deliberate sentence structure; judge clarity by
+   reader effort, not sentence length.
 2. **Preserve semantics, not prose.** Wording, order, and representation may
    change freely while every material fact survives.
 3. **Describe the system positively.** Establish what components own and do
    before adding necessary prohibitions. Keep a prohibition when it is itself an
    integrity, security, compatibility, or scope invariant that the positive
    model does not close.
-4. **Remove non-information.** Delete repetition, ceremony, fake alternatives,
-   fanciful non-goals, generic caveats, empty or `N/A` headings, and
+4. **Remove non-information.** Delete unhelpful repetition, ceremony, fake
+   alternatives, fanciful non-goals, generic caveats, empty or `N/A` headings, and
    implementation narration that constrains nothing.
 5. **Decide material behaviour.** Do not leave product, architectural, state,
    ownership, failure, or compatibility decisions to the implementer. Do leave

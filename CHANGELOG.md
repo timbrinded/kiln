@@ -8,6 +8,34 @@ Historical GitHub releases were reconstructed from the first commit on
 that commit's date. GitHub does not permit changing a release's publication
 timestamp, so retroactive release notes state the original release date.
 
+## Kiln v0.6.1
+
+<!-- release:v0.6.1 -->
+**Release date:** 2026-09-10
+
+Unslop 0.4.1 improves Specsavers readability guidance for reviews, rewrites,
+and authored specifications in Codex and Claude Code.
+
+### Included plugin versions
+
+| Plugin | Version |
+|---|---:|
+| swift-design | 0.2.1 |
+| performance-optimization | 0.2.1 |
+| ui-refactor | 0.2.1 |
+| unslop | 0.4.1 |
+| teach-me | 0.1.1 |
+| infographic | 0.1.1 |
+| lottie-animation | 0.1.1 |
+| stacked-prs | 0.1.0 |
+
+See the [Unslop v0.4.1 release notes](https://github.com/timbrinded/kiln/releases/tag/unslop-v0.4.1) and
+[PR #13](https://github.com/timbrinded/kiln/pull/13).
+
+Compare
+[`v0.6.0...v0.6.1`](https://github.com/timbrinded/kiln/compare/v0.6.0...v0.6.1).
+<!-- /release:v0.6.1 -->
+
 ## Kiln v0.6.0
 
 <!-- release:v0.6.0 -->
@@ -263,6 +291,36 @@ Compare
 Source:
 [`a66fff2`](https://github.com/timbrinded/kiln/commit/a66fff2d9219d2c1d6712c552345e5fddf7647f1).
 <!-- /release:ui-refactor-v0.1.0 -->
+
+## unslop v0.4.1
+
+<!-- release:unslop-v0.4.1 -->
+**Release date:** 2026-09-10
+
+### Changed
+
+- Load shared readability guidance before all Specsavers prose work,
+  including small tasks handled by the parent without delegation.
+- Use the same guidance in the readability specialist's review and
+  verification passes.
+- Clarify descriptive voice, sentence flow, emphasis, and useful repetition.
+  Preserve connected clauses and needed context when they help the reader.
+- Keep related obligations together when their conditions and outcomes remain
+  clear and independently verifiable.
+
+### Validation support
+
+- Added two evaluation cases for leaving clear conditional prose unchanged
+  and drafting a proportionate specification from a conversational brief.
+- Updated the evaluation criteria to accept repetition that supplies context.
+- Removed the fixed catalog-size assertion so validation checks every case
+  as the catalog grows.
+
+See [PR #13](https://github.com/timbrinded/kiln/pull/13).
+
+Compare
+[`unslop-v0.4.0...unslop-v0.4.1`](https://github.com/timbrinded/kiln/compare/unslop-v0.4.0...unslop-v0.4.1).
+<!-- /release:unslop-v0.4.1 -->
 
 ## unslop v0.4.0
 
