@@ -20,8 +20,8 @@ restates a term instead of defining it.
 At sentence level, inspect the topic, action, backward connection, and main
 takeaway. A paragraph of individually clear sentences can still leave the
 reader to reconstruct their relationships. Use the
-[readability reviewer](readability-reviewer.md) for these diagnostics and their
-limits, including subject–verb proximity and useful repetition of key terms.
+[readability guidance](readability.md) for these diagnostics and their limits,
+including descriptive voice, sentence flow, and useful repetition of key terms.
 
 The [cleanup-worker example](gotchas-and-examples.md#1-rewrite-a-necessary-but-badly-written-passage)
 shows a complete rewrite into execution order while preserving each fact.

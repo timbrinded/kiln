@@ -255,6 +255,35 @@
         "The response briefly states that no substantive change is needed. It does not claim external tests or independent reviewers were used.",
         "The trace contains no subagent delegation for this small self-contained note; the parent applies both technical and readability perspectives locally."
       ]
+    },
+    {
+      "id": 19,
+      "prompt": "--apply Make the attached cached-response note clearer where it needs improvement, preserving its behavior.",
+      "expected_output": "A concise response recognizing that the connected explanation is already clear, with no unnecessary sentence splitting or rewrite.",
+      "files": [
+        "evals/files/conditional-read/cached-response.md"
+      ],
+      "expectations": [
+        "The note remains byte-for-byte unchanged. Its longer sentences group related conditions and outcomes clearly; sentence length and semicolons alone do not justify an edit.",
+        "The response does not invent ambiguity in the present-and-unexpired hit condition, absent-or-expired miss condition, equality-at-expiry rule, exact key matching, or preservation of contents and LRU order. It does not add clock, eviction, or concurrency mechanisms.",
+        "The response briefly states that no substantive change is needed, without prescribing a word limit, punctuation quota, replacement wording, or additional template sections.",
+        "The candidate trace shows the parent reading references/readability.md before assessing the note and applying both perspectives locally, without subagent delegation or adopting the read-only specialist role."
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "Use Specsavers to draft a technical specification for the attached preview-status change.",
+      "expected_output": "A proportionate, connected specification that describes the helper's contract in a factual voice without copying the brief's conversational walkthrough.",
+      "files": [
+        "evals/files/author-preview-status/feature-brief.md"
+      ],
+      "expectations": [
+        "The specification preserves the stale-preview problem, classifyPreview interface, validated preview fields, supplied clock value, integer milliseconds on the same clock, opaque case-sensitive revisions, and current, outdated, and expired results. Expiry is now >= expires_at and takes precedence over revision mismatch; only unexpired previews use revision equality to distinguish current from outdated.",
+        "The specification preserves the pure helper contract, input non-mutation, prohibition on reading the clock internally, unchanged UI labels and layout, and verification of matching and differing revisions before expiry, equality at expiry, later expiry, expiry combined with a revision mismatch, and unchanged inputs.",
+        "The explanation connects the status conditions and makes expiry precedence easy to understand. It uses a factual, descriptive voice rather than a first-person walkthrough or human motives attributed to components. Appropriate component subjects, present tense, and ordered rules are accepted; no particular punctuation, sentence length, or prose-versus-table layout is required.",
+        "The document stays proportionate to the local helper. It does not invent persistence, automatic refresh, network requests, scheduling, input validation rules, or unrelated sections. The raw brief remains unchanged.",
+        "The candidate trace shows the parent reading references/readability.md before drafting and producing the specification itself without subagent delegation for this small task. The parent does not treat the shared guidance as a read-only reviewer assignment or return only review findings."
+      ]
     }
   ]
 }
