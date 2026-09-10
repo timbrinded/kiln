@@ -42,10 +42,10 @@ cannot repair a document whose explanation is out of order.
 - **Distinct claims.** Give independently important claims enough space to be
   understood, using separate sentences or a list where useful. Preserve which
   conditions apply to which obligations when splitting or moving text.
-- **Useful repetition.** Repeat a precise term when it anchors the next idea
-  or disambiguates a pronoun. Repeating a term is different from repeating an
-  assertion. Avoid synonym changes that make readers infer whether two names
-  mean the same thing.
+- **Useful repetition.** Repeat a precise term or relevant fact when it
+  supplies context for the next idea, maintains continuity, or disambiguates
+  a pronoun. Remove repetition that adds no context or clarity. Avoid synonym
+  changes that make readers infer whether two names mean the same thing.
 - **Logical connections.** Decide whether the source establishes sequence,
   contrast, cause, or an example before choosing connecting language. If a
   clear explanation requires a guess, flag the missing relationship rather

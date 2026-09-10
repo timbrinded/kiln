@@ -98,8 +98,8 @@ perspective in the parent and disclose the missing independent check.
    before adding necessary prohibitions. Keep a prohibition when it is itself an
    integrity, security, compatibility, or scope invariant that the positive
    model does not close.
-4. **Remove non-information.** Delete repetition, ceremony, fake alternatives,
-   fanciful non-goals, generic caveats, empty or `N/A` headings, and
+4. **Remove non-information.** Delete unhelpful repetition, ceremony, fake
+   alternatives, fanciful non-goals, generic caveats, empty or `N/A` headings, and
    implementation narration that constrains nothing.
 5. **Decide material behaviour.** Do not leave product, architectural, state,
    ownership, failure, or compatibility decisions to the implementer. Do leave
