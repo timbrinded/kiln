@@ -99,6 +99,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer Tools"
+    },
+    {
+      "name": "idea-space",
+      "source": {
+        "source": "local",
+        "path": "./plugins/idea-space"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Ideation"
     }
   ]
 }

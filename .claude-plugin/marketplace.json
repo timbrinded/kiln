@@ -1,8 +1,8 @@
 {
   "name": "kiln",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "metadata": {
-    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, developer tooling, and learning workflows."
+    "description": "Kiln — Raw code refined into polished design. A marketplace of Claude Code plugins for design, performance, code quality, developer tooling, ideation, and learning workflows."
   },
   "owner": {
     "name": "timbo"
@@ -87,6 +87,16 @@
       "category": "development",
       "license": "MIT",
       "keywords": ["github", "stacked-prs", "gh-stack", "pull-request", "branches", "code-review"]
+    },
+    {
+      "name": "idea-space",
+      "source": "./plugins/idea-space",
+      "description": "Generate verifiably new ideas in any domain: map everything that exists by meaning, find the empty space, write the idea that would live there, and measure how far it lands from its closest existing twin.",
+      "version": "0.1.0",
+      "author": { "name": "timbo" },
+      "category": "ideation",
+      "license": "MIT",
+      "keywords": ["ideation", "brainstorming", "novelty", "embeddings", "white-space", "market-gaps", "game-design", "product-ideas"]
     }
   ]
 }
