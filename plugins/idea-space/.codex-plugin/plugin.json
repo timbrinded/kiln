@@ -1,0 +1,39 @@
+{
+  "name": "idea-space",
+  "version": "0.1.0",
+  "description": "Generate verifiably new ideas in any domain: map everything that exists by meaning, find the empty space, write the idea that would live there, and measure how far it lands from its closest existing twin.",
+  "author": {
+    "name": "timbo",
+    "url": "https://github.com/timbrinded"
+  },
+  "homepage": "https://github.com/timbrinded/kiln",
+  "repository": "https://github.com/timbrinded/kiln",
+  "license": "MIT",
+  "keywords": [
+    "ideation",
+    "brainstorming",
+    "novelty",
+    "embeddings",
+    "white-space",
+    "market-gaps",
+    "game-design",
+    "product-ideas"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Idea Space",
+    "shortDescription": "Find the empty space in a domain and measure how new an idea is.",
+    "longDescription": "Embed a corpus of everything that exists in a domain, survey its neighbourhoods, blend related items or find holes between neighbourhoods, write the idea that would live there, and re-embed it to measure its distance from the closest existing item before ranking.",
+    "developerName": "timbo",
+    "category": "Ideation",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Give me genuinely new game ideas that nothing on Steam already does.",
+      "Map this product catalogue and show me where the white space is.",
+      "How original is this idea compared with what already exists?"
+    ]
+  }
+}

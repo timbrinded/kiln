@@ -1,0 +1,9 @@
+{
+  "name": "idea-space",
+  "version": "0.1.0",
+  "description": "Generate verifiably new ideas in any domain: map everything that exists by meaning, find the empty space, write the idea that would live there, and measure how far it lands from its closest existing twin.",
+  "author": {
+    "name": "timbo"
+  },
+  "keywords": ["ideation", "brainstorming", "novelty", "embeddings", "white-space", "market-gaps", "game-design", "product-ideas"]
+}
